@@ -1,0 +1,1 @@
+java -jar wfstore_1.2.0.jar
