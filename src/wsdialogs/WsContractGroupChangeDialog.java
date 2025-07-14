@@ -1,0 +1,216 @@
+package wsdialogs;
+
+import static wsmain.WsUtils.*;
+
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+
+import wscontrols.WsContractsComboBox;
+import wsevents.WsEventDispatcher;
+import wsforms.WsPrihodForm;
+import wsmain.WsCloseFlag;
+import wsmain.WsGuiTools;
+import wsmain.WsUtils;
+
+
+public class  WsContractGroupChangeDialog extends JDialog  {
+	
+	private static final long serialVersionUID = 1L;
+
+	private Forwarder forwarder = new Forwarder();
+	
+	private WsCloseFlag flag = WsCloseFlag.CANCEL;
+	
+	private WsContractsComboBox m_contractCombo = new WsContractsComboBox();
+	
+	public JButton m_startButton;
+
+	JCheckBox m_checkRashod = new JCheckBox(getGuiStrs("changeRashodCheckBox"));
+	
+	JLabel m_combo_label = new JLabel(getGuiStrs("newContractLabel"));
+	
+	WsPrihodForm parent = null;
+	
+	public  WsContractGroupChangeDialog(JFrame jfrm, WsPrihodForm p, String nameFrame) {
+		
+		super (jfrm, nameFrame, true);
+		
+		parent = p;
+		
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		
+		add(createGUI());
+		
+		//setBounds(50, 50, 350, 150);
+		
+		setCustomFont();
+		
+		setLocation(50, 50);
+
+		pack();
+		
+		setResizable(false);
+		
+	}
+	
+
+	/**
+	 * Listener for buttons reaction
+	 * @author Andrii Dashkov license GNU GPL v3
+	 *
+	 */
+	class Forwarder implements ActionListener {
+		
+		public void actionPerformed(ActionEvent e) {
+			
+			if ( e.getSource() == m_startButton ) { onOK(e); }
+			
+					
+		}
+	}
+	
+	public void onOK(ActionEvent e) {
+
+		flag = WsCloseFlag.OK;
+			
+		int res = WsUtils.showYesNoDialogLong(getMessagesStrs("startContrChangeCaption0"),
+						 	getMessagesStrs("startContrChangeCaption1"));
+	      	   
+		if ( 1 == res) {
+	
+			setCursor(new Cursor(Cursor.WAIT_CURSOR));
+			
+			int processed = parent.changeContract( m_contractCombo.getCurrentSQLId(), m_checkRashod.isSelected() );
+
+			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			
+ 		    WsUtils.showMessageDialog(getMessagesStrs("endCnCganeMessage") + " " + String.valueOf(processed));
+		
+			dispose();
+		
+		}
+		
+	}
+
+	
+	/**
+	 * 	
+	 * @return close flag to determine what operation should be done after the dialog close
+	 */
+	public WsCloseFlag getClosedFlagValue () {
+		
+		return flag;
+	}
+	
+	
+	/**
+	 * 
+	 * @return main UI panel with all components
+	 */
+	private JPanel createGUI() {
+		
+		m_startButton = new JButton(getGuiStrs("buttonStartConrChCaption"));
+		
+		JPanel panel_MAIN = WsGuiTools.createVerticalPanel();
+		
+		panel_MAIN.add(Box.createVerticalStrut(WsUtils.VERT_STRUT));
+		
+		JPanel panel1 = WsGuiTools.createHorizontalPanel();
+		
+		panel1.add( m_combo_label );   panel1.add(Box.createHorizontalStrut(WsUtils.HOR_STRUT));
+		
+		panel1.add(m_contractCombo );   
+		
+		JPanel panel2 = WsGuiTools.createHorizontalPanel();
+		
+		panel2.add( m_checkRashod);   panel2.add(Box.createHorizontalStrut(WsUtils.HOR_STRUT));
+		
+		JPanel panel_start = WsGuiTools.createHorizontalPanel();
+		
+		panel_start.add(m_startButton);   panel_start.add(Box.createHorizontalGlue());
+		
+		panel_MAIN.setBorder(BorderFactory.createEmptyBorder(WsUtils.VERT_STRUT,WsUtils.VERT_STRUT,WsUtils.VERT_STRUT,WsUtils.VERT_STRUT));
+		
+		panel_MAIN.add(panel1);
+		
+		panel_MAIN.add(Box.createVerticalStrut(WsUtils.VERT_STRUT));
+		
+		panel_MAIN.add(panel2);
+		
+		panel_MAIN.add(Box.createVerticalStrut(WsUtils.VERT_STRUT));
+		
+		panel_MAIN.add(panel_start);
+		
+		panel_MAIN.add(Box.createVerticalStrut(WsUtils.VERT_STRUT));
+		
+		setAllListeners();
+		
+		setToolTips();
+		
+		return panel_MAIN;
+	}
+	
+	private void setAllListeners() {
+		
+		m_startButton.addActionListener(forwarder);
+		
+		addWindowListener(new WindowAdapter() {
+			
+			public void windowClosing(WindowEvent we) {
+				
+				dispose();
+			}
+		});
+	
+		
+	}
+	
+
+	 /**
+	  * <p>Sets tooltips for all elements</p>
+	  */
+	 private void setToolTips() {
+		 	 	  
+		m_startButton.setToolTipText(getGuiStrs("importDBButtonToolTip"));
+		
+		m_checkRashod.setToolTipText(getGuiStrs("changeContrCheckToolTip"));
+		 
+	 }
+	 
+
+	public void dispose() {
+		
+		WsEventDispatcher.get().disconnect(this);
+				
+		super.dispose();
+			
+	}
+	
+	private void setCustomFont() {
+		
+		Font f = WsGuiTools.getCustomFont( );
+		
+		if(null == f) {
+			
+			return;
+		}
+		
+		WsGuiTools.changeFont(this, f);
+			
+	}
+}
+
