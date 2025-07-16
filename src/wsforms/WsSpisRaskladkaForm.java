@@ -569,6 +569,17 @@ public class WsSpisRaskladkaForm extends JPanel {
 			
 		}
 		
+		for(WsSkladMoveDataColumn df : table_vec) {
+			
+			if(df.q_array[1].initial_rest != 0.0 && 
+					df.q_array[1].rest == 0.0 && df.q_array[1].out_quantity == 0.0) {
+				
+				df.q_array[1].rest = df.q_array[1].initial_rest  + 
+						df.q_array[1].in_quantity - df.q_array[1].out_quantity;
+				
+			}
+		}
+		
 		Collections.sort(table_vec, new WsKodComparator());
 	
 		m_table.refresh();
