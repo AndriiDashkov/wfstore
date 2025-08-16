@@ -556,7 +556,7 @@ public class WsSettings {
 		
 		if(rowRecentData.size() > 10) {
 			
-			rowRecentData.removeLast();
+			rowRecentData.remove(rowRecentData.size() - 1);
 			
 		}
 		
@@ -600,7 +600,7 @@ public class WsSettings {
 		
 		s.append(LOG_ENABLED_ATTR +"='false'  >");
 		
-		s.append("<" + LF_ELEMENT + "  " + FONT_SIZE_ATTR + "=0></" + LF_ELEMENT + " >");
+		s.append("<" + LF_ELEMENT + "  " + FONT_SIZE_ATTR + "= '0'></" + LF_ELEMENT + " >");
 		
 		s.append("<" + RECENT_BASES_ELEMENT + "><" + RECENT_BASE_ELEMENT + " "  + RECENT_BASE_PATH_ATTR + " =''  >");
 		

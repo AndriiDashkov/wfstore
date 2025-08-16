@@ -155,30 +155,33 @@ public class WsSkladSqlStatements {
 	        	StringBuilder s_b =  new StringBuilder();
 	        	
 	        	s_b.append("SELECT invoice_parts.id, invoices.date, part_types.name, "
-	        			+ "invoice_parts.name, SUM(invoice_parts.rest), "
+	        			+ "invoice_parts.name, SUM(invoice_parts.rest) AS sumrest, "
 	        			+ "units.name, invoice_parts.vendor_code_2, invoice_parts.info,"
 	        			+ "id_part_type, id_units, id_invoice, invoice_parts.cost,"
 	        			+ " invoice_parts.nds, part_types.kod, invoice_parts.costnds FROM invoice_parts"
 	        			+ " INNER JOIN invoices ON invoices.id = invoice_parts.id_invoice"
 	        			+ " INNER JOIN part_types ON part_types.id = invoice_parts.id_part_type"
 	        			+ " INNER JOIN units ON units.id = invoice_parts.id_units"
-	        			+ " WHERE invoice_parts.rest > 0.00001 GROUP BY part_types.kod ORDER BY ");
+	        			+ " WHERE invoice_parts.rest > 0.00001 GROUP BY part_types.kod "
+	        			+ " HAVING sumrest > 0.0009 ORDER BY ");
 	        	
 	        	
 	        	switch(sort_flag) {
 	        	
-	        		case 0: s_b.append(" invoices.date;"); break;
+	        		case 0: s_b.append(" invoices.date"); break;
 	        		
-	        		case 1: s_b.append(" part_types.kod;"); break;
+	        		case 1: s_b.append(" part_types.kod"); break;
 	        		
-	        		case 2: s_b.append(" invoice_parts.name;"); break;
+	        		case 2: s_b.append(" invoice_parts.name"); break;
 	        		
-	        		case 3: s_b.append(" part_types.kod;"); break;
+	        		case 3: s_b.append(" part_types.kod"); break;
 	        		
-	        		default : s_b.append(" invoices.date;");
+	        		default : s_b.append(" invoices.date");
 	        	};
 
 	       
+	        	s_b.append(";");
+	        	
 	        	ResultSet rs =  st.executeQuery(s_b.toString());
 	        	
 	        	while(rs.next()) {
@@ -312,7 +315,7 @@ public class WsSkladSqlStatements {
 
 			if(groupBykod) {
 				
-				s_b.append(" SUM(invoice_parts.rest), ");
+				s_b.append(" SUM(invoice_parts.rest) AS sumrest, ");
 			}
 			else {
 				
@@ -331,27 +334,29 @@ public class WsSkladSqlStatements {
         	
         	if(groupBykod) {
         		
-        		s_b.append(" GROUP BY part_types.kod ");
+        		s_b.append("  GROUP BY part_types.kod HAVING sumrest > 0.0009 ");
         	}
         	
         	switch(sort_flag) {
         	
-        		case 0: s_b.append(" ORDER BY invoices.date;"); break;
+        		case 0: s_b.append(" ORDER BY invoices.date"); break;
         		
-        		case 1: s_b.append("  ORDER BY part_types.kod;"); break;
+        		case 1: s_b.append("  ORDER BY part_types.kod"); break;
         		
-        		case 2: s_b.append("  ORDER BY invoice_parts.name;"); break;
+        		case 2: s_b.append("  ORDER BY invoice_parts.name"); break;
         		
-        		case 3: s_b.append("   ORDER BY part_types.kod;"); break;
+        		case 3: s_b.append("   ORDER BY part_types.kod"); break;
         		
-        		case 4: s_b.append("   ORDER BY part_types.kod,invoice_parts.id ;"); break;
+        		case 4: s_b.append("   ORDER BY part_types.kod,invoice_parts.id "); break;
         		
-        		case 5: s_b.append("   ORDER BY part_types.kod, invoices.date DESC, invoice_parts.id DESC;"); break;
+        		case 5: s_b.append("   ORDER BY part_types.kod, invoices.date DESC, invoice_parts.id DESC"); break;
         		
-        		case 6: s_b.append("   ORDER BY part_types.kod, invoices.date, invoice_parts.id;"); break;
+        		case 6: s_b.append("   ORDER BY part_types.kod, invoices.date, invoice_parts.id"); break;
         		
-        		default : s_b.append(" ORDER BY  invoices.date;");
+        		default : s_b.append(" ORDER BY  invoices.date");
         	};
+        	
+        	s_b.append(";");
         	
         	PreparedStatement ps = WsConnect.getCurrentConnection().prepareStatement(s_b.toString());
         	

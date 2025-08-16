@@ -43,19 +43,19 @@ public class WsIndicesImportPanel extends JPanel {
 	
 	JLabel m_mainLabel = new JLabel(getGuiStrs("importIndicesMainLabel"));
 	
-	protected static int[] RASKLADKA_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1};
+	protected static int[] RASKLADKA_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1};
 	
-	protected static int[] NAKL_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1};
+	protected static int[] NAKL_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1};
 	
-	protected static int[] PRIHODNAKL_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1};
+	protected static int[] PRIHODNAKL_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1};
 	
-	protected static int[] KARTZVIT_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1};
+	protected static int[] KARTZVIT_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1};
 	
-	protected static int[] KARTZVITRASKLADKA_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1};
+	protected static int[] KARTZVITRASKLADKA_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1};
 	
-	protected static int[] CATALOGRASKLADKA_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1};
+	protected static int[] CATALOGRASKLADKA_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1};
 	
-	protected static int[] PRODREST_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1};
+	protected static int[] PRODREST_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1};
 	
 	protected  JLabel m_labelSheetColumn = new JLabel(getGuiStrs("labelSheetColumnCaption"));
 	
@@ -83,7 +83,6 @@ public class WsIndicesImportPanel extends JPanel {
 	
 	protected  JLabel m_labelPeopleColumn = new JLabel(getGuiStrs("labelPeopleColumnCaption"));
 	
-	
 	protected  JSpinner m_spinSheetColumn = null;
 	
 	protected  JSpinner m_spinKodColumn = null;
@@ -109,6 +108,8 @@ public class WsIndicesImportPanel extends JPanel {
 	protected  JSpinner m_spinSundayRow = null;
 	
 	protected  JSpinner m_spinPeopleColumn = null;
+	
+	protected  JSpinner m_spinQuantityColumn1 = null;
 	
 	WsParseIndicies.TYPE m_type = TYPE.NAKL;
 	
@@ -175,6 +176,8 @@ public class WsIndicesImportPanel extends JPanel {
 			
 			case PRIHODNAKL: { m_panel_bottom = getGuinakladna(); break;}
 			
+			case PRODREST: { m_panel_bottom = getGuiProdRest(); break; } 
+			
 			default: { break; }
 		};
 		
@@ -225,6 +228,54 @@ public class WsIndicesImportPanel extends JPanel {
 		panel_grid.add(m_labelNameColumn);     panel_grid.add(m_spinNameColumn);
 		
 		panel_grid.add(m_labelQuantityColumn); panel_grid.add(m_spinQuantityColumn);
+		
+		panel_grid.add(m_labeUnitsRow);         panel_grid.add(m_spinUnitsRow);
+
+		return panel_grid;
+		
+	}
+	
+	private JPanel getGuiProdRest() {
+		
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+		SpinnerModel model1 = new SpinnerNumberModel(-1, -1, 20000, 1);  
+		
+		m_spinSheetColumn = new  JSpinner(model1);
+		
+		SpinnerModel model2 = new SpinnerNumberModel(-1, -1, 20000, 1); 
+		
+		m_spinKodColumn = new  JSpinner(model2);
+		
+		SpinnerModel model3 = new SpinnerNumberModel(-1, -1, 20000, 1);
+		
+		m_spinNameColumn = new  JSpinner(model3);
+		
+		SpinnerModel model4 = new SpinnerNumberModel(-1, -1, 20000, 1);
+		
+		m_spinQuantityColumn = new  JSpinner(model4);
+			
+		SpinnerModel model5 = new SpinnerNumberModel(-1, -1, 20000, 1);
+		
+		m_spinQuantityColumn1 = new  JSpinner(model5);
+		
+		SpinnerModel model8 = new SpinnerNumberModel(-1, -1, 20000, 1);
+		
+		m_spinUnitsRow = new  JSpinner(model8);
+		
+		JPanel panel_grid = new JPanel();	
+		
+		panel_grid.setLayout(new GridLayout(8,2, 0, WsUtils.VERT_STRUT/4));
+		
+		panel_grid.add(m_labelSheetColumn); panel_grid.add(m_spinSheetColumn);
+		
+		panel_grid.add(m_labelKodColumn);	    panel_grid.add(m_spinKodColumn);
+		
+		panel_grid.add(m_labelNameColumn);     panel_grid.add(m_spinNameColumn);
+		
+		panel_grid.add(new JLabel("Index pochatok")); panel_grid.add(m_spinQuantityColumn);
+		
+		panel_grid.add(new JLabel("Index pribulo")); panel_grid.add(m_spinQuantityColumn1);
 		
 		panel_grid.add(m_labeUnitsRow);         panel_grid.add(m_spinUnitsRow);
 
@@ -283,17 +334,17 @@ public class WsIndicesImportPanel extends JPanel {
 		
 		switch(tp) {
 		
-			case RASKLADKA:         {  ref = RASKLADKA_static_indices; break;}
+			case RASKLADKA:           {  ref = RASKLADKA_static_indices; break;}
 			
-			case NAKL:              {  ref = NAKL_static_indices; break;}
+			case NAKL:                {  ref = NAKL_static_indices; break;}
 			
-			case KARTZVIT:          {  ref = KARTZVIT_static_indices; break;}
+			case KARTZVIT:            {  ref = KARTZVIT_static_indices; break;}
 			
-			case KARTZVITRASKLADKA: {  ref = KARTZVITRASKLADKA_static_indices; break;}
+			case KARTZVITRASKLADKA:   {  ref = KARTZVITRASKLADKA_static_indices; break;}
 			
-			case CATALOGRASKLADKA:  {  ref = CATALOGRASKLADKA_static_indices; break;}
+			case CATALOGRASKLADKA:    {  ref = CATALOGRASKLADKA_static_indices; break;}
 			
-			case PRODREST:          {  ref = PRODREST_static_indices; break;}
+			case PRODREST:            {  ref = PRODREST_static_indices; break;}
 			
 			case PRIHODNAKL:          {  ref = PRIHODNAKL_static_indices; break;}
 			
@@ -460,16 +511,6 @@ private JPanel getGuiRaskladka() {
 		
 		//panel_grid2.setBorder(title);
 		
-	
-	    
-
-		
-
-		
-
-		
-
-		
 		main.add(panel_left);
 		
 		//main.add(panel_grid2);
@@ -518,8 +559,6 @@ private JPanel getGuiRaskladka() {
 			case NAKL:              {   break;}
 			
 			case KARTZVIT:          {   break;}
-			
-		
 			
 			case CATALOGRASKLADKA:  {   break;}
 			
@@ -673,6 +712,21 @@ private JPanel getGuiRaskladka() {
 			 ind_schema.unitsColumnIndex = (int)m_spinUnitsRow.getValue();
 	
 		}
+		else if(m_type == TYPE.PRODREST) {
+			
+			 ind_schema.sheetIndex = (int)m_spinSheetColumn.getValue();
+				
+			 ind_schema.kodColumnIndex = (int)m_spinKodColumn.getValue();
+			
+			 ind_schema.nameColumnIndex = (int)m_spinNameColumn.getValue();
+			
+			 ind_schema.quantityColumnIndex = (int)m_spinQuantityColumn.getValue();
+			 
+			 ind_schema.quantityColumnIndex1 = (int)m_spinQuantityColumn1.getValue();
+			
+			 ind_schema.unitsColumnIndex = (int)m_spinUnitsRow.getValue();
+	
+		}
 		else if(m_type == TYPE.KARTZVIT) {
 			
 			 ind_schema.sheetIndex = (int)m_spinSheetColumn.getValue();
@@ -789,6 +843,8 @@ private JPanel getGuiRaskladka() {
 		
 		if(m_spinPeopleColumn != null)  { ar[12] = (int) m_spinPeopleColumn.getValue(); }
 		
+		if(m_spinQuantityColumn1 != null)  { ar[13] = (int) m_spinQuantityColumn1.getValue(); }
+		
 		st.setImportIndices(m_type, ar);
 		
 		st.setReqSavingFlag();
@@ -879,6 +935,11 @@ private JPanel getGuiRaskladka() {
 	    	m_spinPeopleColumn.setValue(sc.peopleStartColumnIndex);
 	    }
 	    
+		if(m_spinQuantityColumn1 != null ) {
+			
+			m_spinQuantityColumn1.setValue(sc.quantityColumnIndex1);
+		}
+	    
 	    int[] ref = getStaticArray(sc.type);
 	    
 	    ref[0] = sc.sheetIndex;
@@ -921,6 +982,8 @@ private JPanel getGuiRaskladka() {
 	    ref[11] = sc.sundaySumIndex;
 	    
 	    ref[12] = sc.peopleStartColumnIndex;
+	    
+	    ref[13] = sc.quantityColumnIndex1;
 	
 	}
 	
@@ -953,6 +1016,8 @@ private JPanel getGuiRaskladka() {
 		if(null != m_spinSundayRow) { m_spinSundayRow.setValue(ref[11]); }
 		
 		if(null != m_spinPeopleColumn) { m_spinPeopleColumn.setValue(ref[12]); }
+		
+		if(null != m_spinQuantityColumn1) { m_spinQuantityColumn1.setValue(ref[13]); }
 				
 	}
 	
@@ -1022,6 +1087,10 @@ private JPanel getGuiRaskladka() {
 		if(m_spinPeopleColumn != null ) {
 			
 			ref[12] = (int) m_spinPeopleColumn.getValue();
+		}
+		if(m_spinQuantityColumn1 != null ) {
+			
+			ref[13] = (int) m_spinQuantityColumn1.getValue();
 		}
 	}
 	

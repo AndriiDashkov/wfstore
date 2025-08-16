@@ -50,6 +50,8 @@ public class WsSignsEditTableModel extends AbstractTableModel{
 
     public int getRowCount() {
     	
+    	if(m_vec == null) { return 0; }
+    	
         return m_vec.size();
     }
 

@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -21,8 +20,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-
 import wscontrols.Ws2DatesControl;
+import wscontrols.WsDoubleField;
 import wscontrols.WsPartTypesComboBox;
 import wsdatabase.WsRashodSqlStatements;
 import wsevents.WsEventDispatcher;
@@ -54,6 +53,12 @@ public class WsAutoRashodDialog  extends JDialog  {
 	
 	JCheckBox m_checkPeople = new JCheckBox(getGuiStrs("usePeopleForAutoRashodCheckBox"));
 	
+	JCheckBox m_allRest = new JCheckBox(getGuiStrs("allRestAutoRashodCheckBox"));
+	
+	private   WsDoubleField m_quantity = null;
+
+	private JLabel m_lq = new JLabel(getGuiStrs("klGoodFpOp") + " ");
+	
 	private static java.sql.Date m_start_date = null;
 	
 	private static java.sql.Date m_end_date = null;
@@ -84,7 +89,16 @@ public class WsAutoRashodDialog  extends JDialog  {
 		
 		public void actionPerformed(ActionEvent e) {
 			
-			if ( e.getSource() == m_startButton ) onOK(e);
+			if ( e.getSource() == m_startButton ) {
+				onOK(e);
+			}
+			else 
+			if ( e.getSource() == m_allRest )  {
+				
+				m_lq.setEnabled(!m_allRest.isSelected() );
+				
+				m_quantity.setEnabled(!m_allRest.isSelected() );
+			}
 			
 		}
 	}
@@ -107,9 +121,26 @@ public class WsAutoRashodDialog  extends JDialog  {
 			
 			m_end_date = m_date.getSqlEndDate();
 			
+			double req_quantity = -1;
+			
+			if(!m_allRest.isSelected()) {
+				
+				try {
+					
+			
+					req_quantity = (double) m_quantity.getValue();
+					
+				}catch(Exception ex) {
+					
+					WsUtils.showMessageDialog(getMessagesStrs("cantreadvalidQuan"));
+					
+					return;
+				}
+			}
+			
 			String operationMessage = WsRashodSqlStatements.transferAllPrihodIntoRashod(kod,  
 					 m_date.getSqlStartDate(), m_date.getSqlEndDate() , 
-					m_checkPeople.isSelected());
+					m_checkPeople.isSelected(), req_quantity);
 			
 			if(operationMessage == null) {
 				
@@ -151,6 +182,10 @@ public class WsAutoRashodDialog  extends JDialog  {
 	 */
 	private JPanel createGUI() {
 		
+		m_quantity = new  WsDoubleField();
+		
+		m_quantity.setColumns(10);
+		
 		JPanel panel_MAIN = WsGuiTools.createVerticalPanel();
 		
 		JPanel panel_1 = WsGuiTools.createHorizontalPanel();
@@ -159,11 +194,23 @@ public class WsAutoRashodDialog  extends JDialog  {
 		
 		JPanel panel_3 = WsGuiTools.createHorizontalPanel();
 		
+		JPanel panel_4 = WsGuiTools.createHorizontalPanel();
+		
+		JPanel panel_5 = WsGuiTools.createHorizontalPanel();
+		
 		panel_1.add(m_comboPartTypeLabel);  panel_1.add(m_partTypesCombo); panel_1.add(Box.createHorizontalGlue());
 		
 		panel_2.add(m_date);  panel_2.add(Box.createHorizontalGlue());
 		
 		panel_3.add(m_checkPeople);  panel_3.add(Box.createHorizontalGlue());
+		
+		panel_4.add(m_allRest);  panel_4.add(Box.createHorizontalGlue());
+		
+		panel_5.add(m_lq);
+		
+		panel_5.add(m_quantity);
+		
+		 panel_5.add(Box.createHorizontalGlue());
 	
 		JPanel south_right = new JPanel( new FlowLayout( FlowLayout.RIGHT, 5, 0) );
 		
@@ -185,6 +232,14 @@ public class WsAutoRashodDialog  extends JDialog  {
 		
 		panel_MAIN.add(Box.createVerticalStrut(WsUtils.VERT_STRUT));
 		
+		panel_MAIN.add(panel_4);
+		
+		panel_MAIN.add(Box.createVerticalStrut(WsUtils.VERT_STRUT));
+		
+        panel_MAIN.add(panel_5);
+		
+		panel_MAIN.add(Box.createVerticalStrut(WsUtils.VERT_STRUT));
+		
 		panel_MAIN.add(panel_3);
 		
 		panel_MAIN.add(Box.createVerticalStrut(WsUtils.VERT_STRUT));
@@ -203,6 +258,8 @@ public class WsAutoRashodDialog  extends JDialog  {
 	private void setAllListeners() {
 		
 		m_startButton.addActionListener(forwarder);
+		
+		m_allRest.addActionListener(forwarder);
 		
 		addWindowListener(new WindowAdapter() {
 			
@@ -251,6 +308,11 @@ public class WsAutoRashodDialog  extends JDialog  {
 			m_date.setSqlStartDate(m_start_date);
 		}
 		
+		m_lq.setEnabled(false);
+		
+		m_quantity.setEnabled(false);
+		
+		m_allRest.setSelected(true);
 		
 	}
 

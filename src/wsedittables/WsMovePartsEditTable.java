@@ -88,7 +88,7 @@ public class WsMovePartsEditTable extends JTable {
 		
 	    m_model.deleteAllRows();
 	        
-    	for(int i = 0; i <vec.size(); ++i) {
+    	for(int i = 0; i < vec.size(); ++i) {
     		
     		WsSkladMoveDataColumn d = vec.elementAt(i);
     		

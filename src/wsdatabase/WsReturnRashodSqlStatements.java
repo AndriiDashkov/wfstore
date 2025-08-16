@@ -222,6 +222,11 @@ public class WsReturnRashodSqlStatements {
 					
 					quantity_to_process -= rest;
 					
+					if(Math.abs(quantity_to_process) < WsUtils.getRZL()) {
+						
+						break;
+					}
+					
 				}	
 			}
 		}

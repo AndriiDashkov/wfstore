@@ -28,7 +28,9 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import wscontrols.WsFileTableControl;
+import wsdatabase.WsUtilSqlStatements;
 import wsdatastruct.WsAgentData;
+import wsdatastruct.WsPartType;
 import wsdatastruct.WsSkladMoveDataColumn;
 import wsimport.WsImportExcelUtil;
 import wsmain.WsGuiTools;
@@ -208,6 +210,10 @@ public class  WsJoinZsuProdDogsReport  extends WSReportViewer {
 		
 		sHeader_b.append("<td   style='border-left: 1px solid;border-top: 1px solid ;text-align: center;'>");
 		
+		sHeader_b.append("<font size =4>&nbsp;" + getGuiStrs("unitsPosLabel") + "&nbsp;</font></td>");
+		
+		sHeader_b.append("<td   style='border-left: 1px solid;border-top: 1px solid ;text-align: center;'>");
+		
 		sHeader_b.append("<font size =4>&nbsp;" + getGuiStrs("naPochatProdReportName") + "&nbsp;</font></td>");
 		
 		sHeader_b.append("<td   style='border-left: 1px solid;border-top: 1px solid ;text-align: center;'>");
@@ -260,6 +266,16 @@ public class  WsJoinZsuProdDogsReport  extends WSReportViewer {
 			row_s_b.append("'><font size =4>&nbsp;" );
 			
 			row_s_b.append(d.name );
+			
+			row_s_b.append("&nbsp;</font></td>");
+			
+			row_s_b.append("<td nowrap style=' max-width: 250px; text-overflow:ellipsis; overflow: hidden; border-left: 1px solid; border-top: 1px solid ;  " );
+			
+			row_s_b.append(bottomBorder );
+			
+			row_s_b.append("'><font size =4>&nbsp;" );
+			
+			row_s_b.append(d.units );
 			
 			row_s_b.append("&nbsp;</font></td>");
 			
@@ -378,6 +394,8 @@ public class  WsJoinZsuProdDogsReport  extends WSReportViewer {
 		
 		int sheet_index = 0;
 		
+		int units_index = 2;
+		
 		HashMap<Integer, WsSkladMoveDataColumn> map = new HashMap<Integer, WsSkladMoveDataColumn>();
 		
 		String excel_file_name = null;
@@ -479,6 +497,8 @@ public class  WsJoinZsuProdDogsReport  extends WSReportViewer {
 	        		
 	        		d.name = WsImportExcelUtil.getStringCell(row,  name_column);
 	        		
+	        		d.units = WsImportExcelUtil.getStringCell(row,  units_index);
+	        		
 	        		WsSkladMoveDataColumn d_f = map.get(d.kod);
 	        		
 	        		if(d_f == null) {
@@ -564,6 +584,10 @@ public class  WsJoinZsuProdDogsReport  extends WSReportViewer {
                 
                 cell02.setCellValue(dt.name);
                 
+                XSSFCell cell021 = row.createCell(cell_index++);
+                
+                cell021.setCellValue(dt.units);
+                
                 XSSFCell cell03_1 = row.createCell(cell_index++);
                 
                 cell03_1.setCellValue(dt.initial_rest_1);
@@ -612,13 +636,15 @@ public class  WsJoinZsuProdDogsReport  extends WSReportViewer {
 	
 		   createCell(rowHeader0, 1, getGuiStrs("nameNameInReport"), creationHelper);
 		   
-		   createCell(rowHeader0, 2, getGuiStrs("naPochatReportName"), creationHelper);
+		   createCell(rowHeader0, 2, getGuiStrs("unitsPosLabel"), creationHelper);
 		   
-		   createCell(rowHeader0, 3, getGuiStrs("pribuloReportName"), creationHelper);
+		   createCell(rowHeader0, 3, getGuiStrs("naPochatReportName"), creationHelper);
+		   
+		   createCell(rowHeader0, 4, getGuiStrs("pribuloReportName"), creationHelper);
 
-		   createCell(rowHeader0, 4, getGuiStrs("vibuloReportName"), creationHelper);
+		   createCell(rowHeader0, 5, getGuiStrs("vibuloReportName"), creationHelper);
 		   
-		   createCell(rowHeader0, 5, getGuiStrs("restNameInReport"), creationHelper);
+		   createCell(rowHeader0, 6, getGuiStrs("restNameInReport"), creationHelper);
 		   
 	}
 	

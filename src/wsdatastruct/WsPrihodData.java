@@ -29,6 +29,8 @@ public class WsPrihodData {
     
     public int id_external = -1;
     
+    public double quantity = 0.0;
+    
     public Vector<WsPrihodPartData> rows = null;
 
 }

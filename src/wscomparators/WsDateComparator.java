@@ -1,6 +1,8 @@
 
 package wscomparators;
 
+
+
 import java.util.Comparator;
 
 import wsdatastruct.WsSkladMoveDataRow;

@@ -27,9 +27,13 @@ public class WsPartTypesEditTableModel extends AbstractTableModel{
 		private boolean m_dontUseSqlSource = false;
 		
 		
-		String[] m_columnNames = {getGuiStrs("ptypesKodColumName"),getGuiStrs("ptypesColumName"), 
-				getGuiStrs("ptypesKatalogCostWithNdsColumName"), getGuiStrs("ptypesSkladQuantityInfoColumName"),
-				getGuiStrs("ptypesInfoColumName"), "id"};
+		String[] m_columnNames = {
+				getGuiStrs("ptypesKodColumName"),
+				getGuiStrs("ptypesColumName"), 
+				getGuiStrs("ptypesKatalogCostWithNdsColumName"), 
+				getGuiStrs("ptypesSkladQuantityInfoColumName"),
+				getGuiStrs("ptypesInfoColumName"),
+				"id"};
 		
 		public WsPartTypesEditTableModel() {
 			
@@ -52,6 +56,8 @@ public class WsPartTypesEditTableModel extends AbstractTableModel{
 
 	   public int getRowCount() {
 	    	
+		   if(m_vec == null) { return 0; }
+		   
 	        return m_vec.size();
 	   }
 

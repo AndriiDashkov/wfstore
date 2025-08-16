@@ -1725,6 +1725,60 @@ public class WsReportsSqlStatements {
 	}
 	
 	
+	public static double getAvailableRestForPartForDate(int kod, Date end_date) {
+		
+	       
+		WsPartType dType = WsUtilSqlStatements.getPartTypeForKod(kod);
+		
+		try {
+			
+				WsConnect.get();
+        	
+				Vector<WsSkladMoveDataColumn> vec = new Vector<WsSkladMoveDataColumn>();
+			
+	         	final String s1 = "SELECT SUM(rest) FROM invoice_parts"
+	        			+ " INNER JOIN invoices ON invoices.id = invoice_parts.id_invoice"
+	        			+ " INNER JOIN part_types ON part_types.id = invoice_parts.id_part_type"
+	        			+ " WHERE invoices.date <= ? AND part_types.id == ? AND invoice_parts.rest > 0.0 GROUP BY part_types.kod;";
+	         	
+	        	PreparedStatement ps1 = WsConnect.getCurrentConnection().prepareStatement(s1);
+				
+	            ps1.setDate(1, end_date);
+	            
+	            ps1.setInt(2, dType.id);
+	        	
+	        	ResultSet rs1 =   ps1.executeQuery();
+	        	
+	        	while(rs1.next()) {
+	        		
+	        		WsSkladMoveDataColumn d = new WsSkladMoveDataColumn();
+	        		
+	        		d.q_array[0].rest = rs1.getDouble(1);
+	        		
+	        		vec.add(d);
+	        	}
+	        	
+	        	rs1.close();
+	        	
+	        	ps1.close();
+	        		
+	        	if(vec.isEmpty()) { return 0.0;}
+	        	
+	        	return vec.elementAt(0).q_array[0].rest;
+	        
+	        
+		} catch (SQLException e) {
+			
+			if( WsUtils.isDebug() ) {
+				
+				e.printStackTrace();
+			}
+		}
+
+		return -1.0;
+
+	}
+	
 	
 	public static double getRestForPartForDate(int kod, Date end_date) {
 		

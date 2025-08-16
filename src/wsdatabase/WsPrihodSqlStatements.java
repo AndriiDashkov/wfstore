@@ -1258,19 +1258,21 @@ public class WsPrihodSqlStatements {
 	}
 	
 	//collects all positions which are with kod == kod, between dates, and available to give out 
-	public static double getSumPrihodForKod(int kod,  Date start_d, Date end_d ) {
+	public static Vector<WsPrihodData> getAvailableSumPrihodForKod(int kod,  Date start_d, Date end_d ) {
 		
 		PreparedStatement ps;
+		
+		Vector<WsPrihodData> vec = new Vector<WsPrihodData>();
         
 		try {
 			
 			WsConnect.get();
 			
-	        String s = "SELECT SUM(invoice_parts.quantity)  FROM invoice_parts "
+	        String s = "SELECT invoices.date, SUM(invoice_parts.rest)  FROM invoice_parts "
 	        			+ " INNER JOIN invoices ON invoice_parts.id_invoice = invoices.id "
 	        			+ " INNER JOIN part_types ON part_types.id = invoice_parts.id_part_type"
-	        			+ " WHERE invoices.date BETWEEN ? AND ? AND  part_types.kod = ? AND invoice_parts.rest > ?" 
-	        			+ " GROUP BY part_types.kod;";
+	        			+ " WHERE invoices.date BETWEEN ? AND ? AND  part_types.kod = ? AND invoice_parts.rest > ?"
+	        			+ " GROUP BY invoices.date;";
 	        	
 	        	ps = WsConnect.getCurrentConnection().prepareStatement(s);
 	        	
@@ -1284,11 +1286,20 @@ public class WsPrihodSqlStatements {
 	        	
 	        	ResultSet rs = ps.executeQuery();
 	            
-	            if(!rs.next()) {return 0.0; };
+	        	while(rs.next()) {
+	        		
+	        		WsPrihodData d = new WsPrihodData();
+	        		
+	        		d.date = rs.getDate(1);
+	        		
+	        		d.quantity = rs.getDouble(2);
+	        		
+	        		vec.add(d);
+	        		
+	        	}
 	            		            	
-	            double v = rs.getDouble(1);
-	        	
-	            return v;
+	    
+	            return vec;
 	        	
 		} catch (SQLException e) {
 			
@@ -1298,7 +1309,7 @@ public class WsPrihodSqlStatements {
 			}
 		}
        
-		return -1.0;
+		return vec;
 	}
 	
 	public static Vector<WsPrihodPartData> getPrihodPartsListForIds(Vector<Integer> vec_ids, 

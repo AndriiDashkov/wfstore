@@ -20,6 +20,7 @@ import java.util.Vector;
 import wsdatastruct.WsContractPriceData;
 import wsdatastruct.WsPair;
 import wsdatastruct.WsPartType;
+import wsdatastruct.WsPrihodData;
 import wsdatastruct.WsPrihodPartData;
 import wsdatastruct.WsRashodData;
 import wsdatastruct.WsRashodPartData;
@@ -1791,7 +1792,8 @@ public class WsRashodSqlStatements {
 	}
 	//returns inserted id
 	public static Vector<WsRashodPartData> findSkladPositionsForRashod(Date dt, 
-			Vector<WsRashodPartData> vec, boolean take_latest_positions, Vector<String> not_enough_quantity_kods,
+			Vector<WsRashodPartData> vec, boolean take_latest_positions, 
+			Vector<String> not_enough_quantity_kods,
 			boolean showNotEnoughMessage) {
 		
 		   int sort_type = 6;
@@ -1899,13 +1901,15 @@ public class WsRashodSqlStatements {
 				   
 				   s_message_b.append(  getGuiStrs("Notenoughquantitykod") );
 				   
+				   s_message_b.append( " ");
+				   
 				   s_message_b.append(  String.valueOf(d_r.kod) );
 				   
-				   s_message_b.append(  ":" );
+				   s_message_b.append(  " : " );
 				   
 				   s_message_b.append(  String.valueOf(rest) );
 				   
-				   s_message_b.append(  "\n");
+				   s_message_b.append( "<br/>");
 				   
 				   not_enough_quantity_kods.add( String.valueOf(d_r.kod) + ":" + String.format("%.4f",rest) + "; ");
 			   }
@@ -1915,7 +1919,8 @@ public class WsRashodSqlStatements {
 		   
 		   if(showNotEnoughMessage && !s_message.isEmpty()) {
 			   
-			   WsUtils.showMessageDialog(s_message);
+			  WsUtils.showMessageDialog("<html>" + getGuiStrs("NotenoughquantitykodM") + "</html>");
+			  
 		   }
 		   
 		   return vec_out;
@@ -2171,8 +2176,159 @@ public class WsRashodSqlStatements {
 		
 	}
 	
+	public static WsPair getPeopleFromRashod(Vector<WsRashodData> rashod_vec, boolean usePeople) {
+		
+		 WsPair res = new WsPair();
+		 
+		 res.flag = usePeople ? 1 : 0;
+		
+	    double sum_people = 0.0;
+	    
+	    if(usePeople) {
+	    	
+		    for(WsRashodData r: rashod_vec) {
+		    	
+		    	sum_people += r.people;
+		    }
+		    
+		    if(sum_people < 0.0001) { res.flag = 0; }
+	    }
+	   
+	    res.value = sum_people;
+	    
+	    return res;
+		
+	}
+	
+	public static String processAllRestPrihodIntoRashod(int kod, Date end_d , 
+			boolean usePeople,  double sum_people_for_rest,
+			double rest, Vector<WsRashodData> rashod_vec, Vector<WsPrihodData> prihod_vec,
+			 WsPartType dType, WsUnitData kgUnit) {
+		
+	     //1st all the rest before the satrt date into rashod
+		
+	    double quantity = 0.0;
+	    
+	    if(usePeople) {
+	    	
+	    	quantity = rest/sum_people_for_rest;
+	    }
+	    else {
+	    	
+	    	quantity = rest/rashod_vec.size();
+	    }
+	      
+	    addAdditionalRashod(kod, rashod_vec,quantity,
+				dType, kgUnit, usePeople);
+	    
+	    //2nd round - all prihod during the period into rashod
+
+	    for(WsPrihodData d: prihod_vec) {
+	    	
+	    	//get rashods which start from the day of the prihod
+	    	 Vector<WsRashodData> rashod_vec2 = getRashodList(d.date, end_d);
+	    	
+	    	 if(rashod_vec2.isEmpty()) { return null; }
+	    	 
+	    	 WsPair resp2 = getPeopleFromRashod(rashod_vec2, usePeople);
+	 		
+	 		 usePeople = resp2.flag == 1 ? true : false ;
+	 		
+	 	     double sum_people = resp2.value;
+	    	
+	 	     if(usePeople) {
+		    	
+		    	quantity = d.quantity/sum_people;
+		     }
+		     else {
+		    	
+		    	quantity = d.quantity/rashod_vec2.size();
+		     }
+	 	    
+	 	     addAdditionalRashod(kod, rashod_vec2,quantity,
+					dType, kgUnit, usePeople);
+	    	
+	    }
+
+		return null;
+	
+	}
+	
+	public static String processRequiredRestPrihodIntoRashod(int kod, Date end_d , 
+			boolean usePeople,  double sum_people_for_all_period,
+			double rest, double prihod_sum, Vector<WsRashodData> rashod_vec, 
+			Vector<WsPrihodData> prihod_vec,
+			 WsPartType dType, WsUnitData kgUnit, double req_quantity) {
+		
+		
+	    //1st  process the rest only
+		
+		double quantity_to_process = 0.0;
+		
+		if(req_quantity < rest)  {   quantity_to_process = req_quantity;    }
+		else { quantity_to_process = rest;  }
+
+	    double quantity;
+	    
+	    if(usePeople) {
+	    	
+	    	quantity = quantity_to_process/sum_people_for_all_period;
+	    }
+	    else {
+	    	
+	    	quantity = quantity_to_process/rashod_vec.size();
+	    }
+	      
+	    addAdditionalRashod(kod, rashod_vec,quantity,
+				dType,kgUnit, usePeople);
+	    
+	    double rest_to_process = req_quantity - quantity_to_process;
+	    
+	    if(rest_to_process <= 0.001) { return null; }
+	    
+	    //2nd round - working with prihod in the period
+	    //the rashod can be performed starting with the date of prihod;
+	    //that is why we do it separately for every prihod invoice
+	 
+	    for(WsPrihodData d: prihod_vec) {
+	    	
+	    	if(rest_to_process < d.quantity) { quantity_to_process = rest_to_process; }
+	    	else { quantity_to_process =  d.quantity;   } 
+	    	
+	    	//get rashods which start from the day of the prihod
+	    	 Vector<WsRashodData> rashod_vec2 = getRashodList(d.date, end_d);
+	    	
+	    	 if(rashod_vec2.isEmpty()) { return null; }
+	    	 
+	    	 WsPair resp2 = getPeopleFromRashod(rashod_vec2, usePeople);
+	 		
+	 		 usePeople = resp2.flag == 1 ? true : false ;
+	 		
+	 	     double sum_people = resp2.value;
+	    	
+	 	     if(usePeople) {
+		    	
+		    	quantity = quantity_to_process/sum_people;
+		    }
+		    else {
+		    	
+		    	quantity = quantity_to_process/rashod_vec2.size();
+		    }
+	 	    
+	 	    addAdditionalRashod(kod, rashod_vec2, quantity,
+					dType, kgUnit, usePeople);
+	 	   
+	 	    rest_to_process -= quantity_to_process;
+	 	   
+	 	    if(rest_to_process < 0.001) { return null; }
+	    	
+	    }
+		
+	    return null;
+	}
+	
 	public static String transferAllPrihodIntoRashod(int kod,  Date start_d, Date end_d , 
-			boolean usePeople) {
+			boolean usPl, double req_quantity) {
 		
 		WsPartType dType = WsUtilSqlStatements.getPartTypeForKod(kod);
 		
@@ -2186,39 +2342,54 @@ public class WsRashodSqlStatements {
 					+ getMessagesStrs("noRashodForAutomaticPrihodMessage1") + "<html>";
 			
 		}
-	    
-	    double sum_people = 0.0;
-	    
-	    if(usePeople) {
-	    	
-		    for(WsRashodData r: rashod_vec) {
-		    	
-		    	sum_people += r.people;
-		    }
-		    
-		    if(sum_people < 0.0001) { usePeople = false; }
-	    }
-	       
-	    double prihod_sum =  WsPrihodSqlStatements.getSumPrihodForKod(kod,  start_d, end_d );
+		
+		WsPair resp = getPeopleFromRashod(rashod_vec, usPl);
+		
+		boolean usePeople = resp.flag == 1 ? true : false ;
+		
+	    double sum_people = resp.value;
+       
+	    Vector<WsPrihodData> vec =  WsPrihodSqlStatements.getAvailableSumPrihodForKod(kod,  start_d, end_d );
 	      
+	    double prihod_sum = 0.0;
+	    
+	    for(WsPrihodData d: vec) {   prihod_sum += d.quantity; }
+	    
 	    java.sql.Date date_before_start = WsUtils.sqlDatePlusDays(start_d, -1);
 	    
-	    double rest = WsReportsSqlStatements.getRestForPartForDate(kod,  date_before_start);
+	    double rest = WsReportsSqlStatements.getAvailableRestForPartForDate(kod,  date_before_start);
 	      
 	    if((prihod_sum + rest) < 0.0) { return getMessagesStrs("noPrihodForAutomaticPrihodMessage"); }
 	      
-	    double quantity;
-	    
-	    if(usePeople) {
-	    	
-	    	quantity = (prihod_sum +rest)/sum_people;
-	    }
-	    else {
-	    	
-	    	quantity = (prihod_sum +rest)/rashod_vec.size();
-	    }
-	      
-	    Vector<WsReturnedPartData> back_vec = new Vector<WsReturnedPartData>();
+		if(req_quantity > (prihod_sum + rest)) {
+			
+			return getMessagesStrs("autoRashExceeds1") + " " + String.valueOf(req_quantity) +
+					getMessagesStrs("autoRashExceeds2") + " " + String.valueOf(prihod_sum + rest);
+		}
+		
+		
+		if( req_quantity < 0) {//process all the rest and prihod
+			
+			return processAllRestPrihodIntoRashod(kod, end_d , 
+					usePeople,  sum_people, rest, rashod_vec, vec,
+					dType, kgUnit);
+			
+		}
+		else {
+			
+			return processRequiredRestPrihodIntoRashod(kod, end_d, 
+					usePeople,  sum_people,
+					rest, prihod_sum, rashod_vec, vec,
+					dType, kgUnit, req_quantity);
+		}
+
+	}
+	
+	//return for every position of the good with kod in vector, according to quantity
+	static private void addAdditionalRashod(int kod, Vector<WsRashodData> rashod_vec, double quantity,
+			WsPartType dType, WsUnitData kgUnit, boolean usePeople) {
+		
+		Vector<WsReturnedPartData> back_vec = new Vector<WsReturnedPartData>();
 	      
 	    for(WsRashodData r: rashod_vec) {
 	    	              
@@ -2256,8 +2427,6 @@ public class WsRashodSqlStatements {
 	      }
 	      
 	      WsReturnRashodSqlStatements.getRashodBack(back_vec);
-	      
-		  return null;
 		
 	}
 	

@@ -76,6 +76,8 @@ public class WsPrihodPartEditTableModel extends AbstractTableModel{
 
     public int getRowCount() {
     	
+    	if(m_vec == null) { return 0; }
+    	
         return m_vec.size();
     }
     
@@ -160,10 +162,10 @@ public class WsPrihodPartEditTableModel extends AbstractTableModel{
     	
         return null; 
     }
-
+    
 	 public boolean isCellEditable(int row, int col) {
 	    			
-	             return  col < 9 && col != 5 && col != 4 && col != 2;
+	             return  col < 10 && col != 5 && col != 4 && col != 2;
 	 }
 	    
 	    

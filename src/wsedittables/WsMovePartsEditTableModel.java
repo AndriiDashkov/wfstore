@@ -21,10 +21,18 @@ public class WsMovePartsEditTableModel extends AbstractTableModel{
 
 		private Vector< WsSkladMoveDataColumn> m_vec = new Vector< WsSkladMoveDataColumn>();
 		
-		String[] m_columnNames = {getGuiStrs("ptypesKodColumName"),getGuiStrs("ptypesColumName"), 
-				getGuiStrs("impZali"), getGuiStrs("prihodPartsColumnRestName"), getGuiStrs("quantityNameReportColumn"),
-				getGuiStrs("rashodNameReportColumn"), getGuiStrs("vubRazkl"), getGuiStrs("prihodPartsColumnRestName"),
-				getGuiStrs("zalRazkl"),  getGuiStrs("diffReportNAme"), getGuiStrs("correctioPossibleReportName2"),
+		String[] m_columnNames = {getGuiStrs("ptypesKodColumName"),
+				getGuiStrs("ptypesColumName"), 
+				getGuiStrs("impZali"), 
+				getGuiStrs("pochatokSklad"), 
+				getGuiStrs("prihodImportNameReportColumn"),
+				getGuiStrs("prihodSkladColumn"),
+				getGuiStrs("vubRazkl"), 
+				getGuiStrs("rashodSkladColumn"), 
+				getGuiStrs("zalRazkl"), 
+				getGuiStrs("restSkladName"),
+				getGuiStrs("diffReportNAme"), 
+				getGuiStrs("correctioPossibleReportName2"),
 				getGuiStrs("corrToDo")};
 			
 		public WsMovePartsEditTableModel() {
@@ -49,10 +57,12 @@ public class WsMovePartsEditTableModel extends AbstractTableModel{
 	
 	   public int getColumnCount() { 
 		   
-	        return 12; 
+	        return m_columnNames.length; 
 	    }
 
 	    public int getRowCount() {
+	    	
+	    	if(m_vec == null) { return 0; }
 	    	
 	        return m_vec.size();
 	    }
@@ -61,7 +71,6 @@ public class WsMovePartsEditTableModel extends AbstractTableModel{
 	    	
 	    	WsSkladMoveDataColumn dt = m_vec.elementAt(row);
 	    	 
-	    	
 	    	switch(col) {
 	    	
 	    		case 0:{
@@ -82,11 +91,11 @@ public class WsMovePartsEditTableModel extends AbstractTableModel{
 	    		}
 	    		case 4:{
 	    			
-	    			return dt.q_array[0].in_quantity;
+	    			return dt.q_array[1].in_quantity;
 	    		}
 	    		case 5:{
 	    			
-	    			return dt.q_array[0].out_quantity;
+	    			return dt.q_array[0].in_quantity;
 	    		}
 	    		case 6:{
 	    			
@@ -94,7 +103,7 @@ public class WsMovePartsEditTableModel extends AbstractTableModel{
 	    		}
 	    		case 7:{
 	    			
-	    			return dt.q_array[0].rest;
+	    			return dt.q_array[0].out_quantity;
 	    		}
 	    		case 8:{
 	    			
@@ -102,13 +111,17 @@ public class WsMovePartsEditTableModel extends AbstractTableModel{
 	    		}
 	    		case 9:{
 	    			
-	    			return dt.q_array[1].rest  - dt.q_array[0].rest;
+	    			return dt.q_array[0].rest;
 	    		}
 	    		case 10:{
 	    			
-	    			return dt.correction;
+	    			return dt.q_array[1].rest  - dt.q_array[0].rest;
 	    		}
 	    		case 11:{
+	    			
+	    			return dt.correction;
+	    		}
+	    		case 12:{
 	    			
 	    			return dt.correctionToDo;
 	    		}
@@ -120,7 +133,7 @@ public class WsMovePartsEditTableModel extends AbstractTableModel{
 
 	    public boolean isCellEditable(int row, int col) {
 	    	
-	    	return col == 11;
+	    	return col == 12;
 	    			
 	     }
 	    
@@ -131,9 +144,9 @@ public class WsMovePartsEditTableModel extends AbstractTableModel{
 	         
 	        switch (col) {
 	          
-		        case 11: {
+		        case 12: {
 		        	
-		            dt.correctionToDo =Double.valueOf((String) value);
+		            dt.correctionToDo = Double.valueOf((String) value);
 		          
 		            break;
 		        }

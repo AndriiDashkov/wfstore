@@ -84,6 +84,8 @@ public class WsSkladForm extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				
 				m_itemAddRest.setEnabled(!m_radioJoinKodSort.isSelected());
+				
+				m_itemAddRestAll.setEnabled(!m_radioJoinKodSort.isSelected());
 						
 				refresh();
 				

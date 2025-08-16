@@ -925,8 +925,12 @@ public class WsExcelImport {
 				        	
 		        	 try {
 		        		
-		        		kod = (int)cell_kod.getNumericCellValue();
-		        		
+		        		 Double double_kod = getNumericValue(cell_kod);
+		        		 
+		        		 if(null == double_kod) { break; }
+		        		 
+		        		 kod = double_kod.intValue();
+		        			 
 		        		//the transformation of kod value into value from database; 
 		        		//kods 11203 and 1203 are treated as same in order to work with new 5-digit codes
 		        		kod   = WsCatalogKods.getKodFromDatabaseCatalog(kod, catalog);
@@ -944,11 +948,23 @@ public class WsExcelImport {
 	        			
 	        			dt_row.kod = kod;
 	        			
-	        			dt_row.quantity = cell_data.getNumericCellValue();
+	        			//dt_row.quantity = cell_data.getNumericCellValue();
+	        			
+	        			Double double_quantity = getNumericValue(cell_data);
+		        		 
+		        		if(null == double_quantity) { break; }
+		        		
+		        		dt_row.quantity = double_quantity;
 	        			
 	        			if(cell_people != null) {
 	        			
-	        				dt_row.people = (int) cell_people.getNumericCellValue();
+	        				//dt_row.people = (int) cell_people.getNumericCellValue();
+	        				
+	        				Double double_people = getNumericValue(cell_people);
+			        		 
+			        		if(null == double_people) { break; }
+			        		
+			        		dt_row.people = double_people.intValue();
 	        			}
 	        			
 	        			dt_row.costwithnds = catalog.get(kod).costwithnds;
@@ -959,7 +975,13 @@ public class WsExcelImport {
 	        					
 	        			vec.add(dt_row);
 		        		
-		        	 } catch(Exception e) { break; }
+		        	 } catch(Exception e) { 
+		        		 
+		        		 e.printStackTrace();
+		        		 
+		        		 break; 
+		        		 
+		        	 }
 						  
 				      ++kods_start_column_index;
 				      
@@ -1277,6 +1299,35 @@ public class WsExcelImport {
 				
 		return return_pair;
 		
+	}
+	
+	
+	private static Double getNumericValue(XSSFCell cell) {
+		
+		double value = -1.0;
+		
+		if(cell == null) { return null; }
+		
+		 try {
+    		 
+			 value = (double)cell.getNumericCellValue();
+			 
+			 return value;
+			 
+		 } catch(NumberFormatException | IllegalStateException e1) {
+			 
+			 try {
+			 
+				 String str = cell.getStringCellValue();
+			 
+				 return Double.valueOf(str);
+			 
+			 }catch(NumberFormatException | IllegalStateException e2) {
+				 
+				 return null;
+			 }
+			 
+		 }
 	}
 
 }

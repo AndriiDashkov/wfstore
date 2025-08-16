@@ -281,8 +281,8 @@ public class WsExcelRaskladkaRashodImportDialog extends JDialog {
 					 return;
 				}
 						
-				int res = WsUtils.showYesNoDialogLong3(  getMessagesStrs("confirmImportRaskladkaForRashodCaption1"),
-					    " " + String.valueOf(getNaklNumber()) + " ",
+				int res = WsUtils.showYesNoDialogLong(  getMessagesStrs("confirmImportRaskladkaForRashodCaption1")
+					    + " " + String.valueOf(getNaklNumber()) + " ",
 					    getMessagesStrs("confirmImportRaskladkaForRashodCaption2"));
 				
 				

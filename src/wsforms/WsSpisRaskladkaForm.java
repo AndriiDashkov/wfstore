@@ -84,7 +84,7 @@ public class WsSpisRaskladkaForm extends JPanel {
 	
 	private JButton m_buttonGenerate = new JButton(getGuiStrs("generateNewRasklButton"));
 
-	private JButton m_saveRasklButton = new JButton(getGuiStrs("saveNewRasklFileChooseButton"));
+	private JButton m_saveRasklButton = new JButton("4." + getGuiStrs("saveNewRasklFileChooseButton"));
 	
 	protected WsMovePartsEditTable m_table = new WsMovePartsEditTable();
 	
@@ -299,9 +299,7 @@ public class WsSpisRaskladkaForm extends JPanel {
             	saveNewRest();
             }
 		});
-		
-		
-		  
+	  
 	}
 	
 	private void importRestFromExcel() {
@@ -333,7 +331,7 @@ public class WsSpisRaskladkaForm extends JPanel {
 			
 			d.q_array[0].initial_rest = 0.0;
 			
-			d.q_array[1].in_quantity = 0.0;
+			//d.q_array[1].in_quantity = 0.0;
 			
 			d.q_array[1].out_quantity = 0.0;
 			
@@ -361,6 +359,8 @@ public class WsSpisRaskladkaForm extends JPanel {
 			if(d.initial_rest > WsUtils.getRZL() ) {
 				
 				d_ins.q_array[1].initial_rest = d.initial_rest;
+				
+				d_ins.q_array[1].in_quantity = d.in_quantity;
 				
 				d_ins.kod = d.kod;
 				
@@ -439,14 +439,14 @@ public class WsSpisRaskladkaForm extends JPanel {
 				
 				d_found.q_array[0].rest  += d.rest;
 				
-				d_found.q_array[1].rest  = d_found.q_array[1].initial_rest + d_found.q_array[0].in_quantity - d_found.q_array[1].out_quantity;
+				d_found.q_array[1].rest  = d_found.q_array[1].initial_rest + d_found.q_array[1].in_quantity - d_found.q_array[1].out_quantity;
 				
 			}
 			else {
 				
 				WsSkladMoveDataColumn d_new = new WsSkladMoveDataColumn(d);
 				
-				d_new.q_array[1].rest  = d_new.q_array[1].initial_rest + d_new.q_array[0].in_quantity - d_new.q_array[1].out_quantity;
+				d_new.q_array[1].rest  = d_new.q_array[1].initial_rest + d_new.q_array[1].in_quantity - d_new.q_array[1].out_quantity;
 				
 				table_vec.add(d_new);
 				
@@ -478,7 +478,7 @@ public class WsSpisRaskladkaForm extends JPanel {
 				
 				d_found.q_array[1].out_quantity  += d.q_array[1].out_quantity;
 				
-				d_found.q_array[1].rest  = d_found.q_array[1].initial_rest + d_found.q_array[0].in_quantity - d_found.q_array[1].out_quantity;
+				d_found.q_array[1].rest  = d_found.q_array[1].initial_rest + d_found.q_array[1].in_quantity - d_found.q_array[1].out_quantity;
 				
 				
 			}
@@ -490,9 +490,10 @@ public class WsSpisRaskladkaForm extends JPanel {
 				
 				d_new.q_array[1].out_quantity  = d.q_array[1].out_quantity;
 				
-				d_new.q_array[1].rest  = d_new.q_array[1].initial_rest + d_new.q_array[0].in_quantity - d_new.q_array[1].out_quantity;
+				d_new.q_array[1].in_quantity  = d.q_array[1].in_quantity;
 				
-							
+				d_new.q_array[1].rest  = d_new.q_array[1].initial_rest + d_new.q_array[1].in_quantity - d_new.q_array[1].out_quantity;
+						
 				table_vec.add(d_new);
 				
 			}

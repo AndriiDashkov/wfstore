@@ -51,7 +51,9 @@ public class WsParseIndicies {
 	
 	public int peopleSheetIndex = -1;
 	
-	public static int indicesNumber = 13;
+	public int quantityColumnIndex1 = -1;
+	
+	public static int indicesNumber = 14;
 	
 	public enum TYPE{
 	
@@ -194,10 +196,12 @@ public class WsParseIndicies {
 				kodColumnIndex = 0;
 		
 				nameColumnIndex = 1;
+				
+				unitsColumnIndex = 2;
 			
-				quantityColumnIndex = 5;
-			
-				unitsColumnIndex =2;
+				quantityColumnIndex = 3;
+				
+				quantityColumnIndex1 = 4;
 				
 				break;
 			
@@ -264,6 +268,8 @@ public class WsParseIndicies {
 	    sundaySumIndex = ar[11];
 	    
 	    peopleStartColumnIndex = ar[12];
+	    
+	    quantityColumnIndex1 = ar[13];
 	
 	}
 

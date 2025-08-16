@@ -130,7 +130,7 @@ public class WsImportRestExcelDialog extends JDialog {
 		
 		panel_main.setBorder(title);
 		
-		m_panel_ind = new WsIndicesImportPanel(this, TYPE.NAKL);
+		m_panel_ind = new WsIndicesImportPanel(this, TYPE.PRODREST);
 				
 		JPanel but_panel = WsGuiTools.createHorizontalPanel();
 		
@@ -410,6 +410,8 @@ public class WsImportRestExcelDialog extends JDialog {
 				 
 				d.q_array[1].initial_rest = WsImportExcelUtil.getDoubleCell(row, m_ind_schema.quantityColumnIndex);
  				   
+				d.q_array[1].in_quantity = WsImportExcelUtil.getDoubleCell(row, m_ind_schema.quantityColumnIndex1);
+				
 				if(d.kod != -1) {
 					
 					if(map.containsKey(d.kod)) {
@@ -417,6 +419,8 @@ public class WsImportRestExcelDialog extends JDialog {
 						WsSkladMoveDataColumn df = map.get(d.kod);
 						
 						df.q_array[1].initial_rest += d.q_array[1].initial_rest;
+						
+						df.q_array[1].in_quantity += d.q_array[1].in_quantity;
 						
 					}
 					else {
