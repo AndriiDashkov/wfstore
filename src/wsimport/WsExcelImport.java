@@ -3,7 +3,10 @@ package wsimport;
 
 import static wsmain.WsUtils.*;
 
+import java.awt.Cursor;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -348,14 +351,13 @@ public class WsExcelImport {
 			        	
 			     for(int j = 0; j < 7;  ++j) {
 			        		
-			        	WsImportData dt =   vec.get(j);
+			        	WsImportData dt =  vec.get(j);
 			        		
 			        	XSSFCell  cell = rows_week[j].getCell(kods_start_column_index);
 			        		
 			        	double value = cell.getNumericCellValue();
 			        		
 			        	if(value != 0.0) {
-			        		
 			        		
 			        			WsRowData dt_row = new WsRowData();
 			        			
@@ -595,6 +597,48 @@ public class WsExcelImport {
 	}
 	
 	
+	static public void mergeRaskladkaSet( XSSFWorkbook target_wb, String  raskl_to_add, WsParseIndicies schema) {
+		 
+		
+		XSSFWorkbook add_wb = getWorkBook(raskl_to_add);
+		
+		Vector<WsImportData>  data = getFullDataFromRaskladka(add_wb, schema);
+		
+		if(data == null) { return; }
+		
+		int sheetIndex = schema.sheetIndex;
+		   
+		XSSFSheet sheet = target_wb.getSheetAt(sheetIndex);
+		
+		for(WsImportData d : data) {
+			
+			int column_index = d.column_index;
+			
+			for(WsRowData dr : d.m_data) {
+				
+				int row_index = dr.row_index;
+				
+				 XSSFRow row = sheet.getRow(row_index);
+		
+				 XSSFCell cell = row.getCell( column_index);
+				 
+				 if(cell == null) {
+					 
+					 System.out.println("!!!!!!!!!!!!!");
+					 
+				 }
+				  
+				 double value = cell.getNumericCellValue() + dr.quantity;
+				
+				 cell.setCellValue(value);
+				
+			}
+			
+			
+		}
+	}
+	
+	
 	static public Vector<WsImportData> getFullDataFromRaskladka( XSSFWorkbook wb , WsParseIndicies schema) {
 		 
 
@@ -670,7 +714,7 @@ public class WsExcelImport {
 	        	 
 	        	 int current_people = vec_people.elementAt(people_index).people[0];
 	        	 
-	        	 for(int j = 12; j < 223;  ++j) {
+	        	 for(int j = schema.dataStartRowIndex; j < (schema.dataEndRowIndex + 1);  ++j) {
 	        		 
 	        		 if(sum_rows_indices.contains(j)) { 
 	        			 
@@ -1328,6 +1372,69 @@ public class WsExcelImport {
 			 }
 			 
 		 }
+	}
+	
+	
+	public static XSSFWorkbook getWorkBook(String excel_file_name) {
+		
+		FileInputStream fStream = null;
+		
+		XSSFWorkbook target_wb = null;
+		
+		try {
+			
+			fStream = new FileInputStream(excel_file_name);
+			
+			target_wb = new XSSFWorkbook( fStream );
+					
+		} catch (FileNotFoundException e) {
+			
+			e.printStackTrace();
+			
+		}
+		catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+	    catch(org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException e) {
+	    	
+			try {
+				target_wb.close();
+				
+			} catch (IOException e1) {
+				
+			}
+		
+	    }
+		catch(java.lang.OutOfMemoryError ex) {
+			
+			try {
+				
+				target_wb.close();
+				
+			} catch (IOException e) {
+			
+				//e.printStackTrace();
+			}
+			
+			WsUtils.showMessageDialogLong3(getMessagesStrs("outMemoryExcelImport0"),
+					getMessagesStrs("outMemoryExcelImport1"),
+					getMessagesStrs("outMemoryExcelImport2"));
+			
+		}
+		
+		
+		try {
+			
+			if(fStream != null)  { fStream.close(); }
+			
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return target_wb;
+		
 	}
 
 }

@@ -53,7 +53,11 @@ public class WsParseIndicies {
 	
 	public int quantityColumnIndex1 = -1;
 	
-	public static int indicesNumber = 14;
+	public int dataStartRowIndex = -1;
+	
+	public int dataEndRowIndex = -1;
+	
+	public static int indicesNumber = 16;
 	
 	public enum TYPE{
 	
@@ -112,12 +116,16 @@ public class WsParseIndicies {
 					
 				peopleSheetIndex = 0;
 				
+				dataStartRowIndex = 12;
+				
+				dataEndRowIndex = 223;
+				
 				break;
 				 	
 			}
 			case KARTZVITRASKLADKA: {
 				
-				sheetIndex = 3;
+				sheetIndex = 1;
 					
 				kodRowIndex = 2;
 				
@@ -138,6 +146,10 @@ public class WsParseIndicies {
 				sartudaySumIndex = 189;
 		
 				sundaySumIndex = 220;
+				
+				dataStartRowIndex = 4;
+				
+				dataEndRowIndex = 219;
 				 
 				break;
 				 	
@@ -270,6 +282,10 @@ public class WsParseIndicies {
 	    peopleStartColumnIndex = ar[12];
 	    
 	    quantityColumnIndex1 = ar[13];
+	    
+	    dataStartRowIndex = ar[14];
+		
+		dataEndRowIndex = ar[15];
 	
 	}
 

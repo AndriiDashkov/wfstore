@@ -501,7 +501,7 @@ public class WsNewPrihodDialog extends JDialog {
 		
 		JPanel panel_Ok_Cancel = new JPanel( new GridLayout( 1,2,5,0) );
 		
-		m_OkButton = new JButton(getGuiStrs("buttonOkCaption"));
+		m_OkButton = new JButton(getGuiStrs("prov"));
 		
 		m_CancelButton = new JButton(getGuiStrs("buttonCancelCaption"));
 		

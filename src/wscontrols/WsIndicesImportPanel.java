@@ -43,19 +43,19 @@ public class WsIndicesImportPanel extends JPanel {
 	
 	JLabel m_mainLabel = new JLabel(getGuiStrs("importIndicesMainLabel"));
 	
-	protected static int[] RASKLADKA_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1};
+	protected static int[] RASKLADKA_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1, -1, -1};
 	
-	protected static int[] NAKL_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1};
+	protected static int[] NAKL_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1, -1, -1};
 	
-	protected static int[] PRIHODNAKL_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1};
+	protected static int[] PRIHODNAKL_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1, -1, -1};
 	
-	protected static int[] KARTZVIT_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1};
+	protected static int[] KARTZVIT_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1, -1, -1};
 	
-	protected static int[] KARTZVITRASKLADKA_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1};
+	protected static int[] KARTZVITRASKLADKA_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1, -1, -1};
 	
-	protected static int[] CATALOGRASKLADKA_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1};
+	protected static int[] CATALOGRASKLADKA_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1, -1, -1};
 	
-	protected static int[] PRODREST_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1};
+	protected static int[] PRODREST_static_indices = {-1,-1, -1, -1, -1, -1, -1,-1, -1, -1, -1, -1, -1, -1, -1, -1};
 	
 	protected  JLabel m_labelSheetColumn = new JLabel(getGuiStrs("labelSheetColumnCaption"));
 	
@@ -110,6 +110,10 @@ public class WsIndicesImportPanel extends JPanel {
 	protected  JSpinner m_spinPeopleColumn = null;
 	
 	protected  JSpinner m_spinQuantityColumn1 = null;
+	
+	protected  JSpinner m_spinDataStartRow = null;
+	
+	protected  JSpinner m_spinDataEndRow = null;
 	
 	WsParseIndicies.TYPE m_type = TYPE.NAKL;
 	
@@ -389,57 +393,37 @@ private JPanel getGuiRaskladka() {
 		
 		main.setLayout(new BoxLayout(main, BoxLayout.X_AXIS));
 
-		SpinnerModel model1 = new SpinnerNumberModel(3, -1, 20000, 1);  
+		m_spinSheetColumn = new  JSpinner(new SpinnerNumberModel(3, -1, 20000, 1));
 		
-		m_spinSheetColumn = new  JSpinner(model1);
+		m_spinKodColumn = new  JSpinner(new SpinnerNumberModel(10, -1, 20000, 1));
 		
-		SpinnerModel model2 = new SpinnerNumberModel(10, -1, 20000, 1); 
+		m_spinNameColumn = new  JSpinner(new SpinnerNumberModel(12, -1, 20000, 1));
 		
-		m_spinKodColumn = new  JSpinner(model2);
-		
-		SpinnerModel model3 = new SpinnerNumberModel(12, -1, 20000, 1);
-		
-		m_spinNameColumn = new  JSpinner(model3);
-		
-		SpinnerModel model4 = new SpinnerNumberModel(7, -1, 20000, 1);
-		
-		m_spinQuantityColumn = new  JSpinner(model4);
+		m_spinQuantityColumn = new  JSpinner(new SpinnerNumberModel(7, -1, 20000, 1));
 			
-		SpinnerModel model8 = new SpinnerNumberModel(42, -1, 20000, 1);
+		m_spinMondayRow = new  JSpinner(new SpinnerNumberModel(42, -1, 20000, 1));
 		
-		m_spinMondayRow = new  JSpinner(model8);
+		m_spinTuesdayRow = new  JSpinner(new SpinnerNumberModel(73, -1, 20000, 1));
 		
-		SpinnerModel model9 = new SpinnerNumberModel(73, -1, 20000, 1);
+		m_spinWednesdayRow = new  JSpinner(new SpinnerNumberModel(104, -1, 20000, 1));
 		
-		m_spinTuesdayRow = new  JSpinner(model9);
-		
-		SpinnerModel model10 = new SpinnerNumberModel(104, -1, 20000, 1);
-		
-		m_spinWednesdayRow = new  JSpinner(model10);
-		
-		SpinnerModel model11 = new SpinnerNumberModel(135, -1, 20000, 1);
-		
-		m_spinThursdayRow = new  JSpinner(model11);
-		
-		SpinnerModel model12 = new SpinnerNumberModel(166, -1, 20000, 1);
+		m_spinThursdayRow = new  JSpinner(new SpinnerNumberModel(135, -1, 20000, 1));
 			
-		m_spinFridayRow = new  JSpinner(model12);
+		m_spinFridayRow = new  JSpinner(new SpinnerNumberModel(166, -1, 20000, 1));
 		
-		SpinnerModel model13 = new SpinnerNumberModel(197, -1, 20000, 1);
-		
-	    m_spinSaturdayRow = new  JSpinner(model13);
+	    m_spinSaturdayRow = new  JSpinner(new SpinnerNumberModel(197, -1, 20000, 1));
 	    
-	    SpinnerModel model14 = new SpinnerNumberModel(228, -1, 20000, 1);
-		
-	    m_spinSundayRow = new  JSpinner(model14);
+	    m_spinSundayRow = new  JSpinner(new SpinnerNumberModel(228, -1, 20000, 1));
 	    
-		//WsGuiTools.setComponentFixedHeight(m_spinSheetColumn, 15);
-		
+	    m_spinDataStartRow = new  JSpinner(new SpinnerNumberModel(12, -1, 20000, 1));
+	    
+	    m_spinDataEndRow = new  JSpinner(new SpinnerNumberModel(223, -1, 20000, 1));
+	    
 	    JPanel panel_left = WsGuiTools.createVerticalPanel();
 		
 		JPanel panel_grid = new JPanel();	
 		
-		panel_grid.setLayout(new GridLayout(7,4, WsUtils.HOR_STRUT/4, WsUtils.VERT_STRUT/4));
+		panel_grid.setLayout(new GridLayout(7,4, WsUtils.HOR_STRUT, WsUtils.VERT_STRUT/4));
 		
 		panel_grid.add(m_labelSheetColumn); 
 		
@@ -473,17 +457,17 @@ private JPanel getGuiRaskladka() {
 		
 		panel_grid.add(m_spinThursdayRow);
 		
-		panel_grid.add(new JLabel(""));  
+		panel_grid.add(new JLabel(getGuiStrs("indexFirstDataRowRaskl")));  
 		
-		panel_grid.add(new JLabel(""));
+		panel_grid.add(m_spinDataStartRow);
 		
 		panel_grid.add(m_labelFriday);  
 		
 		panel_grid.add(m_spinFridayRow);
 		
-		panel_grid.add(new JLabel(""));  
+		panel_grid.add(new JLabel(getGuiStrs("indexLastDataRowRaskl")));  
 		
-		panel_grid.add(new JLabel(""));
+		panel_grid.add(m_spinDataEndRow);
 		
 		panel_grid.add(m_labelSaturday);    
 		
@@ -497,24 +481,12 @@ private JPanel getGuiRaskladka() {
 		
 		panel_grid.add( m_spinSundayRow);
 		
-
-
 		panel_left.add(panel_grid);         
 		
 		panel_left.add(Box.createVerticalGlue());
 		
-		//JPanel panel_grid2 = new JPanel();	
-
-		//TitledBorder title = BorderFactory.createTitledBorder(getGuiStrs("labelSumWeekDaysCaption"));
-		
-		//panel_grid2.setLayout(new GridLayout(7,2));
-		
-		//panel_grid2.setBorder(title);
-		
 		main.add(panel_left);
-		
-		//main.add(panel_grid2);
-		
+
 		TitledBorder title_main = BorderFactory.createTitledBorder(getGuiStrs("labelRaskladkaIndicesCaption"));
 		
 		main.setBorder(title_main);
@@ -551,6 +523,9 @@ private JPanel getGuiRaskladka() {
 				
 				WsGuiTools.setComponentFixedHeight(m_spinQuantityColumn, h);
 				
+				WsGuiTools.setComponentFixedHeight(m_spinDataStartRow, h);
+				
+				WsGuiTools.setComponentFixedHeight(m_spinDataEndRow, h);
 				
 				break;
 				
@@ -686,6 +661,10 @@ private JPanel getGuiRaskladka() {
 			 ind_schema.peopleStartColumnIndex = 3;
 				
 			 ind_schema.peopleSheetIndex = 0;
+			 
+			 ind_schema.dataStartRowIndex = (int)m_spinDataStartRow.getValue();
+			 
+			 ind_schema.dataEndRowIndex = (int)m_spinDataEndRow.getValue();
 		 
 		}
 		else if(m_type == TYPE.CATALOGRASKLADKA) {
@@ -845,6 +824,10 @@ private JPanel getGuiRaskladka() {
 		
 		if(m_spinQuantityColumn1 != null)  { ar[13] = (int) m_spinQuantityColumn1.getValue(); }
 		
+		if(m_spinDataStartRow != null)  { ar[14] = (int) m_spinDataStartRow.getValue(); }
+		
+		if(m_spinDataEndRow != null)  { ar[15] = (int) m_spinDataEndRow.getValue(); }
+		
 		st.setImportIndices(m_type, ar);
 		
 		st.setReqSavingFlag();
@@ -939,6 +922,16 @@ private JPanel getGuiRaskladka() {
 			
 			m_spinQuantityColumn1.setValue(sc.quantityColumnIndex1);
 		}
+		
+		if(m_spinDataStartRow != null ) {
+	    	
+			m_spinDataStartRow.setValue(sc.dataStartRowIndex);
+	    }
+	    
+		if(m_spinDataEndRow != null ) {
+	    	
+			m_spinDataEndRow.setValue(sc.dataEndRowIndex);
+	    }
 	    
 	    int[] ref = getStaticArray(sc.type);
 	    
@@ -984,6 +977,10 @@ private JPanel getGuiRaskladka() {
 	    ref[12] = sc.peopleStartColumnIndex;
 	    
 	    ref[13] = sc.quantityColumnIndex1;
+	    
+	    ref[14] = sc.dataStartRowIndex;
+	    
+	    ref[15] = sc.dataEndRowIndex;
 	
 	}
 	
@@ -1018,6 +1015,10 @@ private JPanel getGuiRaskladka() {
 		if(null != m_spinPeopleColumn) { m_spinPeopleColumn.setValue(ref[12]); }
 		
 		if(null != m_spinQuantityColumn1) { m_spinQuantityColumn1.setValue(ref[13]); }
+		
+		if(null != m_spinDataStartRow) { m_spinDataStartRow.setValue(ref[14]); }
+		
+		if(null != m_spinDataEndRow) {  m_spinDataEndRow.setValue(ref[15]); }
 				
 	}
 	
@@ -1092,6 +1093,14 @@ private JPanel getGuiRaskladka() {
 			
 			ref[13] = (int) m_spinQuantityColumn1.getValue();
 		}
+		if(m_spinDataStartRow != null ) {
+			
+			ref[14] = (int) m_spinDataStartRow.getValue();
+		}
+		if(m_spinDataEndRow != null ) {
+			
+			ref[15] = (int) m_spinDataEndRow.getValue();
+		}
 	}
 	
 	private void setTooltips() {
@@ -1102,29 +1111,33 @@ private JPanel getGuiRaskladka() {
 		
 		m_buttonSave.setToolTipText(getGuiStrs("indicesImportSaveButtonToolTip"));
 		
-		if(m_spinSheetColumn != null)  { m_spinSheetColumn.setToolTipText(getGuiStrs("sheetColImToolTip")); }
+		if(m_spinSheetColumn != null)  { m_spinSheetColumn.setToolTipText(getMessagesStrs("sheetColImToolTip")); }
 		
-		if(m_spinKodColumn != null)  {  m_spinKodColumn.setToolTipText(getGuiStrs("kodColImToolTip")); }
+		if(m_spinKodColumn != null)  {  m_spinKodColumn.setToolTipText(getMessagesStrs("kodColImToolTip")); }
 		
-		if(m_spinNameColumn != null)  {  m_spinNameColumn.setToolTipText(getGuiStrs("nameColImToolTip")); }
+		if(m_spinNameColumn != null)  {  m_spinNameColumn.setToolTipText(getMessagesStrs("nameColImToolTip")); }
 		
-		if(m_spinQuantityColumn != null)  {  m_spinQuantityColumn.setToolTipText(getGuiStrs("quanColImToolTip")); }
+		if(m_spinQuantityColumn != null)  {  m_spinQuantityColumn.setToolTipText(getMessagesStrs("quanColImToolTip")); }
 			
-		if(m_spinUnitsRow != null)  {  m_spinUnitsRow.setToolTipText(getGuiStrs("unitsColImToolTip")); }
+		if(m_spinUnitsRow != null)  {  m_spinUnitsRow.setToolTipText(getMessagesStrs("unitsColImToolTip")); }
 		
-		if(m_spinMondayRow != null)  {  m_spinMondayRow.setToolTipText(getGuiStrs("mondayColImToolTip2")); }
+		if(m_spinMondayRow != null)  {  m_spinMondayRow.setToolTipText(getMessagesStrs("mondayColImToolTip2")); }
 		
-		if(m_spinTuesdayRow != null)  {  m_spinTuesdayRow.setToolTipText(getGuiStrs("tuesdayColImToolTip2")); }
+		if(m_spinTuesdayRow != null)  {  m_spinTuesdayRow.setToolTipText(getMessagesStrs("tuesdayColImToolTip2")); }
 		
-		if( m_spinWednesdayRow != null)  {  m_spinWednesdayRow.setToolTipText(getGuiStrs("wedColImToolTip2")); }
+		if( m_spinWednesdayRow != null)  {  m_spinWednesdayRow.setToolTipText(getMessagesStrs("wedColImToolTip2")); }
 		
-		if(m_spinThursdayRow != null)  {  m_spinThursdayRow.setToolTipText(getGuiStrs("thursDayColImToolTip2")); }
+		if(m_spinThursdayRow != null)  {  m_spinThursdayRow.setToolTipText(getMessagesStrs("thursDayColImToolTip2")); }
 			
-		if(m_spinFridayRow != null)  {  m_spinFridayRow.setToolTipText(getGuiStrs("fridayColImToolTip2")); }
+		if(m_spinFridayRow != null)  {  m_spinFridayRow.setToolTipText(getMessagesStrs("fridayColImToolTip2")); }
 		
-		if(m_spinSaturdayRow != null)  {  m_spinSaturdayRow.setToolTipText(getGuiStrs("saturdayColImToolTip2")); }
+		if(m_spinSaturdayRow != null)  {  m_spinSaturdayRow.setToolTipText(getMessagesStrs("saturdayColImToolTip2")); }
 		
-		if(m_spinSundayRow != null)  {  m_spinSundayRow.setToolTipText(getGuiStrs("sundayColImToolTip2")); }
+		if(m_spinSundayRow != null)  {  m_spinSundayRow.setToolTipText(getMessagesStrs("sundayColImToolTip2")); }
+		
+		if(m_spinDataStartRow != null)  {  m_spinDataStartRow.setToolTipText(getMessagesStrs("spinDataRowStartToolTip2")); }
+		
+		if(m_spinDataEndRow != null)  {  m_spinDataEndRow.setToolTipText(getMessagesStrs("spinDataRowStartToolTip2")); }
 		
 	}
 	

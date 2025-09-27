@@ -151,8 +151,12 @@ public class WsSignSqlStatements {
              ps.setString(3, dt.position);
              
              ps.setInt(4, dt.id);
+             
+             boolean flag = ps.executeUpdate() == 1;
+             
+             ps.close();
         	
-        	 return ps.executeUpdate() == 1;
+        	 return flag;
 	      
 		} catch (SQLException e) {
 
@@ -230,6 +234,8 @@ public class WsSignSqlStatements {
             ps.setInt(1, id);
      
             int numRows = ps.executeUpdate();
+            
+            ps.close();
         	
         	return  numRows;
 	        

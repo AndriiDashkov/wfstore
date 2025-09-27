@@ -31,7 +31,7 @@ public class WsSkladSqlStatements {
 	public static Vector<WsPrihodPartData>  getSkladList(Connection conn, int sort_flag) {
 		
         Statement st;
-       
+        
 		try {
 			
 			Vector<WsPrihodPartData>  vec = new Vector<WsPrihodPartData> ();

@@ -1577,7 +1577,15 @@ public class WsReportsSqlStatements {
 					 avg_people += p; 
 				 }
 				 
-				 row.people = (int) (avg_people/vec_people.size());
+				 if(vec_people.size() != 0) {
+				 
+					 row.people = (int) (avg_people/vec_people.size());
+				 }
+				 else {
+					 
+					 row.people = 0;
+					 
+				 }
 				 
 				 row.consumed =  consumedWaterForPeriod(startDate,  vec_people, periods);
 
@@ -2380,8 +2388,6 @@ public static Vector<WsSkladMoveDataRow> getRashodMovement46(Connection conn, Da
 	        				
 	        				d.in_quantity = 0.0;
 	        				
-	        				///////////////////////////////
-	        				
 	        				d.q_array[0].out_quantity = d_.q_array[0].out_quantity;
 	        				
 	        				d.q_array[0].rest = d.q_array[0].in_quantity - d.q_array[0].out_quantity;
@@ -2551,7 +2557,11 @@ public static Vector<WsSkladMoveDataRow> getRashodMovement46(Connection conn, Da
 	        		
 	        		data.contract_name = rs2.getString(9);
 	        				
-				}				
+				}		
+	        	
+	        	ps2.close();
+	        	
+	        	rs2.close();
 
 	        	return res_map ;  
 	        
@@ -2753,6 +2763,10 @@ public static Vector<WsSkladMoveDataRow> getRashodMovement46(Connection conn, Da
 	    		dataSum.contract_name = "";
 	        	
 	    		vec.add(dataSum);
+	    		
+	    		ps2.close();
+	    		
+	    		rs2.close();
 
 	        	return vec ;  
 	        
@@ -2772,7 +2786,6 @@ public static Vector<WsSkladMoveDataRow> getRashodMovement46(Connection conn, Da
 	
 	public static Vector<WsSkladMoveDataColumn> getMovePartsForAllContracts( Date start_date,
 			Date end_date) {
-		
 		
 	       StringBuffer sb = new StringBuffer();
 	       
@@ -2986,6 +2999,10 @@ public static Vector<WsSkladMoveDataRow> getRashodMovement46(Connection conn, Da
 	    		vec_with_sums.add(dataSum);
 	    		
 	    		vec.clear();
+	    		
+	    		ps2.close();
+	    		
+	    		rs2.close();
 
 	        	return vec_with_sums;  
 	        
@@ -3105,7 +3122,6 @@ public static Vector<WsSkladMoveDataRow> getRashodMovement46(Connection conn, Da
 	        	rs2.close();
 	        	
 	        	ps2.close();
-	        	
 	        	
 	        	return res_map;
 	        

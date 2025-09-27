@@ -196,9 +196,10 @@ public class WsImportExcelNaklRashodLong extends SwingWorker<Integer, Object> im
 		
 		if(lackFlag) {
 			
-			WsUtils.showMessageDialog(
+			WsUtils.showMessageDialogLong(
 					getMessagesStrs("raskladkaLackPositionsDetectedMessage0") +
-					System.lineSeparator() + getMessagesStrs("raskladkaLackPositionsDetectedMessage1"));
+					System.lineSeparator() + getMessagesStrs("raskladkaLackPositionsDetectedMessage1"),
+					getMessagesStrs("raskladkaLackPositionsDetectedMessage2"));
 			
 		}
 		

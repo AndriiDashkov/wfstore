@@ -213,8 +213,9 @@ public class WsImportRaskladka7daysLong extends SwingWorker<Integer, Object> {
 		
 		if(lackFlag) {
 			
-			WsUtils.showMessageDialog( getMessagesStrs("raskladkaLackPositionsDetectedMessage0") +
-					System.lineSeparator() + getMessagesStrs("raskladkaLackPositionsDetectedMessage1"));
+			WsUtils.showMessageDialogLong3( getMessagesStrs("raskladkaLackPositionsDetectedMessage0"),
+					 getMessagesStrs("raskladkaLackPositionsDetectedMessage1"),
+					 getMessagesStrs("raskladkaLackPositionsDetectedMessage2"));
 			
 		}
 		

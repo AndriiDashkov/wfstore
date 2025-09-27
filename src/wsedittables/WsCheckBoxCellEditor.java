@@ -24,6 +24,10 @@ public class  WsCheckBoxCellEditor extends AbstractCellEditor implements TableCe
 	
 	private int m_index = 13;
 	
+	JTable m_table = null;
+	
+	private int m_row = -1;
+	
     public  WsCheckBoxCellEditor() {
     	
     	
@@ -43,6 +47,10 @@ public class  WsCheckBoxCellEditor extends AbstractCellEditor implements TableCe
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value,
             boolean isSelected, int row, int column) {
+    	
+    	m_table = table;
+    	
+    	m_row = row;
     	
         if (value instanceof Boolean) {
         	
@@ -66,6 +74,12 @@ public class  WsCheckBoxCellEditor extends AbstractCellEditor implements TableCe
     	JCheckBox box = (JCheckBox) event.getSource();
         
         m_value =  box.isSelected();
+        
+        if(m_value) {
+        	
+        	m_table.editCellAt(m_row, 3);
+
+        }
     }
     
 }

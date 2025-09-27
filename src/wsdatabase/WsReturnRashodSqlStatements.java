@@ -132,10 +132,10 @@ public class WsReturnRashodSqlStatements {
 				 
 			 }
 
+			 ps0.close();
 			
-			rs.close();
+			 rs.close();
 
-			
 		} catch (SQLException e) {
 			
 			if( WsUtils.isDebug() ) {
@@ -313,7 +313,7 @@ public class WsReturnRashodSqlStatements {
 			  PreparedStatement ps0 = WsConnect.getCurrentConnection().prepareStatement(returned_rows);
 		      
 			  @SuppressWarnings("unused")
-			int rows = ps0.executeUpdate();
+			  int rows = ps0.executeUpdate();
 			  
 			  ps0.close();
 			 
@@ -340,6 +340,7 @@ public class WsReturnRashodSqlStatements {
 		 WsConnect.get();
 		 	
 		 PreparedStatement ps = null;
+		 
 		 try {
 			 
 			 for(int i = 0; i < vec.size(); ++i) {

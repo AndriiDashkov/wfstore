@@ -11,6 +11,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import wsdatabase.WsRashodSqlStatements;
+import wsdatabase.WsTransactions;
 import wsdatastruct.WsRashodData;
 import wsedittables.WsDateRenderer;
 import wsmain.WsUtils;
@@ -80,8 +81,12 @@ public class WsRashodTable extends JTable {
 	
 	public void refreshData(int id_agent, int id_contract, Date start, Date end, int kod_id, boolean kod_inverse) {
 		
+			WsTransactions.beginTransaction(null);
+		
         	Vector<WsRashodData> vec  = WsRashodSqlStatements.getRashodList( id_agent, id_contract, start, end,  kod_id, kod_inverse);
         
+        	WsTransactions.commitTransaction(null);
+        	
     	    while (m_model.getRowCount() > 0) {
     	    	
     	        m_model.removeRow(0);
@@ -101,7 +106,6 @@ public class WsRashodTable extends JTable {
     	    
     	    }
     	    
-			
 			m_model.fireTableDataChanged();
 			
 	}
@@ -168,7 +172,6 @@ public class WsRashodTable extends JTable {
 			removeColumn(getColumnModel().getColumn(6));
 			
 			removeColumn(getColumnModel().getColumn(5));
-
 
 		}
 		

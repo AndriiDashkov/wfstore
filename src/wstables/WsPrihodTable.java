@@ -10,6 +10,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import wsdatabase.WsPrihodSqlStatements;
+import wsdatabase.WsTransactions;
 import wsdatastruct.WsPrihodData;
 import wsedittables.WsDateRenderer;
 import wsmain.WsUtils;
@@ -38,10 +39,14 @@ public class WsPrihodTable extends JTable {
 		   }
 	};
 	
-	String[] m_columnNames = {getGuiStrs("prihodColumnNumberNameName"),
-			getGuiStrs("prihodColumnDateName"), getGuiStrs("prihodColumnDateDocName"), 
-			getGuiStrs("prihodColumnAgentName"), getGuiStrs("prihodColumnContractName"), 
-			getGuiStrs("prihodColumnInfoName"), "id" };
+	String[] m_columnNames = {
+			getGuiStrs("prihodColumnNumberNameName"),
+			getGuiStrs("prihodColumnDateName"), 
+			getGuiStrs("prihodColumnDateDocName"), 
+			getGuiStrs("prihodColumnAgentName"),
+			getGuiStrs("prihodColumnContractName"), 
+			getGuiStrs("prihodColumnInfoName"), 
+			"id" };
 	
 	int m_id_index = 6; //this must be changed if m_columnNames is changed
 	
@@ -94,11 +99,13 @@ public class WsPrihodTable extends JTable {
 	
 	public void refreshData(int id_part_type, int id_agent, int id_contract, java.sql.Date start, java.sql.Date end ) {
 		
+			WsTransactions.beginTransaction(null);
         	 
         	Vector<WsPrihodData> vec  = WsPrihodSqlStatements.getPrihodList( id_part_type, id_agent, id_contract,  start, end);
     	    
+        	WsTransactions.commitTransaction(null);
+        	
     	    this.getSelectionModel().removeListSelectionListener(m_selection_listener);
-    	    
     	    
     	    while (m_model.getRowCount() > 0) {
     	    	

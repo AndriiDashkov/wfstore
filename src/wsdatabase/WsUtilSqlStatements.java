@@ -109,7 +109,11 @@ public class WsUtilSqlStatements {
 				 return rs.getInt(2) > 9999;
 				 
 			 }
-			
+			 
+			 rs.close();
+			 
+			 ps.close();
+			 
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
@@ -272,6 +276,8 @@ public class WsUtilSqlStatements {
             }
         
             rs.close();
+            
+            ps.close();
             
         	return vec;
   
@@ -525,6 +531,8 @@ public class WsUtilSqlStatements {
 	                inserted_id = rs.getInt(1);
 	            }
 	            
+	            rs.close();
+	            
 	            ps.close();
 	            
 	            return inserted_id;
@@ -588,6 +596,8 @@ public class WsUtilSqlStatements {
             if(flag) return true;
            
             rs.close();
+            
+            ps.close();
         	
 		} catch (SQLException e) {
 			
@@ -719,6 +729,8 @@ public class WsUtilSqlStatements {
 	                inserted_id = rs.getInt(1);
 	            }
 	            
+	            rs.close();
+	            
 	            ps.close();
 	            
 	            return inserted_id;
@@ -755,6 +767,8 @@ public class WsUtilSqlStatements {
             boolean flag = rs.next() != false;
             
             if(flag) return true;
+            
+            ps.close();
            
             rs.close();
         	
@@ -892,6 +906,8 @@ public class WsUtilSqlStatements {
 	            	
 	                inserted_id = rs.getInt(1);
 	            }
+	            
+	            rs.close();
 	            
 	            ps.close();
 	            
@@ -1120,7 +1136,4 @@ public class WsUtilSqlStatements {
 		
 	}
 	
-
-	
-
 }

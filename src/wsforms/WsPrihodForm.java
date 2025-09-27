@@ -45,6 +45,7 @@ import wscontrols.WsMutableString;
 import wscontrols.WsPartTypesFilterComboBox;
 import wsdatabase.WsAgentSqlStatements;
 import wsdatabase.WsPrihodSqlStatements;
+import wsdatabase.WsTransactions;
 import wsdatastruct.WsNaklSums;
 import wsdatastruct.WsPrihodData;
 import wsdatastruct.WsPrihodPartData;
@@ -884,7 +885,11 @@ public class WsPrihodForm extends JPanel {
 		
 		WsPrihodData d = getPrihodDataForEdit();
 		
+		WsTransactions.beginTransaction(null);
+		
 		Vector<WsPrihodPartData> parts_vec = WsPrihodSqlStatements.getPrihodPartsList(d.id, 0);
+		
+		WsTransactions.commitTransaction(null);
 		
 		OutputStream out;
 		
@@ -1062,13 +1067,17 @@ public class WsPrihodForm extends JPanel {
 		
 		int processed = 0;
 		
+		WsTransactions.beginTransaction(null);
+		
 		for(int i = 0; i < vec.size(); ++i) {
 			
 			int id = vec.elementAt(i);
 			
 			processed += WsPrihodSqlStatements.updatePricesForInvoice( id_new_contract,  id, rashodChangeFlag);
 			
-		}		
+		}	
+		
+		WsTransactions.commitTransaction(null);
 		
 		WsPrihodInvoiceChangedEvent ev = new WsPrihodInvoiceChangedEvent();
 		

@@ -1020,13 +1020,19 @@ public class WsRashodSqlStatements {
 				
 				s_b.append(d.name);
 				
-				s_b.append( ";");
+				s_b.append( ";<br>");
 				
 			}
 		}
 		
+		String s = s_b.toString();
 		
-		return s_b.toString();		
+		if(s != null &&  !s.isEmpty()) {
+			
+			s = "<html>" + s + "</html>";
+		}
+		
+		return  s;		
 	}
 	
 	//checks for forbidden symbols in the names
@@ -1112,7 +1118,6 @@ public class WsRashodSqlStatements {
 	            if(inserted_id == -1) {  return -1; }
 	            
 	            if(vec.isEmpty()) { return inserted_id ;}
-	            
 	            
 	            Iterator<WsRashodPartData> value = vec.iterator();
 	            
@@ -2001,7 +2006,7 @@ public class WsRashodSqlStatements {
         	   ps1.close();
         	   
         	   return false; 
-        	 }
+           }
  	      
  	       int inserted_part_id = -1;
 	  	            

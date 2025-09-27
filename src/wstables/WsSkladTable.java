@@ -15,6 +15,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import wsdatabase.WsSkladSqlStatements;
+import wsdatabase.WsTransactions;
 import wsdatastruct.WsPrihodPartData;
 import wsedittables.WsQuantityControlCellRenderer;
 import wsmain.WsUtils;
@@ -134,6 +135,8 @@ public class WsSkladTable extends JTable {
 		 
 			m_vec  = null;
 			
+	        WsTransactions.beginTransaction(null);
+			
 			if(dt == null) {
 				
 				if(groupByKod) {
@@ -151,7 +154,8 @@ public class WsSkladTable extends JTable {
 				
 				m_vec  = WsSkladSqlStatements.getSkladListAvailableForDate(dt, sort_flag, groupByKod);
 			}
-		
+			
+			WsTransactions.commitTransaction(null);
     	    
     	    while (m_model.getRowCount() > 0) {
     	    	

@@ -478,7 +478,9 @@ public class WsPrihodSqlStatements {
 	public static Vector<WsPrihodPartData> getPrihodPartsList(Connection conn, int id_invoice, int sort_type) {
 		
         Statement st;
-       
+        
+     
+        
 		try {
 			
 			st = conn.createStatement();
@@ -567,7 +569,7 @@ public class WsPrihodSqlStatements {
 	        	rs.close();
 	        	
 	        	st.close();
-	        	
+      	
 	        	return vec;
 	        
 	        }

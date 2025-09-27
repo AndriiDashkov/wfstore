@@ -108,8 +108,6 @@ public class WsExcelKartkaImportDialog extends JDialog {
 		
 		top_grid.setLayout(new GridLayout(5,2, 0, WsUtils.VERT_STRUT/4));
 		
-		//top_grid.setLayout(new GridLayout(5,2, 0, 0));
-		
 		JPanel panel_path = WsGuiTools.createHorizontalPanel();	
 		
 		panel_path.add(m_path_file);
@@ -156,16 +154,10 @@ public class WsExcelKartkaImportDialog extends JDialog {
 		
 		top_grid.add(m_number);
 		
-		//SpinnerModel model1 = new SpinnerNumberModel(0, 0, 200000, 1);  
-		
-		//m_people_spinner = new  JSpinner(model1);
-		
 		SpinnerModel model11 = new SpinnerNumberModel(1, 0, 1000, 1);  
 		
 		m_nakl_spinner = new  JSpinner(model11);
-		
-		//top_grid.add(new JLabel (getGuiStrs("importExcelNaklPeopleNumberLabel"))); top_grid.add(m_people_spinner);
-			
+
 		top_grid.add(new JLabel (getGuiStrs("importExcelNaklNumberLabel2"))); top_grid.add(m_nakl_spinner);
 		
 		JPanel panel_button = WsGuiTools.createHorizontalPanel();
@@ -451,8 +443,6 @@ public class WsExcelKartkaImportDialog extends JDialog {
 		m_number.setToolTipText(getMessagesStrs("numImpKZ"));
 		
 		m_nakl_spinner.setToolTipText(getMessagesStrs("klNaklKZImp"));
-		
-		//m_people_spinner.setToolTipText(getMessagesStrs("peopleKZImp"));
 			
 	}
 	

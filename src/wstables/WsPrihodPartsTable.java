@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import wsdatabase.WsPrihodSqlStatements;
+import wsdatabase.WsTransactions;
 import wsdatastruct.WsNaklSums;
 import wsdatastruct.WsPrihodPartData;
 import wsedittables.WsQuantityCellRenderer;
@@ -176,8 +177,12 @@ public class WsPrihodPartsTable extends JTable {
 			m_sort_type = sort_type;
 		
         	Vector<WsPrihodPartData> vec = null;
+        	
+        	WsTransactions.beginTransaction(null);
         			
         	Vector<WsPrihodPartData> vec1 =	WsPrihodSqlStatements.getPrihodPartsList(id_invoice, sort_type);
+        	
+        	WsTransactions.commitTransaction(null);
         	
         	if (m_sumKodesFlag) {
         		

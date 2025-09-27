@@ -676,7 +676,7 @@ private JPanel createGrid() {
 	    
 	    panelTop.add(Box.createHorizontalGlue());
 		
-		m_OkButton = new JButton(getGuiStrs("buttonOkCaption"));
+		m_OkButton = new JButton(getGuiStrs("prov"));
 		
 		m_CancelButton = new JButton(getGuiStrs("buttonCancelCaption"));
 		

@@ -14,7 +14,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
-
 import wsmain.WsUtils;
 import wsreports.WsForeignSklads46Report;
 import wsreports.WsJoinZsuProdDogsReport;
@@ -243,7 +242,16 @@ public class WsReportsList extends JPanel  {
 			    
 			root.add(genRepNode1);
 				
-			m_gen_reports_nodes.add(genRepNode1);  
+			m_gen_reports_nodes.add(genRepNode1); 
+			
+			
+			//DefaultMutableTreeNode genRepNode2 = new DefaultMutableTreeNode(getGuiStrs("reportJoinRaskl"));
+		    
+			//root.add(genRepNode2);
+				
+			//m_gen_reports_nodes.add(genRepNode2); 
+			
+		
 }
 	
 	private void setListeners() {
@@ -435,5 +443,15 @@ public class WsReportsList extends JPanel  {
 			dialog.setVisible(true);
 			
 		}	
+		/*else
+		if(node == m_gen_reports_nodes.elementAt(2)) {
+				
+			WsMergerRasklReportDialog dialog = new  WsMergerRasklReportDialog(WsUtils.get().getMainWindow(), 
+					getGuiStrs("reportJoinRaskl"));
+			
+			dialog.setVisible(true);
+			
+		}*/
+		
 	}
 }

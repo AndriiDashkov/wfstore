@@ -254,6 +254,8 @@ public class WsContractsSqlStatements {
             boolean flag = rs.next() != false;
         	
         	rs.close();
+        	
+        	ps.close();
            
         	return  flag;
 	        
@@ -300,10 +302,14 @@ public class WsContractsSqlStatements {
 		                
 		                rs.close();
 		                
+		                st.close();
+		                
 		                return dt;
 		              
 		        }
 		        else { 
+		        	
+		        	
 		        	return null; 
 		        }
 	        }

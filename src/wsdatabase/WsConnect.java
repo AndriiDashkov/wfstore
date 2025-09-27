@@ -71,7 +71,7 @@ public class WsConnect {
 	            	throw new SQLException(getMessagesStrs("cantLoadDatabaseFile")); 
 	            }
 	            
-				WsDatabaseUpdate.main_update();
+				//WsDatabaseUpdate.main_update();
 	            
 	            WsEventInt event = new WsEventEnable(WsEventEnable.TYPE.DATABASE_LOADED);
 	            
