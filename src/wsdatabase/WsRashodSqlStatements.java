@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -1020,17 +1021,12 @@ public class WsRashodSqlStatements {
 				
 				s_b.append(d.name);
 				
-				s_b.append( ";<br>");
+				s_b.append( ";");
 				
 			}
 		}
 		
 		String s = s_b.toString();
-		
-		if(s != null &&  !s.isEmpty()) {
-			
-			s = "<html>" + s + "</html>";
-		}
 		
 		return  s;		
 	}
@@ -1225,7 +1221,6 @@ public class WsRashodSqlStatements {
 			return -1;
 		
 	}
-	
 	
 	public static boolean updateRashod(WsRashodData data, 
 			Vector<WsRashodPartData> vec ) {
@@ -1489,6 +1484,171 @@ public class WsRashodSqlStatements {
 		
 	}
 	
+	private static boolean insertRashodParts(Connection cn, int invoiceId, 
+			Vector<WsRashodPartData> vec) {
+		
+	      Iterator<WsRashodPartData> value = vec.iterator();
+	      
+	      StringBuilder s_b = new StringBuilder("");
+          
+          s_b.append("INSERT INTO sale_parts ( id_sale_invoice, "
+          		+ "id_invoice_parts, \n"
+	                + "name, quantity, rest, \n"
+	                + " id_units, vendor_code_2, info, cost, nds, req_quantity, costnds)\n"
+	                + "VALUES ");
+          
+          while(value.hasNext()) {
+          	
+          	WsRashodPartData d = (WsRashodPartData) value.next();
+          	
+          	d.name = checkName(d.name, d.kod);
+          	
+          	d.id_units =  checkUnitsEggs(d.kod, d.id_units);
+          	
+          	s_b.append( "(" + Integer.toString(invoiceId) );
+          	
+          	s_b.append( ",\n");
+          	
+          	s_b.append( Integer.toString(d.id_invoice_parts) );
+          	
+          	s_b.append( ",\n'");
+          	
+          	s_b.append( d.name );
+          	
+          	s_b.append( "',\n");
+          	
+          	s_b.append( Double.toString(d.quantity) );
+          	
+          	s_b.append( ",\n");
+          	
+          	s_b.append( Double.toString(d.rest) );
+          	
+          	s_b.append( ",\n");
+          	
+          	s_b.append(  Integer.toString(d.id_units));
+          	
+          	s_b.append( ",\n'");
+          	
+          	s_b.append(d.vendor_code_2 );
+          	
+          	s_b.append( "',\n'");
+
+          	s_b.append( d.info );
+          	
+          	s_b.append( "',");
+          	
+          	s_b.append( Double.toString(d.cost) );
+          	
+          	s_b.append( ",");
+          	
+          	s_b.append( Double.toString(d.nds) );
+          	
+          	s_b.append( ",");
+          	
+          	s_b.append( Double.toString(d.req_quantity) );
+          	
+          	s_b.append( ",");
+          	
+          	s_b.append( Double.toString(d.costwithnds) );
+          	
+          	s_b.append( ")");
+          			
+          	if(value.hasNext()) {
+          		
+          		s_b.append( ",");
+          	}
+          	
+          }
+          
+          s_b.append(";");
+          
+          PreparedStatement ps = null;
+          
+	      try {
+    
+	    	  ps = cn.prepareStatement( s_b.toString());
+          
+            //  @SuppressWarnings("unused")
+			  boolean flag = ps.executeUpdate() == vec.size();
+          
+              ps.close();
+              
+              return flag; 
+          	   
+	      } catch (SQLException e) {
+		
+	    	  if( WsUtils.isDebug() ) {
+			
+	    		  e.printStackTrace();
+	    	  }
+	      }
+		
+	      return false;
+		
+	}
+	/*
+	public static boolean updateRashod(WsRashodData data, 
+			Vector<WsRashodPartData> vec, boolean tableChanged ) {
+			
+	       PreparedStatement ps = null;
+	       
+	       Connection cn = null;
+	       
+       	   final String update = "UPDATE sale_invoices SET number = ?,   date = ?, info = ?, "
+    			+ "id_counterparty = ?, people = ? WHERE id = ?;";
+    	            
+		   try {
+
+	        	WsConnect.get();
+	        	
+	        	cn = WsConnect.getCurrentConnection();
+	        	
+				ps = cn.prepareStatement(update);
+				
+	            ps.setString(1, data.number);
+	            
+	            ps.setDate(2, data.date);
+	            
+	            ps.setString(3, data.info);
+	            
+	            ps.setInt(4, data.id_counterparty);
+	            
+	            ps.setInt(5, data.people);
+	            
+	            ps.setInt(6, data.id);
+	            
+	            boolean res = ps.executeUpdate() == 1;
+	            
+	            ps.close();
+	            
+	            if(!res) {  return false; }
+		               
+		        if(tableChanged && !vec.isEmpty()) {
+		        	
+		        	int id_del = deleteRashodPartsOnly(data.id);
+		        	
+		        	if(id_del < 1) { return false; }
+		        	
+		        	boolean flag = insertRashodParts(cn, data.id, vec);
+		        	
+		        	if(!flag) { return false;}
+		        }
+		        
+		        return true;
+	                        
+			} catch (SQLException e) {
+				
+				if( WsUtils.isDebug() ) {
+					
+					e.printStackTrace();
+				}
+			
+			}
+			
+			return false;
+		
+	}
+	*/
 	public static int updateDeletePartsRashod(WsRashodData data, Vector<WsRashodPartData> vec) {
 		
 		 String exist_rows = "SELECT id FROM sale_parts WHERE id_sale_invoice = " + Integer.toString(data.id) + ";";
@@ -1661,6 +1821,80 @@ public class WsRashodSqlStatements {
 		}
      
 		return null;	
+	}
+	
+	private static int deleteRashodPartsOnly(int sale_invoice_id) {
+		
+		 String exist_rows = "SELECT id FROM sale_parts WHERE id_sale_invoice = " + Integer.toString(sale_invoice_id) + ";";
+		   
+		 WsConnect.get();
+		 
+		 int numDeleteRows = 0;
+		 
+		 int procRows = 0;
+		 
+			//return the rest to the store
+	     final String update_prihod = "UPDATE invoice_parts SET rest = (rest + SaleTable.quantity) "
+			        + " FROM (SELECT id_invoice_parts, quantity "
+			        + "FROM sale_parts WHERE id = ? ) AS SaleTable "
+			        + " WHERE SaleTable.id_invoice_parts = invoice_parts.id;";
+			
+	 	final String delete_st = "DELETE FROM sale_parts WHERE id = ?;";
+			
+		 try {
+			 
+			Statement st = WsConnect.getCurrentConnection().createStatement();
+			
+			ResultSet rs = st.executeQuery(exist_rows);
+			
+			PreparedStatement ps = WsConnect.getCurrentConnection().prepareStatement(update_prihod);
+			   
+			PreparedStatement ps1 = WsConnect.getCurrentConnection().prepareStatement(delete_st);
+			
+			while(rs.next()) {
+				
+				int id = rs.getInt(1);
+					        
+				ps.setInt(1, id);
+				
+				ps.addBatch();
+				
+				ps1.setInt(1, id);
+				
+			    ps1.addBatch();
+			
+		         
+			}
+			
+			int[] pr_ar = ps.executeBatch();
+			
+			int[] del_ar = ps1.executeBatch();
+			
+			for(int v : pr_ar  ) { procRows += v;  }
+			
+			for(int v : del_ar  ) { numDeleteRows += v; } ;
+			
+			rs.close();
+			
+			st.close();
+			
+			ps.close();
+				
+			ps1.close();
+			
+			return numDeleteRows + procRows;
+			
+			
+		} catch (SQLException e) {
+			
+			if( WsUtils.isDebug() ) {
+				
+				e.printStackTrace();
+			}
+		}
+		     
+		return 0;
+			
 	}
 	
 	public static int deleteRashod(int sale_invoice_id) {
@@ -2148,17 +2382,16 @@ public class WsRashodSqlStatements {
             ps.setInt(1, sale_invoice_id);
      
             ResultSet rs = ps.executeQuery();
+            
+            boolean flag = true;
            
             while( rs.next() ) {
             	
             	if( dt.compareTo(rs.getDate(1)) < 0 ) { 
+
+            		flag = false;
             		
-            		ps.close();
-            		
-            		rs.close();
-            		
-            		return false;
-            		
+            		break;
             	}
             	
             } 
@@ -2167,7 +2400,7 @@ public class WsRashodSqlStatements {
         	
         	rs.close();
            
-        	return  true;
+        	return  flag;
 	          
 		} catch (SQLException e) {
 			

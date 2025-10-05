@@ -12,6 +12,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Calendar;
@@ -154,6 +156,10 @@ public class  WsRashodForm  extends JPanel {
 		protected JTextField m_number_positions = new JTextField(10);
 		
 		TitledBorder m_title = null;
+		
+		SelectionListener m_selection_listener = new SelectionListener();
+		
+		boolean m_table_has_been_edited = false;
 	    
 		public  WsRashodForm() {
 			
@@ -303,34 +309,8 @@ public class  WsRashodForm  extends JPanel {
 			m_printButton.setAction(new WsPrintRashodAction(this));
 			
 		    ListSelectionModel cellSelectionModel = m_table.getSelectionModel();
-	
-		    cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
-		 
-				@Override
-				public void valueChanged(ListSelectionEvent e) {
-					
-					int viewRow = m_table.getSelectedRow();
-					
-					if(m_selected_order_row != viewRow) {
-						
-						m_selected_order_row = viewRow;
-						
-						m_parts_table.refreshData(m_table.getSelectedId());
-						
-						WsNaklSums sm = m_parts_table.getSums();
-						
-						m_sumwithnds.setText(WsUtils.getDF_fix_str(sm.sumwithnds, 4));
-						
-						m_sumnds.setText(WsUtils.getDF_fix_str(sm.sumnds, 4));
-						
-						m_sum.setText(WsUtils.getDF_fix_str(sm.sum, 4));
-						
-						m_number_positions.setText(String.valueOf(m_parts_table.getRowCount()));
-						
-					}
-					
-				}
-		     });
+		    
+		    cellSelectionModel.addListSelectionListener(m_selection_listener);
 			
 			add(mainPanel);
 			
@@ -359,12 +339,18 @@ public class  WsRashodForm  extends JPanel {
 				   		kod_id = m_partTypesCombo.getCurrentSQLId();
 				   		
 				   		int id_contract =  m_contractsCombo.getCurrentSQLId();
-				   			
+				   		
+				   	    ListSelectionModel cellSelectionModel = m_table.getSelectionModel();
+					    
+					    cellSelectionModel.removeListSelectionListener(m_selection_listener);
+				
 					    m_table.refreshData(id_agent, id_contract, m_dates.getSqlStartDate(),
 					    		m_dates.getSqlEndDate(), kod_id, false);
 					    
 					    m_table.setToolTipText(getGuiStrs("topRashodTableToolTip") +
 					    		" : " + m_table.getRowCount());
+					    
+					    cellSelectionModel.addListSelectionListener(m_selection_listener);
 				    
 					}
 	   				
@@ -373,6 +359,8 @@ public class  WsRashodForm  extends JPanel {
 		
 			
 		}
+		
+		//"<html>"
 		
 		public void refreshDataAndSelect(WsRashodInvoiceChangedEvent e) {
 			
@@ -393,9 +381,15 @@ public class  WsRashodForm  extends JPanel {
 			   		kod_id = m_partTypesCombo.getCurrentSQLId();
 			   		
 			   		int id_contract =  m_contractsCombo.getCurrentSQLId();
+			   		
+			   		ListSelectionModel cellSelectionModel = m_table.getSelectionModel();
+			   		
+			   		cellSelectionModel.removeListSelectionListener(m_selection_listener);
 			   			  	
 	 			    m_table.refreshData(id_agent, id_contract, m_dates.getSqlStartDate(),
 				    		m_dates.getSqlEndDate(),  kod_id, false);
+	 			    
+	 			   cellSelectionModel.addListSelectionListener(m_selection_listener);
 	   				
 	   				int row = e.getRowId();
 	   				
@@ -1053,6 +1047,9 @@ public class  WsRashodForm  extends JPanel {
 
 
 		    m_sum_checkbox.addActionListener(actionListener);
+		    
+
+		    
 	}
 	
 	public void findNumberOrInfo(String s, int flag) {
@@ -1122,6 +1119,35 @@ public class  WsRashodForm  extends JPanel {
 		m_title.setTitleFont(f);
 		
 	}
+	
+	
+	private class SelectionListener implements ListSelectionListener {
+		 
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			
+			int viewRow = m_table.getSelectedRow();
+			
+			if(m_selected_order_row != viewRow) {
+				
+				m_selected_order_row = viewRow;
+				
+				m_parts_table.refreshData(m_table.getSelectedId());
+				
+				WsNaklSums sm = m_parts_table.getSums();
+				
+				m_sumwithnds.setText(WsUtils.getDF_fix_str(sm.sumwithnds, 4));
+				
+				m_sumnds.setText(WsUtils.getDF_fix_str(sm.sumnds, 4));
+				
+				m_sum.setText(WsUtils.getDF_fix_str(sm.sum, 4));
+				
+				m_number_positions.setText(String.valueOf(m_parts_table.getRowCount()));
+				
+			}
+			
+		}
+     };
 
 }
 

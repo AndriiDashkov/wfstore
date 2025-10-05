@@ -173,6 +173,8 @@ public class WsNewRashodDialog extends JDialog  {
 	
 	double m_nds_coeff = WsUtils.getNdsCoeff();
 	
+	boolean m_table_has_been_edited = false;
+	
 	public WsNewRashodDialog(JFrame jfrm, WsRashodData dt, String nameFrame) {
 		super (jfrm, nameFrame, true);
 		
@@ -315,8 +317,10 @@ public class WsNewRashodDialog extends JDialog  {
 			
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			
-			String operationMessage =  getMessagesStrs("newRashodCreationFailRestProblem") + " " +
-					restNotEnough;
+			restNotEnough = restNotEnough.replace(";", "<br>");
+			
+			String operationMessage =  "<html>" + getMessagesStrs("newRashodCreationFailRestProblem") + " " +
+					restNotEnough + "</html>";
 			
 			WsUtils.showMessageDialog(operationMessage);
 			
@@ -400,9 +404,10 @@ public class WsNewRashodDialog extends JDialog  {
 				}
 				else {
 					
-					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					WsTransactions.rollbackTransaction(null);
 					
-					WsTransactions.rollbackTransaction(null); 
+					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					 
 				}
 			
 			}
@@ -705,11 +710,13 @@ private JPanel createGrid() {
 		
 		m_contractsCombo.addActionListener(forwarder);
 
-		PaFocusCustomListener fListener = new PaFocusCustomListener();
+		FocusCustomListener fListener = new FocusCustomListener();
 		
-		m_number.addFocusListener(fListener);
+		//m_number.addFocusListener(fListener);
 
-		m_info.addFocusListener(fListener);
+		//m_info.addFocusListener(fListener);
+		
+		m_table.addFocusListener(fListener);
 		
 		m_button_ins.addActionListener(new ButCustomListener());
 		
@@ -746,15 +753,6 @@ private JPanel createGrid() {
 					
 				}
 			}
-	     });
-	     
-	     m_table.addFocusListener(new FocusAdapter() {
-	    	 
-	         @Override
-	         public void focusLost(FocusEvent e) {
-	             verifyInfo();
-	         }
-	         
 	     });
 
 	     m_radioDateSort.addActionListener(m_radio_but_listener);
@@ -794,18 +792,20 @@ private JPanel createGrid() {
 	}
 	
 	
-	class PaFocusCustomListener implements FocusListener
+	class FocusCustomListener implements FocusListener
 	{
 		@Override
 		public void focusGained(FocusEvent arg0) {
-			// TODO Auto-generated method stub
-			
+		
+			 m_table_has_been_edited = true;
 		}
 
 		@Override
 		public void focusLost(FocusEvent ef) {
 		
 			 verifyInfo();
+			 
+			 m_table_has_been_edited = true;
 			 
 		}    
 	}

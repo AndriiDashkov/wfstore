@@ -135,7 +135,7 @@ public class WsSkladTable extends JTable {
 		 
 			m_vec  = null;
 			
-	        WsTransactions.beginTransaction(null);
+	       // WsTransactions.beginTransaction(null);
 			
 			if(dt == null) {
 				
@@ -155,7 +155,7 @@ public class WsSkladTable extends JTable {
 				m_vec  = WsSkladSqlStatements.getSkladListAvailableForDate(dt, sort_flag, groupByKod);
 			}
 			
-			WsTransactions.commitTransaction(null);
+			//WsTransactions.commitTransaction(null);
     	    
     	    while (m_model.getRowCount() > 0) {
     	    	

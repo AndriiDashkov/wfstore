@@ -81,11 +81,11 @@ public class WsRashodTable extends JTable {
 	
 	public void refreshData(int id_agent, int id_contract, Date start, Date end, int kod_id, boolean kod_inverse) {
 		
-			WsTransactions.beginTransaction(null);
+			//WsTransactions.beginTransaction(null);
 		
         	Vector<WsRashodData> vec  = WsRashodSqlStatements.getRashodList( id_agent, id_contract, start, end,  kod_id, kod_inverse);
         
-        	WsTransactions.commitTransaction(null);
+        	//WsTransactions.commitTransaction(null);
         	
     	    while (m_model.getRowCount() > 0) {
     	    	
