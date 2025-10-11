@@ -1044,7 +1044,7 @@ public class WsUtils {
 			
 		  String firm_name = "-----";
 			  
-			  Vector<WsInfoData>  v_info = WsUtilSqlStatements.getInfoDataList();
+			  Vector<WsInfoData>  v_info = WsCommonDataUtil.get().getInfoDataList();
 				
 			  if(v_info.size() != 0) {
 				
@@ -1057,7 +1057,7 @@ public class WsUtils {
 		
 		public static double getNdsCoeff() {
 			
-			  Vector<WsInfoData> vec_info = WsUtilSqlStatements.getInfoDataList();
+			  Vector<WsInfoData> vec_info = WsCommonDataUtil.get().getInfoDataList();
 			  
 			  double nds_coeff = 1.2;
 			    

@@ -2,15 +2,14 @@
 package wsdialogs;
 
 import static wsmain.WsUtils.*;
-
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.Vector;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -24,13 +23,13 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.WindowConstants;
-
 import wscontrols.Ws2DatesControl;
 import wscontrols.WsAgentComboBox;
 import wscontrols.WsIndicesImportPanel;
 import wsdatabase.WsRashodSqlStatements;
 import wsdatabase.WsTransactions;
 import wsdatabase.WsUtilSqlStatements;
+import wsdatastruct.WsPartType;
 import wsdatastruct.WsRashodData;
 import wsdatastruct.WsRashodPartData;
 import wsdatastruct.WsUnitData;
@@ -42,6 +41,8 @@ import wsimport.WsRowData;
 import wsimport.WsParseIndicies.TYPE;
 import wsmain.WsGuiTools;
 import wsmain.WsUtils;
+
+
 
 
 
@@ -273,7 +274,6 @@ public class WsExcelKartkaImportDialog extends JDialog {
 		Vector<Vector<WsRowData>> data_import = WsExcelImport.getDataFromKartkaMultiRow( excel_file_name, 
 			schema, rowsNumber);
 		
-		
 		if(null == data_import) {
 			
 			getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -290,12 +290,65 @@ public class WsExcelKartkaImportDialog extends JDialog {
 			
 		String number = m_number.getText();
 		
-		//int people = (int) m_people_spinner.getValue();
+		int createdNakls = createNakls(data_import, id_counterparty,  date,  number );
+		
+		if(createdNakls  !=  0) {
+			
+			WsRashodInvoiceChangedEvent ev = new WsRashodInvoiceChangedEvent();
+			
+			ev.setRowId(-1);
+			
+			WsEventDispatcher.get().fireCustomEvent(ev);
+			
+			getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			
+			if(createdNakls < 0) {
+				
+				createdNakls *= -1;
+			
+				WsUtils.showMessageDialogLong3(getMessagesStrs("raskladkaLackPositionsDetectedMessage0"),
+						 getMessagesStrs("raskladkaLackPositionsDetectedMessage1"),
+						 getMessagesStrs("raskladkaLackPositionsDetectedMessage2"));
+			
+			}
+			
+			WsUtils.showMessageDialog(String.valueOf(createdNakls) + " " +
+   			    getMessagesStrs("raskladkaNaklsNumberCreatedMessage"));
+		
+		}
+		else {
+			
+			getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				
+			WsUtils.showMessageDialog(getMessagesStrs("operationErrorCaption"));
+		}
+				
+	}
+	
+	public int createNakls(Vector<Vector<WsRowData>> data_import,
+			 int id_counterparty, java.sql.Date date, String number ) {
+		
+		WsUnitData ud_kg = WsUtilSqlStatements.getKgUnit();
+
+		WsUnitData ud_fst = WsUtilSqlStatements.getFirstUnit();
+		
+		HashMap<Integer, WsPartType> partTypeMap = WsUtilSqlStatements.getPartTypesMap();
+		
+		HashMap<String, WsUnitData> unitsMap = WsUtilSqlStatements.getUnitsMap();
+		
+		int createdNakls = 0;
+		
+		int lackIndicator = 1;
 		
 		for(int i =  0; i < data_import.size(); ++i) {
 			
-			createNakl(data_import.elementAt(i), id_counterparty, 
-				date, number, data_import.elementAt(i).elementAt(0).people);
+			int value = createNakl(data_import.elementAt(i), id_counterparty, 
+				date, number, data_import.elementAt(i).elementAt(0).people, ud_kg,
+				ud_fst, partTypeMap, unitsMap);
+			
+			if(value < 0) { lackIndicator = -1;  value *= -1; }
+			
+			createdNakls += value;
 			
 			try {
 				
@@ -311,11 +364,17 @@ public class WsExcelKartkaImportDialog extends JDialog {
 			date = WsUtils.sqlDatePlusDays(date, 1);
 		
 		}
-			
+		
+		//the negative number is used to indicate that some created invoices have 
+		// met the lack of goods in the store
+		return createdNakls*lackIndicator;
+		
 	}
 	
-	public void createNakl(Vector<WsRowData> data_import, int id_counterparty, 
-			java.sql.Date date, String number, int people) {
+	public  int createNakl(Vector<WsRowData> data_import, int id_counterparty, 
+			java.sql.Date date, String number, int people,
+			WsUnitData ud_kg, WsUnitData ud_fst, HashMap<Integer, WsPartType> partTypeMap,
+			HashMap<String, WsUnitData> unitsMap) {
 		
 		WsRashodData data = new WsRashodData(); 
 		
@@ -328,6 +387,8 @@ public class WsExcelKartkaImportDialog extends JDialog {
 		data.people = people;
 			
 		Vector<WsRashodPartData> vec = new Vector<WsRashodPartData>() ;
+		
+		int result = 0;
 			
 		for(int i = 0; i <  data_import.size(); ++i) {
 			
@@ -351,23 +412,19 @@ public class WsExcelKartkaImportDialog extends JDialog {
 				continue;
 			}
 			
-			d_.name = WsUtilSqlStatements.getPartTypeForKod(d.kod).name;
+			WsPartType pt = partTypeMap.get(d.kod);
+			
+			if(pt != null) {  d_.name =  pt.name; }
 			
 			d_.kod = d.kod;
 			
 			d_.vendor_code_2 = String.valueOf(d.kod);
 			
-			WsUnitData ud = WsUtilSqlStatements.getUnitIdForName(d.units);
+			WsUnitData ud = unitsMap.get(d.units);
 			
-			if(ud == null) {
-				
-				ud = WsUtilSqlStatements.getKgUnit();
-			}
-			if(ud == null) {
-				
-				ud = WsUtilSqlStatements.getFirstUnit();
-		
-			}
+			if(ud == null) {  ud = ud_kg; }
+			
+			if(ud == null) { ud = ud_fst; }
 		
 			d_.id_units = ud.id;
 			
@@ -376,13 +433,18 @@ public class WsExcelKartkaImportDialog extends JDialog {
 		
 		boolean lackFlag = false;
 		
-		int createdNakls = 0;
-		
 		Vector<String> vec_not_enough_quantity = new Vector<String>();
 		
 		Vector<WsRashodPartData> vec_ins =
 				WsRashodSqlStatements.findSkladPositionsForRashod(data.date, vec, 
 						false, vec_not_enough_quantity, false);
+
+		if(vec_ins == null || vec_ins.isEmpty()) {
+
+			return 0;
+		}
+		
+	
 		
 		for(int i = 0; i < vec_not_enough_quantity.size(); ++i) {
 			
@@ -393,38 +455,20 @@ public class WsExcelKartkaImportDialog extends JDialog {
 			lackFlag = true;
 		}
 		
-		WsTransactions.beginTransaction(null);
+		//data.setRows(vec_ins);
 		
 		if( WsRashodSqlStatements.createNewRashod(data, vec_ins) != -1) {
-			
-			WsTransactions.commitTransaction(null);
-			
-			createdNakls++;
+				
+			result++;
 		}
-		else {
-			
-			WsTransactions.rollbackTransaction(null);
-			
-		}
-			
-		getContentPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		
+	
 		if(lackFlag) {
 			
-			WsUtils.showMessageDialogLong3(getMessagesStrs("raskladkaLackPositionsDetectedMessage0"),
-					 getMessagesStrs("raskladkaLackPositionsDetectedMessage1"),
-					 getMessagesStrs("raskladkaLackPositionsDetectedMessage2"));
-						
+			result *= -1;
+					
 		}
-		
-		WsRashodInvoiceChangedEvent ev = new WsRashodInvoiceChangedEvent();
-		
-		ev.setRowId(-1);
-		
-		WsEventDispatcher.get().fireCustomEvent(ev);
-		
-		WsUtils.showMessageDialog(String.valueOf(createdNakls) + " " +
-   			    getMessagesStrs("raskladkaNaklsNumberCreatedMessage"));
+
+		return result;
 			
 	}
 	

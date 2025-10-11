@@ -9,6 +9,7 @@ import wsdatabase.WsSignSqlStatements;
 import wsdatastruct.WsSignsData;
 import wsevents.WsEventDispatcher;
 import wsevents.WsEventEnable;
+import wsmain.WsCommonDataUtil;
 
 /**
  * @author Andrii Dashkov license GNU GPL v3
@@ -42,7 +43,7 @@ public class WsSignsComboBox extends JComboBox<String> {
 		
 			Vector<String> list = new Vector<String>();
 			
-			Vector<WsSignsData>  vec = WsSignSqlStatements.getSignsList();
+			Vector<WsSignsData> vec = WsCommonDataUtil.get().getSignsList();
 			
 			for(int i = 0; i < vec.size(); ++i) {
 				

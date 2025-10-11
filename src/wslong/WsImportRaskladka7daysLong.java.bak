@@ -110,15 +110,9 @@ public class WsImportRaskladka7daysLong extends SwingWorker<Integer, Object> {
 			return;
 		}
 		
-		WsUnitData ud_kg = WsUtilSqlStatements.getKgUnit();
-		
-		WsUnitData ud_fst = WsUtilSqlStatements.getFirstUnit();
-		
 		int createdNakls = 0;
 		
 		boolean lackFlag = false;
-		
-		int frstNaklNumber = m_d.getFirstNaklNumber();
 		
 		for(int j = 0; j < 7; ++j) {
 			
@@ -130,7 +124,7 @@ public class WsImportRaskladka7daysLong extends SwingWorker<Integer, Object> {
 			
 			data.date =   sqlDatePlusDays(m_d.getSqlStartDate(), j);
 			
-			data.number = String.valueOf(frstNaklNumber++);
+			data.number = "auto";
 			
 			data.people = (int)m_d.getSpinners()[j].getValue();
 			
@@ -171,11 +165,11 @@ public class WsImportRaskladka7daysLong extends SwingWorker<Integer, Object> {
 				
 				if(ud == null) {
 					
-					ud = ud_kg;
+					ud = WsUtilSqlStatements.getKgUnit();
 				}
 				if(ud == null) {
 					
-					ud = ud_fst;
+					ud = WsUtilSqlStatements.getFirstUnit();
 			
 				}
 			

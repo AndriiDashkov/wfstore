@@ -5,11 +5,10 @@ package wscontrols;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-
-import wsdatabase.WsUtilSqlStatements;
 import wsdatastruct.WsInfoData;
 import wsevents.WsEventDispatcher;
 import wsevents.WsEventEnable;
+import wsmain.WsCommonDataUtil;
 
 /**
  * @author Andrii Dashkov license GNU GPL v3
@@ -39,7 +38,7 @@ public class WsCompanyComboBox  extends JComboBox<String> {
 		
 		Vector<String> list = new Vector<String>();
 		
-		Vector<WsInfoData> vec = WsUtilSqlStatements.getInfoDataList();
+		Vector<WsInfoData> vec =  WsCommonDataUtil.get().getInfoDataList();
 		
 		m_indices_map.clear();
 		

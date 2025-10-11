@@ -124,6 +124,8 @@ public class WsUtilSqlStatements {
 	
 	}
 	
+
+	
 	public static Vector<WsPartType> getPartTypesList() {
 		
 		WsConnect.get();
@@ -315,6 +317,63 @@ public class WsUtilSqlStatements {
 		}
 		
 		return null;
+	}
+	
+	
+	public static HashMap<String, WsUnitData> getUnitsMap() {
+		
+		WsConnect.get();
+		
+		Connection conn = WsConnect.getCurrentConnection();
+		
+		return getUnitsMap(conn);
+		
+	}
+	
+	public static HashMap<String, WsUnitData> getUnitsMap(Connection conn) {
+		
+
+		 HashMap<String, WsUnitData> map = new  HashMap<String, WsUnitData>();
+		
+		try {
+			
+
+        	final String st = "SELECT id, name FROM units;";
+       	  	          
+			PreparedStatement ps = conn.prepareStatement(st);
+     
+            ResultSet rs = ps.executeQuery();
+           
+            while(rs.next()) {
+            	
+            	WsUnitData d = new WsUnitData();
+            	
+            	d.id = rs.getInt(1);
+            	
+            	d.name = rs.getString(2);
+            	
+            	map.put(d.name, d);
+            	
+            }
+            
+            rs.close();
+            
+            ps.close();
+           
+        	return  map;
+	        
+	        
+		} catch (SQLException e) {
+			
+			if( WsUtils.isDebug() ) {
+				
+				e.printStackTrace();
+			}
+
+		}
+		
+		return null;
+		
 	}
 	
 	public static Vector<WsUnitData> getUnitsList() {
@@ -983,6 +1042,9 @@ public class WsUtilSqlStatements {
 		return null;
 		
 	}
+	
+	
+	
 	
 	public static WsPartType getPartTypeForId(int id) {
 		

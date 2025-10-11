@@ -12,6 +12,7 @@ import wsdatastruct.WsSignsData;
 import wsevents.WsEventDispatcher;
 import wsevents.WsEventEnable;
 import wsevents.WsEventInt;
+import wsmain.WsCommonDataUtil;
 import wsmain.WsTokenizer;
 
 
@@ -104,6 +105,8 @@ public class WsSignsEditTableModel extends AbstractTableModel{
 		        	
 		        	WsSignSqlStatements.updateSign(dt);
 		        	
+		        	WsCommonDataUtil.get().resetSignsList();
+		        	
 		        	WsEventInt event = new WsEventEnable(WsEventEnable.TYPE.SIGNS_DATA_CHANGED);
 		   				
 	   				WsEventDispatcher.get().fireCustomEvent(event);
@@ -117,6 +120,8 @@ public class WsSignsEditTableModel extends AbstractTableModel{
 		        	
 		        	WsSignSqlStatements.updateSign(dt);
 		        	
+		        	WsCommonDataUtil.get().resetSignsList();
+		        	
 		        	WsEventInt event = new WsEventEnable(WsEventEnable.TYPE.SIGNS_DATA_CHANGED);
 	   				
 	   				WsEventDispatcher.get().fireCustomEvent(event);
@@ -128,6 +133,8 @@ public class WsSignsEditTableModel extends AbstractTableModel{
 		        	dt.position = ((String) value);
 		        	
 		        	WsSignSqlStatements.updateSign(dt);
+		        	
+		        	WsCommonDataUtil.get().resetSignsList();
 		        	
 		        	WsEventInt event = new WsEventEnable(WsEventEnable.TYPE.SIGNS_DATA_CHANGED);
 	   				
@@ -169,6 +176,8 @@ public class WsSignsEditTableModel extends AbstractTableModel{
 		
 		this.fireTableDataChanged();
 		
+		WsCommonDataUtil.get().resetSignsList();
+		
 	}	
 	
 	public void deleteRow(int index) {
@@ -176,6 +185,8 @@ public class WsSignsEditTableModel extends AbstractTableModel{
 		m_vec.remove(index);
 		
 		this.fireTableDataChanged();
+		
+		WsCommonDataUtil.get().resetSignsList();
 		
 	}
 	
@@ -205,7 +216,9 @@ public class WsSignsEditTableModel extends AbstractTableModel{
 		 
 		 m_vec= null;
 		 
-		 m_vec = WsSignSqlStatements.getSignsList();
+		 WsCommonDataUtil.get().resetSignsList();
+		 
+		 m_vec = WsCommonDataUtil.get().getSignsList();
 		 
 		 this.fireTableDataChanged();
 		

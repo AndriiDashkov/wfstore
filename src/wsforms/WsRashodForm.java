@@ -4,7 +4,6 @@ import static wsmain.WsUtils.HOR_STRUT;
 import static wsmain.WsUtils.getGuiStrs;
 import static wsmain.WsUtils.getMenusStrs;
 import static wsmain.WsUtils.getMessagesStrs;
-
 import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -12,8 +11,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Calendar;
@@ -47,12 +44,12 @@ import wsdatabase.WsRashodSqlStatements;
 import wsdatastruct.WsNaklSums;
 import wsdatastruct.WsRashodData;
 import wsdialogs.WsAutoRashodDialog;
+import wsdialogs.WsExcelImportGroupRashodDialog;
 import wsdialogs.WsExcelKartkaImportDialog;
 import wsdialogs.WsExcelRaskladkaRashodImport2Dialog;
 import wsdialogs.WsExcelRaskladkaRashodImportDialog;
 import wsdialogs.WsExportRashodAsPrihodDialog;
 import wsdialogs.WsFindDialog;
-import wsdialogs.WsGroupImportRashodDialog;
 import wsdialogs.WsNewRashodDialog;
 import wsdialogs.WsNewRashodThresholdRestDialog;
 import wsdialogs.WsXmlImportRashodDialog;
@@ -396,6 +393,8 @@ public class  WsRashodForm  extends JPanel {
 	   				if(row != -1) {
 	   				
 	   					m_table.setSelectedSqlId(row) ;
+	   					
+	   					m_parts_table.refreshData(m_table.getSelectedId());
 	   				
 	   				}
 	   				
@@ -610,6 +609,7 @@ public class  WsRashodForm  extends JPanel {
 			   JMenuItem menu = (JMenuItem) e.getSource();
 			   		   
         	   if (m_table.isEditing()) {
+        		   
        	        	m_table.getCellEditor().cancelCellEditing();
        	       }
         	   
@@ -738,7 +738,7 @@ public class  WsRashodForm  extends JPanel {
                }  
                else if (menu ==  m_itemGroupImport) {
               	   
-            	   	 WsGroupImportRashodDialog dialog = new WsGroupImportRashodDialog(WsUtils.get().getMainWindow(), 
+            	   	 WsExcelImportGroupRashodDialog dialog = new WsExcelImportGroupRashodDialog(WsUtils.get().getMainWindow(), 
                 			  getGuiStrs("groupImportDialogWinCaption"));
          			
          			 dialog.setVisible(true);

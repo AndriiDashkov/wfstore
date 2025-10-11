@@ -40,7 +40,7 @@ import wsmain.WsUtils;
  * @author Andrii Dashkov license GNU GPL v3
  *
  */
-public class WsGroupImportRashodDialog  extends JDialog  {
+public class WsExcelImportGroupRashodDialog  extends JDialog  {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -67,7 +67,7 @@ public class WsGroupImportRashodDialog  extends JDialog  {
 	
 	private static java.sql.Date m_start_date = null;
 		
-	public WsGroupImportRashodDialog (JFrame jfrm, String nameFrame) {
+	public WsExcelImportGroupRashodDialog (JFrame jfrm, String nameFrame) {
 		
 		super (jfrm, nameFrame, false);
 		
@@ -108,7 +108,7 @@ public class WsGroupImportRashodDialog  extends JDialog  {
 						
 					}
 					
-					WsImportExcelNaklRashodLong cusor = new   WsImportExcelNaklRashodLong(WsGroupImportRashodDialog.this,
+					WsImportExcelNaklRashodLong cusor = new   WsImportExcelNaklRashodLong(WsExcelImportGroupRashodDialog.this,
 						     m_progressBar);
 						
 					m_progressBar.setVisible(true);

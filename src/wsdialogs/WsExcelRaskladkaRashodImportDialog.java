@@ -202,6 +202,8 @@ public class WsExcelRaskladkaRashodImportDialog extends JDialog {
 		
 		top_grid.add(m_labeAgentCombo); top_grid.add(m_AgentCombo);
 		
+		top_grid.add(label_number); top_grid.add(m_number);
+		
 		panel_grid.add(m_labelMondayColumn); panel_grid.add(m_spinners[0]);
 		
 		panel_grid.add(m_labelTuesdayColumn);	    panel_grid.add(m_spinners[1]);
@@ -254,7 +256,7 @@ public class WsExcelRaskladkaRashodImportDialog extends JDialog {
 		
 	}
 	
-	private int getNaklNumber() {
+	private int getNaklPeopleNumber() {
 		
 		int res = 0;
 		
@@ -266,6 +268,19 @@ public class WsExcelRaskladkaRashodImportDialog extends JDialog {
 		return res;
 		
 	}
+	
+	public int getFirstNaklNumber() {
+		
+		try {
+			
+			return Integer.valueOf(m_number.getText());
+		}
+		catch(NumberFormatException ex) {
+			
+			return 1;
+		}
+		
+	}
 
 	class Forwarder implements ActionListener {
 		
@@ -273,7 +288,7 @@ public class WsExcelRaskladkaRashodImportDialog extends JDialog {
 	
 			if ( e.getSource() == m_importButton )  {
 				
-				if(0 == getNaklNumber()) {
+				if(0 == getNaklPeopleNumber()) {
 					 
 					 WsUtils.showMessageDialogLong(getMessagesStrs("noPeopleForRaskladkaImportMessage0"),
 							 getMessagesStrs("noPeopleForRaskladkaImportMessage1"));
@@ -281,8 +296,8 @@ public class WsExcelRaskladkaRashodImportDialog extends JDialog {
 					 return;
 				}
 						
-				int res = WsUtils.showYesNoDialogLong(  getMessagesStrs("confirmImportRaskladkaForRashodCaption1")
-					    + " " + String.valueOf(getNaklNumber()) + " ",
+				int res = WsUtils.showYesNoDialogLong3(  getMessagesStrs("confirmImportRaskladkaForRashodCaption1"),
+					    " " + String.valueOf(getNaklPeopleNumber()) + " ",
 					    getMessagesStrs("confirmImportRaskladkaForRashodCaption2"));
 				
 				

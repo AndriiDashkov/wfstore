@@ -945,6 +945,8 @@ public class WsExcelImport {
 		    
 		    XSSFRow row_kods = sheet.getRow(kods_row_index);
 		    
+		    double nds_coeff = WsUtils.getNdsCoeff();
+		    
 		    for(int  i = 0; i < rowsNumber; ++i) {
 		    	
 		    	int kods_start_column_index = schema.kodColumnIndex; //7;
@@ -1013,7 +1015,7 @@ public class WsExcelImport {
 	        			
 	        			dt_row.costwithnds = catalog.get(kod).costwithnds;
 	        			
-	        			dt_row.cost = dt_row.costwithnds / WsUtils.getNdsCoeff();
+	        			dt_row.cost = dt_row.costwithnds / nds_coeff;
 	        			
 	        			dt_row.nds = dt_row.costwithnds - dt_row.cost;
 	        					
@@ -1104,7 +1106,9 @@ public class WsExcelImport {
 		    XSSFRow data_row = sheet.getRow(data_row_index);
 		    
 		    XSSFRow row_kods = sheet.getRow(kods_row_index);
-		  				 
+		  	
+		    double nds_coeff =  WsUtils.getNdsCoeff();
+		    
 		    do {
 
 				     XSSFCell cell_kod = row_kods.getCell( kods_start_column_index);
@@ -1143,7 +1147,7 @@ public class WsExcelImport {
 	        			
 	        			dt_row.costwithnds = catalog.get(kod).costwithnds;
 	        			
-	        			dt_row.cost = dt_row.costwithnds / WsUtils.getNdsCoeff();
+	        			dt_row.cost = dt_row.costwithnds / nds_coeff;
 	        			
 	        			dt_row.nds = dt_row.costwithnds - dt_row.cost;
 	        					

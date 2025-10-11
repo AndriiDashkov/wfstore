@@ -41,6 +41,7 @@ import wsdatastruct.WsInfoData;
 import wsdatastruct.WsPair;
 import wsdatastruct.WsRashodData;
 import wsdatastruct.WsRashodPartData;
+import wsmain.WsCommonDataUtil;
 import wsmain.WsGuiTools;
 import wsmain.WsUtils;
 
@@ -253,7 +254,7 @@ public class WsRashNaklMilitaryReport extends WSReportViewer {
 	
 		int id = m_combo.getCurrentSQLId();
 		
-		 Vector<WsInfoData> v_info = WsUtilSqlStatements.getInfoDataList();
+		 Vector<WsInfoData> v_info = WsCommonDataUtil.get().getInfoDataList();
 		 
 		 WsInfoData d = null; 
 		 

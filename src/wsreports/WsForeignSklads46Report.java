@@ -45,6 +45,7 @@ import wsdatastruct.WsPair;
 import wsdatastruct.WsPartType;
 import wsdatastruct.WsSkladMoveDataColumn;
 import wsdatastruct.WsSkladMoveDataRow;
+import wsmain.WsCommonDataUtil;
 import wsmain.WsGuiTools;
 import wsmain.WsUtils;
 
@@ -281,7 +282,7 @@ public class WsForeignSklads46Report  extends WSReportViewer {
 		
 		int col_number = vec_all_parts.elementAt(0).row_vec.size();
 		
-		Vector<WsInfoData>  v_info = WsUtilSqlStatements.getInfoDataList();
+		Vector<WsInfoData>  v_info = WsCommonDataUtil.get().getInfoDataList();
 		
 		String firm_name = "-----";
 		
@@ -1439,14 +1440,7 @@ public class WsForeignSklads46Report  extends WSReportViewer {
 		
 		Vector<WsSkladMoveDataRow> vec_all_parts = p.rows_vec;
 		
-		Vector<WsInfoData>  v_info = WsUtilSqlStatements.getInfoDataList();
-		
-		String firm_name = "-----";
-		
-		if(v_info.size() != 0) {
-		
-			firm_name = v_info.elementAt(0).name;
-		}
+		String firm_name = WsUtils.getFirmName();
 		
 		WsPair pr  = createExcelApprovePersonHeader( wb, sheet, 
 				creationHelper, m_p_panel.getApprovePerson(), 0, 11, HorizontalAlignment.LEFT);

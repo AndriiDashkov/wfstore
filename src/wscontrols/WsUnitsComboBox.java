@@ -5,11 +5,10 @@ import java.awt.Font;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-
-import wsdatabase.WsUtilSqlStatements;
 import wsdatastruct.WsUnitData;
 import wsevents.WsEventDispatcher;
 import wsevents.WsEventEnable;
+import wsmain.WsCommonDataUtil;
 import wsmain.WsGuiTools;
 
 public class WsUnitsComboBox extends JComboBox<String> {
@@ -43,7 +42,7 @@ public class WsUnitsComboBox extends JComboBox<String> {
 			
 			m_indices_map.clear();
 			
-			Vector<WsUnitData> vec = WsUtilSqlStatements.getUnitsList();
+			Vector<WsUnitData> vec = WsCommonDataUtil.get().getUnitsList();
 			
 			for(int i = 0; i < vec.size(); ++i) {
 				

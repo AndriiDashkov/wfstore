@@ -3165,7 +3165,7 @@ public static Vector<WsSkladMoveDataRow> getRashodMovement46(Connection conn, Da
 		
 		try {
 			
-			for(int i = 1; i < agents_vec.size(); ++i) {
+			for(int i = 0; i < agents_vec.size(); ++i) {
 				
 				conn = WsConnect.connectImport(agents_vec.elementAt(i).contact);
 					

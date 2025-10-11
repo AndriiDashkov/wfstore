@@ -17,7 +17,7 @@ import wsdatabase.WsTransactions;
 import wsdatastruct.WsAgentData;
 import wsdatastruct.WsRashodData;
 import wsdatastruct.WsRashodPartData;
-import wsdialogs.WsGroupImportRashodDialog;
+import wsdialogs.WsExcelImportGroupRashodDialog;
 import wsevents.WsEventDispatcher;
 import wsevents.WsRashodInvoiceChangedEvent;
 import wsimport.*;
@@ -30,13 +30,13 @@ import wsmain.WsUtils;
 
 public class WsImportExcelNaklRashodLong extends SwingWorker<Integer, Object> implements PropertyChangeListener {
 	
-	 WsGroupImportRashodDialog m_d = null;
+	 WsExcelImportGroupRashodDialog m_d = null;
 	 
 	 JProgressBar m_progressBar = null;
 	
 	boolean is_working = true;
 	
-	public  WsImportExcelNaklRashodLong( WsGroupImportRashodDialog dialog, 
+	public  WsImportExcelNaklRashodLong( WsExcelImportGroupRashodDialog dialog, 
 			JProgressBar progressBar) {
 		
 		m_d = dialog;

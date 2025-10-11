@@ -35,6 +35,7 @@ import wsdatabase.WsUtilSqlStatements;
 import wsdatastruct.WsInfoData;
 import wsdatastruct.WsSkladMoveDataColumn;
 import wsdatastruct.WsSkladMoveDataRow;
+import wsmain.WsCommonDataUtil;
 import wsmain.WsUtils;
 
 
@@ -897,14 +898,7 @@ public class WsSkladMovementReport extends WSReportViewer {
 	
 	private String getReportCaption() {
 		
-		Vector<WsInfoData>  v_info = WsUtilSqlStatements.getInfoDataList();
-		
-		String firm_name = "-----";
-		
-		if(v_info.size() != 0) {
-		
-			firm_name = v_info.elementAt(0).name;
-		}
+		String firm_name = WsUtils.getFirmName();
 		
 		String date_s = WsUtils.dateToString(m_date.getStartDate(), "dd-MMMM-yyyy" );
 		

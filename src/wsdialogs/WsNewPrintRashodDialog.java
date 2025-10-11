@@ -31,6 +31,7 @@ import wsdatastruct.WsRashodData;
 import wsdatastruct.WsRashodPartData;
 import wsevents.WsEventDispatcher;
 import wsmain.WsCloseFlag;
+import wsmain.WsCommonDataUtil;
 import wsmain.WsGuiTools;
 import wsmain.WsUtils;
 import wsreports.WSReportViewer;
@@ -280,7 +281,7 @@ public class WsNewPrintRashodDialog extends JDialog {
 	
 		int id = m_combo.getCurrentSQLId();
 		
-		Vector<WsInfoData> v_info = WsUtilSqlStatements.getInfoDataList();
+		Vector<WsInfoData> v_info = WsCommonDataUtil.get().getInfoDataList();
 		 
 		WsInfoData d = null; 
 		 

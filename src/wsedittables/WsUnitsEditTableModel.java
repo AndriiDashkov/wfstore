@@ -9,6 +9,7 @@ import javax.swing.table.AbstractTableModel;
 
 import wsdatabase.WsUtilSqlStatements;
 import wsdatastruct.WsUnitData;
+import wsmain.WsCommonDataUtil;
 import wsmain.WsTokenizer;
 
 /**
@@ -90,6 +91,8 @@ public class WsUnitsEditTableModel extends AbstractTableModel{
 		        	
 		        	WsUtilSqlStatements.updateUnitName(dt);
 		        	
+		        	 WsCommonDataUtil.get().resetUnitsList();
+		        	
 		            break;
 		        }
 		            
@@ -109,6 +112,8 @@ public class WsUnitsEditTableModel extends AbstractTableModel{
 		
 		m_vec.clear();
 		
+		WsCommonDataUtil.get().resetUnitsList();
+		
 		this.fireTableDataChanged();
 		
 	}
@@ -127,6 +132,8 @@ public class WsUnitsEditTableModel extends AbstractTableModel{
 		
 		this.fireTableDataChanged();
 		
+		WsCommonDataUtil.get().resetUnitsList();
+		
 	}	
 	
 	public void deleteRow(int index) {
@@ -134,6 +141,8 @@ public class WsUnitsEditTableModel extends AbstractTableModel{
 		m_vec.remove(index);
 		
 		this.fireTableDataChanged();
+		
+		WsCommonDataUtil.get().resetUnitsList();
 		
 	}
 	
@@ -166,9 +175,11 @@ public class WsUnitsEditTableModel extends AbstractTableModel{
 		 
 		 m_vec = null;
 		 
-		 m_vec = WsUtilSqlStatements.getUnitsList();
-				 
-		this.fireTableDataChanged();
+		 WsCommonDataUtil.get().resetUnitsList();
+		 
+		 m_vec =  WsCommonDataUtil.get().getUnitsList();
+		 
+	     this.fireTableDataChanged();
 		
 	}       
 };
