@@ -211,9 +211,7 @@ public class WsInfoEditTableModel extends AbstractTableModel{
 	
 	        } 
 	        
-	        this.fireTableDataChanged();
-	        
-	        WsCommonDataUtil.get().resetInfoDataList();
+	        refresh();
 	  }
 
 

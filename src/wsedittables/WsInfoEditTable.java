@@ -92,7 +92,9 @@ public class WsInfoEditTable extends JTable {
             	   
             	   data.id = WsUtilSqlStatements.insertInfoData(data);
             	   
-                   m_model.addRow(data);
+                  //m_model.addRow(data);
+                   
+                   m_model.refresh();
                    
                } else if (menu == m_itemDelete) {
             	   

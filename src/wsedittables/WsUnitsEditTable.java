@@ -95,7 +95,7 @@ public class  WsUnitsEditTable extends JTable {
             	 
             	   data.id = WsUtilSqlStatements.insertUnit(data);
             	   
-                   m_model.addRow(data);
+                   m_model.refresh();
                    
                } else if (menu == m_itemDelete) {
             	   

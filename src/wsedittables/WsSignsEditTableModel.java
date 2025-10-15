@@ -151,7 +151,7 @@ public class WsSignsEditTableModel extends AbstractTableModel{
 	
 	        } 
 	        
-	        this.fireTableDataChanged();
+	        refresh();
 	}
 
 	public void deleteAllRows() {

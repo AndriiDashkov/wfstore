@@ -105,7 +105,7 @@ public class WsUnitsEditTableModel extends AbstractTableModel{
 	
 	        } 
 	        
-	        this.fireTableDataChanged();
+	        refresh();
 	  }
 
 	public void deleteAllRows() {

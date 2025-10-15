@@ -154,7 +154,7 @@ public class WsPartTypesEditTableModel extends AbstractTableModel{
 	
 	        } 
 	        
-	        this.fireTableDataChanged();
+	        refresh();
     }
 
 	public void deleteAllRows() {

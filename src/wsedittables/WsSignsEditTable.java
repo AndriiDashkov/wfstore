@@ -97,7 +97,7 @@ public class WsSignsEditTable  extends JTable {
             	 
             	   data.id = WsSignSqlStatements.createNewSign(data);
             	   
-                   m_model.addRow(data);
+                   m_model.refresh();
                    
                } else if (menu == m_itemDelete) {
             	   

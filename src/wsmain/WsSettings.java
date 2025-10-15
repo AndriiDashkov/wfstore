@@ -554,7 +554,7 @@ public class WsSettings {
 		
 		rowRecentData.add(0, fullPath);
 		
-		if(rowRecentData.size() > 10) {
+		if(rowRecentData.size() > 20) {
 			
 			rowRecentData.remove(rowRecentData.size() - 1);
 			

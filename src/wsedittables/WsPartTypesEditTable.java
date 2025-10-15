@@ -113,7 +113,7 @@ public class WsPartTypesEditTable extends JTable {
             	 
             	   data.id = WsUtilSqlStatements.insertPartType(data);
             	   
-                   m_model.addRow(data);
+                   m_model.refresh();
                    
                } 
                else if (menu == m_itemDelete) {

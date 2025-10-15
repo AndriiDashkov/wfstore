@@ -67,32 +67,12 @@ public class  WsSkladMoveCompareZsuProd  extends WSReportViewer {
 	
 	WsFileTableControl m_table_control = null; 
 	
-	protected JTextField m_path_raskl = new JTextField(25);
-	
-	private JButton m_pathButton = new JButton(getGuiStrs("captionForFileChooseButton"));
-	
 	protected JLabel m_infoLabel = new JLabel(getGuiStrs("rasklFoMOdLabel"));
-	
-	private JButton m_buttonGenerate = new JButton(getGuiStrs("generateRasklButton"));
-	
-	private static String raskl_path_static = new String();
-	
-	private JButton m_saveRasklButton = new JButton(getGuiStrs("saveNewRasklFileChooseButton"));
-	
-	private JButton m_undoButton = new JButton(getGuiStrs("vidminaButton"));
-	
-	protected JLabel m_vidLabel = new JLabel(getGuiStrs("vidminaRasklLabel"));
-	
-	protected WsPartTypesComboBox m_partsCombo = new WsPartTypesComboBox();
-	
-	private Vector<WsImportData> m_vec_raskl_data = null;
 	
 	XSSFWorkbook m_wb = null;
 	
 	XSSFSheet m_sheet = null;
 	
-	TitledBorder m_border = null;
-
 	public  WsSkladMoveCompareZsuProd (JFrame f, String nameFrame) {
 		super(f, nameFrame);
 		
@@ -101,10 +81,6 @@ public class  WsSkladMoveCompareZsuProd  extends WSReportViewer {
 		m_table_control = new WsFileTableControl(columnNames, getGuiStrs("chooserExcelFileLabelName"), true);
 		
 		createGui();
-		
-		m_path_raskl.setText(raskl_path_static);	
-		
-		m_buttonGenerate.setEnabled(false);
 		
 		m_genButton.addActionListener(new ActionListener() {
 			
@@ -128,45 +104,6 @@ public class  WsSkladMoveCompareZsuProd  extends WSReportViewer {
             	}
             }
 		});	
-		
-		m_buttonGenerate.addActionListener(new ActionListener() {
-			
-            public void actionPerformed(ActionEvent e) {
-            	
-            	try {
-            		
-					createModifiedRaskladka();
-					
-				} catch (FileNotFoundException e1) {
-
-					e1.printStackTrace();
-				}
-            }
-		});
-		
-		m_pathButton.addActionListener(new ActionListener() {
-			
-            public void actionPerformed(ActionEvent e) {
-            	
-            	onPath(e);
-            }
-		});
-		
-		 m_saveRasklButton.addActionListener(new ActionListener() {
-				
-	            public void actionPerformed(ActionEvent e) {
-	            	
-	            	saveModifiedRaskladka(m_wb, m_sheet, m_vec_raskl_data );
-	            }
-		 });
-		 
-		 m_undoButton.addActionListener(new ActionListener() {
-				
-	            public void actionPerformed(ActionEvent e) {
-	            	
-	            	undoKod();
-	            }
-		 });
 		 
 		 setCustomFont();
 	}
@@ -176,81 +113,27 @@ public class  WsSkladMoveCompareZsuProd  extends WSReportViewer {
 		WsGuiTools.setFixedSizeBehavior(m_table_control);
 		
 		WsGuiTools.setComponentFixedHeight(m_table_control, 120);
-		
-		JPanel panel0 = WsGuiTools.createVerticalPanel();
-		
+
 		JPanel panel1 = WsGuiTools.createHorizontalPanel();
 		
 		panel1 .add(m_table_control);
 		 
 		panel1.add(Box.createHorizontalGlue());
 		
-		JPanel rask_panel = WsGuiTools.createHorizontalPanel();
-		
-		rask_panel.add( m_infoLabel);
-		
-		rask_panel.add(Box.createHorizontalStrut(WsUtils.HOR_STRUT));
-		
-		rask_panel.add(m_path_raskl);
-		
-		rask_panel.add(Box.createHorizontalStrut(WsUtils.HOR_STRUT));
-		
-		rask_panel.add(m_pathButton);
-		
-		rask_panel.add(Box.createHorizontalStrut(WsUtils.HOR_STRUT));
-		
-		rask_panel.add(m_buttonGenerate);
-		
-		JPanel undo_panel = WsGuiTools.createHorizontalPanel();
-
-		undo_panel.add(m_vidLabel);
-		
-		undo_panel.add(Box.createHorizontalStrut(WsUtils.HOR_STRUT));
-		
-		undo_panel.add(m_partsCombo);
-		
-		undo_panel.add(Box.createHorizontalStrut(WsUtils.HOR_STRUT));
-		
-		undo_panel.add(m_undoButton);
-		
-		undo_panel.add(Box.createHorizontalStrut(WsUtils.HOR_STRUT));
-		
-		undo_panel.add(m_saveRasklButton);
-		
-		panel0.add(Box.createVerticalStrut(WsUtils.VERT_STRUT));
-		
-		panel0.add(rask_panel);
-		
-		panel0.add(Box.createVerticalStrut(WsUtils.VERT_STRUT));
-		
-		panel0.add(undo_panel);
-		
-		m_border = BorderFactory.createTitledBorder(getGuiStrs("modRasklTitleBorder"));
-		
-		panel0.setBorder(m_border);
-		
 		JPanel panel10 = WsGuiTools.createVerticalPanel();
 	
 		panel10.add(panel1);
-		
-		panel10.add(panel0);
-		
+	
 		m_control_panel2.add(panel10);
 	
 		m_date.setCurrentStartDate();
 		
 		m_date.setCurrentEndDate();
 		
-		WsGuiTools.fixTextFieldSize(m_path_raskl);
-		
-		WsGuiTools.fixComponentHeightToMin(m_partsCombo);
-		
 		WsGuiTools.fixComponentHeightToMin(panel10);
 		
 		m_table_control.setTableToolTips(getGuiStrs("porivzVitZsuProdTableTooltip") );
-		
-		m_buttonGenerate.setToolTipText(getGuiStrs("genModRaskTooltip") );
-		
+
 	}
 	
 	//vector of report pages
@@ -362,264 +245,11 @@ public class  WsSkladMoveCompareZsuProd  extends WSReportViewer {
 		
 		Vector<String> vec_pages = generatePages();
 		
-		m_buttonGenerate.setEnabled(true);
-		
 		setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		
 		return vec_pages;
 		
 	}
-	
-	public void createModifiedRaskladka() throws FileNotFoundException {
-		
-		
-		
-		String file_base_rakladka = m_path_raskl.getText();
-		
-		if(file_base_rakladka.isEmpty()) {
-			
-		   WsUtils.showMessageDialog(getMessagesStrs("cantRaskFileForModMessage"));
-			
-			return;
-		}
-		
-		setCursor(new Cursor(Cursor.WAIT_CURSOR));
-		
-		WsParseIndicies schema =  new WsParseIndicies(TYPE.RASKLADKA);
-		
-		FileInputStream fStream = null;
-		
-		try {
-			
-			fStream = new FileInputStream(file_base_rakladka);
-	
-		    try {
-		    	
-		    		if(m_wb != null) { m_wb.close(); }
-			
-					m_wb = new XSSFWorkbook( fStream );
-				
-					fStream.close();
-		    
-		    } catch(org.apache.poi.openxml4j.exceptions.NotOfficeXmlFileException e) {
-		    	
-		    	m_wb.close();
-		    	
-		    	fStream.close();
-		    	
-		    	setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-		    	
-		    	return ;
-		    }
-	
-			Vector<WsImportData> vec_raskl_data =  WsExcelImport.getFullDataFromRaskladka( m_wb, schema);
-			
-			int sheetIndex = schema.sheetIndex; //3
-			   
-			m_sheet = m_wb.getSheetAt(sheetIndex);
-			
-			Vector<WsSkladMoveDataColumn> vec_all = m_vec_all;
-			
-			for(int i = 0; i < vec_all.size(); ++i) {
-				
-				WsSkladMoveDataColumn d = vec_all.elementAt(i);
-							
-				if(  WsUtils.isKodEqual(d.kod,  WsUtils.WATER_KOD) ) { continue; }
-				
-				double diff = d.rest_1 - d.rest;
-				
-				//small diff is no worse to process, the big diff means the 'peresort'
-				if(Math.abs(diff) < 0.1 || (Math.abs(diff) > 300.0 && 
-						!WsUtils.isKodEqual(d.kod, WsUtils.BREAD_KOD_1) && 
-						!WsUtils.isKodEqual(d.kod, WsUtils.BREAD_KOD_2) && 
-						!WsUtils.isKodEqual(d.kod, WsUtils.BREAD_KOD_3)) ) {  continue; }
-				
-				
-					
-				int kod = d.kod;
-				
-				WsImportData fd   = findData(kod, vec_raskl_data);
-				
-				if(fd == null || fd.m_data.isEmpty()) { continue;}
-				
-				Vector<Double> vec_coeffs =  getCoeffs(diff,  fd);
-				
-				double step = 1.0;
-				
-				if(WsUtils.isKodEqual(kod , WsUtils.EGG_KOD_1) || WsUtils.isKodEqual(kod , WsUtils.EGG_KOD_2)) {
-					
-
-					step =  0.25;
-				}
-				else if(fd.m_data.elementAt(0).quantity > 0.999) {
-					
-					 step = 1.0;
-				}
-				else { //values < 1 gr
-					
-					step = 0.1;
-				}
-				
-				setDifference2(diff, vec_coeffs, fd, step);
-			}
-			
-			 m_vec_raskl_data =  vec_raskl_data;
-			 
-			 changeReportData(m_vec_raskl_data);
-			 
-           	 m_html_pages = generatePages();
-            	
-			 setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			 
-		} catch (IOException e1) {
-			
-			e1.printStackTrace();
-			
-			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			
-			return;
-		}
-		
-		setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-	}
-	
-	
-	private void saveModifiedRaskladka(XSSFWorkbook wb, XSSFSheet sheet, 
-			Vector<WsImportData> vec_raskl_data ) {
-		
-		if(null == vec_raskl_data) {
-			
-			  WsUtils.showMessageDialog(getMessagesStrs("noModRasklForSaveMessage"));
-			   
-			   return;
-			
-			
-		}
-		
-		String target_rakladka =  excelRasklSaveFileChoose(this);
-		
-		if(null == target_rakladka) return;
-		
-		for(int j = 0; j <  vec_raskl_data.size(); ++j) {
-			
-			WsImportData d = vec_raskl_data.elementAt(j);
-			
-			Vector<WsRowData >  kod_rows_data =  d.m_data;
-			
-			for(int i = 0; i <  kod_rows_data.size(); ++i) {
-				
-				WsRowData  dt = kod_rows_data.elementAt(i);
-				
-				if(Math.abs(dt.delta) > 0.0) {
-				
-					 XSSFRow r = sheet.getRow(dt.row_index);
-		   		 
-					 XSSFCell c = r.getCell( d.column_index);
-		       	 
-					 double new_value = dt.quantity + dt.delta;
-					 
-					 if(new_value < 0.0) { new_value = 0.0; }
-		       		 
-					 c.setCellValue(new_value);
-				 
-				}
-				
-			}
-		
-		}
-		
-		OutputStream out;
-		 
-		try {
-			
-			out = new FileOutputStream(target_rakladka);
-		
-			wb.write(out);
-		
-			out.close();
-			 
-		} catch (IOException  e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-	}
-	
-	
-	private Vector<Double> getCoeffs(double global_diff, WsImportData fd) {
-		
-		Vector<Double> coeffs = new Vector<Double>();
-		
-		double sum = 0.0;
-		
-		for(int l = 0; l < fd.m_data.size(); ++l) {
-			
-			double cf = Math.exp((fd.m_data.elementAt(l).quantity/1000.0));
-			
-			sum += cf;
-			
-			coeffs.add(cf);
-			
-		}
-	
-		for(int l = 0; l < fd.m_data.size(); ++l) {
-			
-			double cf = coeffs.elementAt(l)/sum;
-			
-			coeffs.set(l, cf);
-
-		}
-		
-		return coeffs;
-	
-	}
-	
-	private void setDifference2(double diff, Vector<Double> vec_coeffs, 
-			WsImportData fd,  double step) {
-		
-		double rest = 0.0;
-		
-		double units_mult = 1000.0;
-
-		if(step == 0.25) { units_mult = 1.0; }
-		
-		for(int i = 0; i < vec_coeffs.size(); ++i) {
-			
-			double delta = vec_coeffs.elementAt(i)*diff*units_mult/fd.m_data.elementAt(i).people;
-			
-			double rounded_delta = ((int)( delta/step)) * step;
-			
-	
-			fd.m_data.elementAt(i).delta = rounded_delta;
-			
-			rest += delta - rounded_delta;
-			
-			fd.m_data.elementAt(i).old_quantity = fd.m_data.elementAt(i).quantity;
-			
-		}
-		
-		double rest_abs = Math.abs(rest);
-		//the last gramm
-		if(rest_abs >= step) {
-			
-			double d = step;
-			
-			if(rest < 0.0) { d = - step; }
-			
-			for(int i1 = 0; i1 < Math.round(rest_abs/step); ++i1) {
-		
-				Random random = new Random();
-				
-				int index = random.nextInt(fd.m_data.size() - 0) + 0;
-				 
-
-				fd.m_data.elementAt(index).delta +=  d;
-			
-			}
-						
-		}
-				
-	}
-	
 
 	public String getPrintHtml(Vector<WsSkladMoveDataColumn> vec_all, int start, int end, int page_number) {
 		
@@ -674,10 +304,7 @@ public class  WsSkladMoveCompareZsuProd  extends WSReportViewer {
 		
 		sHeader_b.append("<font size =4>&nbsp;" + getGuiStrs("restDiffInReport")  + "&nbsp;</font></td>");
 		
-
-		sHeader_b.append("<td   style='border-left: 1px solid;border-top: 1px solid ;text-align: center; border-right: 1px solid ;'>");
-		
-		sHeader_b.append("<font size =4>&nbsp;" + getGuiStrs("correctionDiffInReport") + "&nbsp;</font></td></tr>");
+		sHeader_b.append("</tr>");
 		
 		StringBuilder  row_s_b = new StringBuilder();
 		
@@ -798,7 +425,7 @@ public class  WsSkladMoveCompareZsuProd  extends WSReportViewer {
 			
 			row_s_b.append("&nbsp;</font></td>");
 			
-			row_s_b.append("<td nowrap style=' max-width: 250px; border-left: 1px solid; border-top: 1px solid  ; "); 
+			row_s_b.append("<td nowrap style=' max-width: 250px; border-left: 1px solid; border-right: 1px solid; border-top: 1px solid  ; "); 
 			
 			row_s_b.append(bottomBorder );
 			
@@ -808,15 +435,7 @@ public class  WsSkladMoveCompareZsuProd  extends WSReportViewer {
 			
 			row_s_b.append("&nbsp;</font></td>");
 			
-			row_s_b.append("<td nowrap style=' max-width: 250px; border-left: 1px solid; border-top: 1px solid ; border-right: 1px solid ; "); 
-			
-			row_s_b.append(bottomBorder );
-			
-			row_s_b.append("'><font size =4>&nbsp;" );
-			
-			row_s_b.append(WsUtils.getDF(d.correction) );
-			
-			row_s_b.append("&nbsp;</font></td></tr>");
+			row_s_b.append("</tr>");
 		
 		}
 		
@@ -1010,7 +629,7 @@ public class  WsSkladMoveCompareZsuProd  extends WSReportViewer {
 		        	
 		        	d.kod = ct.getKodFromCatalog(WsImportExcelUtil.getKodCell(row, kod_column));
 	        		
-	        		//if(d.kod == -1) { continue;}
+	        		if(d.kod == WsUtils.UNKNOWN_KOD) { continue;}
 	        		
 	        		d.initial_rest_1 = WsImportExcelUtil.getDoubleCell(row, initial_rest_column);
 	        		
@@ -1223,7 +842,7 @@ public class  WsSkladMoveCompareZsuProd  extends WSReportViewer {
 		return new_vec;
 	
 	}
-	
+	/*
 	public void onPath(ActionEvent e) {
 		
 
@@ -1240,11 +859,11 @@ public class  WsSkladMoveCompareZsuProd  extends WSReportViewer {
 			
 				m_path_raskl.setText(name);	
 				
-				raskl_path_static = name;
+			///	raskl_path_static = name;
 
 			}
 		}
-	}
+	}*/
 	
 	
 	private WsImportData findData(int kod, Vector<WsImportData> vec_raskl_data) {
@@ -1264,77 +883,7 @@ public class  WsSkladMoveCompareZsuProd  extends WSReportViewer {
 		return fd;
 		
 	}
-	
-	private void undoKod() {
-		
-		WsPartType d1 = m_partsCombo.getSelectedPartData();
-    	
-    	if(null == d1) { return; }
-		
-		int  kod =  d1.kod;
-		
-		setCursor(new Cursor(Cursor.WAIT_CURSOR));
-		
-		for(int i = 0; i < m_vec_raskl_data.size(); ++i) {
-			
-			WsImportData d = m_vec_raskl_data.elementAt(i);
-			
-			if(WsUtils.isKodEqual(d.kod, kod)) {
-				
-				Vector<WsRowData>  v = d.m_data;
-				
-				for(int j = 0; j < v.size(); ++j) {
-					
-					WsRowData dr = v.elementAt(j);
-					
-					dr.delta = 0;
-					
-				}
 
-			}
-		}
-		
-		changeReportData(m_vec_raskl_data);
-		
-		generatePages();
-		
-		setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-
-	}
-	
-	
-	private void changeReportData(Vector<WsImportData> vec_raskl_data) {
-		
-		for(int i = 0; i < m_vec_all.size(); ++i) {
-			
-			WsSkladMoveDataColumn d = m_vec_all.elementAt(i);
-						
-			if( WsUtils.isKodEqual(d.kod, WsUtils.WATER_KOD) ) { continue; }
-			
-			
-				
-			int kod = d.kod;
-			
-			WsImportData fd  = findData(kod, vec_raskl_data);
-			
-			if(fd == null || fd.m_data.isEmpty()) { continue;}
-			
-			double sum = 0.0;
-			
-			for(int j1 = 0 ; j1 < fd.m_data.size(); ++j1) {
-				
-				WsRowData  dr = fd.m_data.elementAt(j1);
-				
-				sum += ( dr.delta)*dr.people;
-			}
-			
-			d.correction = sum/1000.0;
-			
-		}
-		
-		
-	}
-	
 	public void dispose() {
 		
 		try {
@@ -1362,10 +911,10 @@ public class  WsSkladMoveCompareZsuProd  extends WSReportViewer {
 		
 		WsGuiTools.changeFont(this, f);
 		
-		if(m_border != null) {
+	//	if(m_border != null) {
 			
-			m_border.setTitleFont(f);
+		//	m_border.setTitleFont(f);
 			
-		}
+		//}
 	}
 }
