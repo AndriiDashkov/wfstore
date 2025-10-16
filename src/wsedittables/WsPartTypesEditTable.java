@@ -135,7 +135,7 @@ public class WsPartTypesEditTable extends JTable {
             	   
             	   for(int index  = 0; index < indices.length ; ++index) {
             	   
-	            	   WsPartType dt = ((WsPartTypesEditTableModel) getModel()).getDataAt(index);
+	            	   WsPartType dt = ((WsPartTypesEditTableModel) getModel()).getDataAt(indices[index]);
 	            	   
 	            	   //this kod can't be deleted
 	            	   if(  WsUtils.isKodEqual(dt.kod, WsUtils.getUnknownKatalogKod()) ) { continue; }
