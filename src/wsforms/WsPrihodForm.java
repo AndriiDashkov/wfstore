@@ -764,6 +764,8 @@ public class WsPrihodForm extends JPanel {
 		
 		m_partTypesCombo.setToolTipText(getGuiStrs("partTypesComboFilterToolTip"));
 		
+		m_contractsCombo.setToolTipText(getGuiStrs("cnComboFilterToolTip"));
+		
 	}
 	
 	

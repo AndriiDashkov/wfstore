@@ -183,6 +183,7 @@ public class WsCreateDatabase {
               + " id_sale_invoice integer NOT NULL,\n"
               + " id_sale_part integer NOT NULL,\n"
               + " id_part_type integer NOT NULL,\n"
+              + " id_user integer default -1,\n"
               + " quantity real default 0.0,\n"
               + " returned_quantity real default 0.0,\n"
               + " sale_invoice_date Date,\n"

@@ -247,6 +247,14 @@ public class WsSpisRaskladkaForm extends JPanel {
 			+ "<br/>" + getMessagesStrs("genRozSpisToolTip1") + "</html>");
 		
 		m_saveRasklButton.setToolTipText(getMessagesStrs("saveRozSpisToolTip"));
+		
+		m_raskl_control_table.setTableToolTips(getMessagesStrs("spRasklTableToolTip"));
+		
+		m_raskl_control_table.setButtonToolTip(getMessagesStrs("spRasklButToolTip"));
+		
+		m_table_control.setTableToolTips(getMessagesStrs("spBdTableToolTip"));
+		
+		m_table_control.setButtonToolTip(getMessagesStrs("spBDButToolTip"));
 				
 	}
 	

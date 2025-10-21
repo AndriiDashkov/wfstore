@@ -22,7 +22,6 @@ import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -32,12 +31,10 @@ import org.apache.poi.xssf.usermodel.XSSFCreationHelper;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import wscontrols.WsFileTableControl;
 import wscontrols.WsPartTypesFilterComboBox;
 import wscontrols.WsSignsControlPanel;
 import wsdatabase.WsReportsSqlStatements;
-import wsdatabase.WsUtilSqlStatements;
 import wsdatastruct.WsAgentData;
 import wsdatastruct.WsInfoData;
 import wsdatastruct.WsMoveKodPage;

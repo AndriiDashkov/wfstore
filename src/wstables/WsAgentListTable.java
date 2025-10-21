@@ -16,12 +16,8 @@ import wsmain.WsUtils;
  *
  */
 
-
 public class WsAgentListTable extends JTable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	DefaultTableModel m_model = new DefaultTableModel() {
@@ -29,15 +25,14 @@ public class WsAgentListTable extends JTable {
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		   public boolean isCellEditable(int row, int column) {
+		public boolean isCellEditable(int row, int column) {
 		     
-		       return false;
-		   }
+		    return false;
+		}
 	};
 	
 	String[] m_columnNames = {getGuiStrs("agentColumnNameName"), getGuiStrs("agentColumnTypeName"), 
 			getGuiStrs("agentColumnContactName"), getGuiStrs("agentColumnInfoName"), "id_type", "id"};
-	
 	
 	public WsAgentListTable() {
 		
@@ -56,8 +51,7 @@ public class WsAgentListTable extends JTable {
 	}
 	
 	
-	public void refreshData(int id_types_index) {
-		
+	public void refreshData(int id_types_index, int sortType) {
 		
 	    while (m_model.getRowCount() > 0) {
 	    	
@@ -65,7 +59,18 @@ public class WsAgentListTable extends JTable {
 	        
 	    }
 	    
-	    Vector<WsAgentData>  vec = WsAgentSqlStatements.getAgentsList(id_types_index);
+	    Vector<WsAgentData>  vec = null;
+	    
+	    if(id_types_index > -1) {
+	    	
+	    	vec = WsAgentSqlStatements.getAgentsList(id_types_index);
+	    
+	    }
+	    else {
+	    	
+	    	vec = WsAgentSqlStatements.getAgentsListSort(sortType);
+	    	
+	    }
 		
 		for(int i = 0; i < vec.size(); ++i) {
 			
@@ -75,11 +80,9 @@ public class WsAgentListTable extends JTable {
 		    		 d.contact, d.info, String.valueOf(d.id_type), String.valueOf(d.id)});
 		}
 	     
-		
 		m_model.fireTableDataChanged();
 			
 	}
-	
 	
 	public int getSelectedId() {
 		
@@ -92,7 +95,6 @@ public class WsAgentListTable extends JTable {
 		
 		return selected_id;
 	}
-	
 	
 	public WsAgentData getSelectedDataAgent() {
 		
@@ -116,7 +118,6 @@ public class WsAgentListTable extends JTable {
 		
 		return dt;
 	}
-	
 	
 	private void hideColumns() {
 		

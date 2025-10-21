@@ -2,7 +2,6 @@
 package wstables;
 
 import static wsmain.WsUtils.getGuiStrs;
-
 import java.awt.Component;
 import java.awt.Rectangle;
 import java.sql.Date;
@@ -13,9 +12,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-
 import wsdatabase.WsSkladSqlStatements;
-import wsdatabase.WsTransactions;
 import wsdatastruct.WsPrihodPartData;
 import wsedittables.WsQuantityControlCellRenderer;
 import wsmain.WsUtils;

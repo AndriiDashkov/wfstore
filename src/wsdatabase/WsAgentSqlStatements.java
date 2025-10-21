@@ -231,6 +231,81 @@ public class WsAgentSqlStatements {
 	}
 	
 	
+	public static Vector<WsAgentData> getAgentsListSort(int sortType) {
+		
+		   WsConnect.get();
+			
+		   return getAgentsListSort(WsConnect.getCurrentConnection(), sortType);
+		}
+		
+		public static Vector<WsAgentData> getAgentsListSort(Connection conn, int sortType) {
+			
+	        Statement st;
+	        
+	        Vector<WsAgentData> vec = new  Vector<WsAgentData>();
+	        
+			try {
+				
+				st = conn.createStatement();
+				
+		        if (st != null) {
+		        	
+		        	String s = null;
+		        	
+		        	if(sortType == 0) {
+		        		
+		        		s = "SELECT counterparties.id, counterparties.name, counterparties_types.name, contact, counterparties.info, counterparties_types.id "
+			        			+ "FROM counterparties INNER JOIN counterparties_types ON counterparties_types.id = counterparties.id_type "
+		        				+ "ORDER BY counterparties.name;";
+		        		
+		        	}
+		        	else {
+		        		
+		            	s = "SELECT counterparties.id, counterparties.name, counterparties_types.name, contact, counterparties.info, counterparties_types.id "
+			        			+ "FROM counterparties INNER JOIN counterparties_types ON counterparties_types.id = counterparties.id_type ORDER BY  counterparties_types.name;";
+			      
+		        	}
+		        	
+		        	ResultSet rs =  st.executeQuery(s);
+		        	
+		        	while(rs.next()) {
+		        		
+		        		WsAgentData d = new WsAgentData();
+		        		
+		        		d.id = rs.getInt(1);
+		        		
+		        		d.name = rs.getString(2);
+		        		
+		        		d.type_name = rs.getString(3);
+		        		
+		        		d.contact = rs.getString(4);
+		        		
+		        		d.info = rs.getString(5);
+		        		
+		        		d.id_type = rs.getInt(6);
+		        		
+		        		vec.add(d);
+		        		
+		        	}
+		        	
+		        	return vec;
+		        
+		        }
+			} catch (SQLException e) {
+
+				if( WsUtils.isDebug() ) {
+					
+					e.printStackTrace();
+				}
+			}
+	       
+	    
+			return null;
+			
+			
+		}
+	
+	
 	public static int deleteAgentForId(int id) {
 		
 		if (id  == -1) return 0;

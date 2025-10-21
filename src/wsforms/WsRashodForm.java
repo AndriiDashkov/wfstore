@@ -875,6 +875,8 @@ public class  WsRashodForm  extends JPanel {
 		m_agentComboBox.setToolTipText(getGuiStrs("agentComboBoxToolTip"));
 		
 		m_partTypesCombo.setToolTipText(getGuiStrs("partTypesComboFilterToolTip"));
+		
+		m_contractsCombo.setToolTipText(getGuiStrs("cnComboFilterToolTip"));
 	}
 		
 	public void clearFilter() {

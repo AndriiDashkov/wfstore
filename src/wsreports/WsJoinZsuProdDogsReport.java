@@ -5,7 +5,6 @@ package wsreports;
 
 import static wsmain.WsUtils.getGuiStrs;
 import static wsmain.WsUtils.getMessagesStrs;
-
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,11 +25,8 @@ import org.apache.poi.xssf.usermodel.XSSFCreationHelper;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import wscontrols.WsFileTableControl;
-import wsdatabase.WsUtilSqlStatements;
 import wsdatastruct.WsAgentData;
-import wsdatastruct.WsPartType;
 import wsdatastruct.WsSkladMoveDataColumn;
 import wsimport.WsImportExcelUtil;
 import wsmain.WsGuiTools;

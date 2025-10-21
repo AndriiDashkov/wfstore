@@ -3,7 +3,6 @@ package wsdatabase;
 
 import static wsmain.WsUtils.getGuiStrs;
 import static wsmain.WsUtils.getMessagesStrs;
-
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -11,13 +10,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import wsdatastruct.WsContractPriceData;
 import wsdatastruct.WsPair;
 import wsdatastruct.WsPartType;
@@ -1484,6 +1481,7 @@ public class WsRashodSqlStatements {
 		
 	}
 	
+	@SuppressWarnings("unused")
 	private static boolean insertRashodParts(Connection cn, int invoiceId, 
 			Vector<WsRashodPartData> vec) {
 		
@@ -1823,6 +1821,7 @@ public class WsRashodSqlStatements {
 		return null;	
 	}
 	
+	@SuppressWarnings("unused")
 	private static int deleteRashodPartsOnly(int sale_invoice_id) {
 		
 		 String exist_rows = "SELECT id FROM sale_parts WHERE id_sale_invoice = " + Integer.toString(sale_invoice_id) + ";";

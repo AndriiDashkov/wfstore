@@ -1,6 +1,3 @@
-/**
- * 
- */
 package wslong;
 
 import static wsmain.WsUtils.getGuiStrs;

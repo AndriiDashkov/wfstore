@@ -2,16 +2,13 @@
 package wstables;
 
 import static wsmain.WsUtils.getGuiStrs;
-
 import java.awt.Rectangle;
 import java.sql.Date;
 import java.util.Vector;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
-
 import wsdatabase.WsRashodSqlStatements;
-import wsdatabase.WsTransactions;
 import wsdatastruct.WsRashodData;
 import wsedittables.WsDateRenderer;
 import wsmain.WsUtils;

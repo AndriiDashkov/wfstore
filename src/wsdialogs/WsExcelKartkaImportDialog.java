@@ -27,7 +27,6 @@ import wscontrols.Ws2DatesControl;
 import wscontrols.WsAgentComboBox;
 import wscontrols.WsIndicesImportPanel;
 import wsdatabase.WsRashodSqlStatements;
-import wsdatabase.WsTransactions;
 import wsdatabase.WsUtilSqlStatements;
 import wsdatastruct.WsPartType;
 import wsdatastruct.WsRashodData;
@@ -342,8 +341,15 @@ public class WsExcelKartkaImportDialog extends JDialog {
 		
 		for(int i =  0; i < data_import.size(); ++i) {
 			
+			int people = 0;
+			
+			if(!data_import.elementAt(i).isEmpty()) {
+				
+				people = data_import.elementAt(i).elementAt(0).people;
+			}
+			
 			int value = createNakl(data_import.elementAt(i), id_counterparty, 
-				date, number, data_import.elementAt(i).elementAt(0).people, ud_kg,
+				date, number, people, ud_kg,
 				ud_fst, partTypeMap, unitsMap);
 			
 			if(value < 0) { lackIndicator = -1;  value *= -1; }

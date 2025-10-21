@@ -3,7 +3,6 @@ package wsreports;
 
 import static wsmain.WsUtils.getGuiStrs;
 import static wsmain.WsUtils.getMessagesStrs;
-
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,9 +22,6 @@ import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import wsdatabase.WsUtilSqlStatements;
-import wsdatastruct.WsInfoData;
 import wsdatastruct.WsPartType;
 import wsdatastruct.WsPrihodPartData;
 import wsmain.WsUtils;

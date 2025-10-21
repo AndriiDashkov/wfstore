@@ -22,10 +22,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
-
 import wscontrols.WsCompanyComboBox;
 import wsdatabase.WsRashodSqlStatements;
-import wsdatabase.WsUtilSqlStatements;
 import wsdatastruct.WsInfoData;
 import wsdatastruct.WsRashodData;
 import wsdatastruct.WsRashodPartData;

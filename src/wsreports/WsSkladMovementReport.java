@@ -3,7 +3,6 @@ package wsreports;
 
 import static wsmain.WsUtils.getGuiStrs;
 import static wsmain.WsUtils.getMessagesStrs;
-
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,10 +14,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Vector;
-
 import javax.swing.Box;
 import javax.swing.JFrame;
-
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -28,14 +25,10 @@ import org.apache.poi.xssf.usermodel.XSSFCreationHelper;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import wscontrols.WsSignsControlPanel;
 import wsdatabase.WsReportsSqlStatements;
-import wsdatabase.WsUtilSqlStatements;
-import wsdatastruct.WsInfoData;
 import wsdatastruct.WsSkladMoveDataColumn;
 import wsdatastruct.WsSkladMoveDataRow;
-import wsmain.WsCommonDataUtil;
 import wsmain.WsUtils;
 
 

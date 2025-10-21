@@ -1,4 +1,3 @@
-
 package wscontrols;
 
 import static wsmain.WsUtils.getGuiStrs;

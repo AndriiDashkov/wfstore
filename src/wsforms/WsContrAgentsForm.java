@@ -2,9 +2,12 @@
 package wsforms;
 
 import static wsmain.WsUtils.getGuiStrs;
-
+import static wsmain.WsUtils.getMenusStrs;
+import static wsmain.WsUtils.getMessagesStrs;
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import javax.swing.BorderFactory;
@@ -12,12 +15,12 @@ import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
-
 import wsactions.WsAgentsTypesAction;
 import wsactions.WsDeleteAgentAction;
 import wsactions.WsEditAgentAction;
@@ -47,12 +50,6 @@ public class WsContrAgentsForm extends JPanel {
 	
 	protected ButtonGroup butGroup = new ButtonGroup();
 	
-	//protected JRadioButton m_rButton1 = new JRadioButton(getGuiStrs("radioButton1AllAgentsLabel")); //
-
-	//protected JRadioButton m_rButton2 = new JRadioButton(getGuiStrs("radioButton2PostAgentsLabel")); //
-
-	//protected JRadioButton m_rButton3 = new JRadioButton(getGuiStrs("radioButton3PidrozdilAgentsLabel")); //
-	
 	protected  JButton m_agentsTypesButton = new JButton(getGuiStrs("buttonAgentTypesCaption"));
 	
 	protected WsAgentListTable m_table = new WsAgentListTable();
@@ -67,7 +64,13 @@ public class WsContrAgentsForm extends JPanel {
 	   
 	JMenuItem m_itemAdd = null;
 	
+	JMenuItem m_itemNameSort = null;
+	   
+	JMenuItem m_itemTypeSort = null;
+	
 	JPopupMenu m_popupMenu = null;
+	
+	JMenu m_sortMenu = null;
 	 
 	TitledBorder m_title = null;
 
@@ -116,6 +119,7 @@ public class WsContrAgentsForm extends JPanel {
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 		
 		mainPanel.add(toolbar_panel);
+		
 		mainPanel.add(scroll);
 		
 		setLayout(new BorderLayout());
@@ -126,6 +130,8 @@ public class WsContrAgentsForm extends JPanel {
 		
 		add(mainPanel);
 		
+		setToolTips();
+		
 	}
 	
 	public void refreshData(WsEventEnable e) {
@@ -135,7 +141,7 @@ public class WsContrAgentsForm extends JPanel {
 			
 			int index = m_typesCombo.getCurrentSQLId();
 	 
-			m_table.refreshData(index);
+			m_table.refreshData(index, 0);
 			
 		}
 		
@@ -164,7 +170,7 @@ public class WsContrAgentsForm extends JPanel {
 	    	   
 	    	   int index = m_typesCombo.getCurrentSQLId();
 	    		 
-				m_table.refreshData(index);
+				m_table.refreshData(index, 0);
 	          
 	       }
 	    }
@@ -182,12 +188,30 @@ public class WsContrAgentsForm extends JPanel {
 	   m_itemDelete = new JMenuItem(new WsDeleteAgentAction(this));
 	   
 	   m_itemAdd = new JMenuItem( new WsNewAgentAction());
+	   
+	   m_sortMenu = new JMenu(getMenusStrs("agSortMenu"));
        
        m_popupMenu.add(m_itemAdd);
         
        m_popupMenu.add(m_itemEdit);
         
        m_popupMenu.add(m_itemDelete);
+       
+       m_popupMenu.add(m_sortMenu);
+       
+       m_itemNameSort = new JMenuItem(getMenusStrs("agSortNameMenu"));
+	   
+   	   m_itemTypeSort = new JMenuItem(getMenusStrs("agSortTypeMenu"));
+   	   
+   	   m_sortMenu.add(m_itemNameSort);
+   	   
+   	   m_sortMenu.add(m_itemTypeSort);
+   	   
+	   CustomPopupListener listener = new CustomPopupListener();
+	   
+	   m_itemTypeSort.addActionListener( listener);
+	   
+	   m_itemNameSort.addActionListener( listener);
         
        m_table.setComponentPopupMenu(m_popupMenu);
         
@@ -210,11 +234,53 @@ public class WsContrAgentsForm extends JPanel {
 		
 		WsGuiTools.changeFont(m_table, f);
 		
-		WsGuiTools.changeFont(m_popupMenu, f);
+		WsGuiTools.changeFont(m_popupMenu,f);
+		
+		m_sortMenu.setFont(f);
+		
+		m_itemNameSort.setFont(f);
+		   
+		m_itemTypeSort.setFont(f);
 
 		m_table.getTableHeader().setFont(f);
 		
 		m_title.setTitleFont(f);
 		
 	}
+	
+	private class CustomPopupListener implements ActionListener {
+
+		/* (non-Javadoc)
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 */
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			   JMenuItem menu = (JMenuItem) e.getSource();
+			   
+               if (menu ==  m_itemNameSort) {
+            	   
+            	   int index = m_typesCombo.getCurrentSQLId();
+
+            	   m_table.refreshData(index, 0);
+                   
+               } else if (menu == m_itemTypeSort) {
+            	   
+            	   int index = m_typesCombo.getCurrentSQLId();
+            	   
+            	   m_table.refreshData(index, 1);
+                   
+               } 
+		}
+	};
+	
+	
+	private void setToolTips() {
+		
+		m_agentsTypesButton.setToolTipText(getMessagesStrs("agTypebUtTt"));
+		
+		m_typesCombo.setToolTipText(getMessagesStrs("typesAgComboTt"));
+		
+	}
+	
 }

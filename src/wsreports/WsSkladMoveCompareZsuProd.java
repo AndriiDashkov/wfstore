@@ -3,7 +3,6 @@ package wsreports;
 
 import static wsmain.WsUtils.getGuiStrs;
 import static wsmain.WsUtils.getMessagesStrs;
-
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -12,7 +11,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,37 +18,21 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.Vector;
-import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
-
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCreationHelper;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import wscontrols.WsFileTableControl;
-import wscontrols.WsPartTypesComboBox;
 import wsdatabase.WsReportsSqlStatements;
 import wsdatastruct.WsAgentData;
-import wsdatastruct.WsPartType;
 import wsdatastruct.WsSkladMoveDataColumn;
-import wsdialogs.WsFileChooserDialog;
-import wsimport.WsExcelImport;
-import wsimport.WsImportData;
 import wsimport.WsImportExcelUtil;
-import wsimport.WsParseIndicies;
-import wsimport.WsRowData;
-import wsimport.WsParseIndicies.TYPE;
 import wsmain.WsCatalogKods;
 import wsmain.WsGuiTools;
 import wsmain.WsUtils;
@@ -625,8 +607,6 @@ public class  WsSkladMoveCompareZsuProd  extends WSReportViewer {
 				        	
 		        	WsSkladMoveDataColumn d = new WsSkladMoveDataColumn();
 		        	
-		        	//d.kod = WsImportExcelUtil.getKodCell(row, kod_column);
-		        	
 		        	d.kod = ct.getKodFromCatalog(WsImportExcelUtil.getKodCell(row, kod_column));
 	        		
 	        		if(d.kod == WsUtils.UNKNOWN_KOD) { continue;}
@@ -808,18 +788,6 @@ public class  WsSkladMoveCompareZsuProd  extends WSReportViewer {
 		   
 	}
 	
-	/*private void createCell( XSSFRow rowHeader, int index, String s, XSSFCreationHelper creationHelper) {
-		
-		  XSSFCell cell3 = rowHeader.createCell(index);
-	        
-	      XSSFRichTextString richString3 = creationHelper
-	                .createRichTextString(s);
-	
-	      cell3.setCellValue(richString3);
-		
-	}*/
-	
-	
 	public Vector<WsSkladMoveDataColumn> removeZerosRows(Vector<WsSkladMoveDataColumn>  vec) {
 		
 		Vector<WsSkladMoveDataColumn>  new_vec = new Vector<WsSkladMoveDataColumn>();
@@ -841,47 +809,6 @@ public class  WsSkladMoveCompareZsuProd  extends WSReportViewer {
 		
 		return new_vec;
 	
-	}
-	/*
-	public void onPath(ActionEvent e) {
-		
-
-		WsFileChooserDialog sourceFile = new WsFileChooserDialog(getGuiStrs("dialogFileChooserTitleDataLoad"), 
-				".", true, false);
-
-		int result = sourceFile.showOpenDialog(this);
-		
-		if (result == JFileChooser.APPROVE_OPTION) {
-			
-			if(sourceFile.getSelectedFile() != null) {
-				
-				String name = sourceFile.getSelectedFile().getPath();
-			
-				m_path_raskl.setText(name);	
-				
-			///	raskl_path_static = name;
-
-			}
-		}
-	}*/
-	
-	
-	private WsImportData findData(int kod, Vector<WsImportData> vec_raskl_data) {
-		
-		WsImportData fd  = null;
-		
-		for(int k = 0; k < vec_raskl_data.size(); ++k) {
-			
-			if( WsUtils.isKodEqual(vec_raskl_data.elementAt(k).kod , kod)) {
-				
-				fd = vec_raskl_data.elementAt(k);
-				
-				break;
-			}
-		}
-		
-		return fd;
-		
 	}
 
 	public void dispose() {
