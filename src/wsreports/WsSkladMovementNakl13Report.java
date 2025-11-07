@@ -886,8 +886,8 @@ public class WsSkladMovementNakl13Report extends WSReportViewer {
 					 nameRow_b.append( getGuiStrs("vidNaklName2") );
 					 
 					 nameRow_b.append( " " );
-					 
-					 nameRow_b.append( dateIn);
+					 	 
+					 nameRow_b.append( WsUtils.dateToString(d_row.date_doc, "dd.MM.yy" ));
 					 
 					 nameRow_b.append( " " );
 					 
