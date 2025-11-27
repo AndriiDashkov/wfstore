@@ -407,7 +407,7 @@ public class WsSkladMovementReport extends WSReportViewer {
 					 
 					 sHeader3_b.append("<td style='border-left: 1px solid;border-top: 1px solid ; text-align: center;'><font size =4>" );
 					 
-					 sHeader3_b.append(getGuiStrs("rashodNameReportColumn") );
+					 sHeader3_b.append(getGuiStrs("quantityNameVibuloReportColumn") );
 					
 					 sHeader3_b.append("</font></td>");
 					 

@@ -25,7 +25,7 @@ public class  WsQuantityCellRenderer extends DefaultTableCellRenderer {
         if (value instanceof Double) {
      
             double d = (double) value;
-            
+
             if(d < WsUtils.getRZL() && d > 0.0) {
             	
             	DecimalFormat formatter = new DecimalFormat("0.0000000");

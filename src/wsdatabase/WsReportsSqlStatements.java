@@ -11,11 +11,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Vector;
-
 import wscomparators.WsDateComparator;
 import wsdatastruct.WsAgentData;
 import wsdatastruct.WsContractData;
 import wsdatastruct.WsMoveKodPage;
+import wsdatastruct.WsMoveMapsData;
 import wsdatastruct.WsPartType;
 import wsdatastruct.WsPrihodData;
 import wsdatastruct.WsPrihodPartData;
@@ -3152,14 +3152,23 @@ public static Vector<WsSkladMoveDataRow> getRashodMovement46(Connection conn, Da
 		
 	}
 	
-	public static HashMap<Integer, WsSkladMoveDataColumn> getRestForAgents(java.sql.Date date, java.sql.Date date2,
+	
+	public static  WsMoveMapsData  getRestForAgents(java.sql.Date date, java.sql.Date date2,
 			Vector<WsAgentData> agents_vec) {
 		
 		WsConnect.get();
 		
 		HashMap<Integer, WsSkladMoveDataColumn> map = new HashMap<Integer, WsSkladMoveDataColumn>();
 		
-		if(agents_vec == null || agents_vec.isEmpty()) { return map; }
+		HashMap<Integer, Vector<WsSkladMoveDataColumn>> map2 = new HashMap<Integer, Vector<WsSkladMoveDataColumn>>();
+		
+		WsMoveMapsData  return_value = new  WsMoveMapsData();
+		
+		return_value.map1 = map;
+		
+		return_value.map2 = map2;
+
+		if(agents_vec == null || agents_vec.isEmpty()) { return  return_value; }
 
 		Connection conn = null;
 		
@@ -3173,6 +3182,8 @@ public static Vector<WsSkladMoveDataRow> getRashodMovement46(Connection conn, Da
 	
 				Vector<WsSkladMoveDataColumn> data = getPrihodRashodBookForDate2(conn, date,  date2,-1);
 					
+				map2.put(i, data);
+				
 				for(WsSkladMoveDataColumn d: data) {
 					
 					if(map.containsKey(d.kod)) {
@@ -3189,7 +3200,7 @@ public static Vector<WsSkladMoveDataRow> getRashodMovement46(Connection conn, Da
 					}
 					else {
 						
-						map.put(d.kod, d);
+						map.put(d.kod, new WsSkladMoveDataColumn(d));
 					}
 				}
 				
@@ -3212,7 +3223,7 @@ public static Vector<WsSkladMoveDataRow> getRashodMovement46(Connection conn, Da
 			}	
 		}
 		
-		return map;
+		return return_value;
 		
 	}
 	

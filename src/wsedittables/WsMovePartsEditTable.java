@@ -13,6 +13,8 @@ import java.util.Vector;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableColumnModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
 import wsdatastruct.WsPartType;
@@ -47,6 +49,21 @@ public class WsMovePartsEditTable extends JTable {
 	     
 	     setFillsViewportHeight(true);
 	     
+	     //workaround to force the table headers to accept multiline captions
+	     DefaultTableColumnModel tableColumnModel = new DefaultTableColumnModel() {
+	    	 
+			private static final long serialVersionUID = 1L;
+
+				public void addColumn(TableColumn column) {
+	               
+	                column.setHeaderRenderer(new JTableHeader().getDefaultRenderer());
+	                
+	                super.addColumn(column);
+	            }
+	        };
+	        
+	        setColumnModel(tableColumnModel);
+	     
 	     setModel(m_model);
 	       
 	     setPopupMenu();
@@ -61,17 +78,15 @@ public class WsMovePartsEditTable extends JTable {
 	     
 	     getTableHeader().setReorderingAllowed( false );
 	     
-	     TableColumn diffColumn = getColumnModel().getColumn(9);
-
-	     diffColumn.setCellRenderer(new WsQuantityControlCellRenderer());
+	     getColumnModel().getColumn(9).setCellRenderer(new WsQuantityControlCellRenderer());
 	     
-	     TableColumn zalColumn = getColumnModel().getColumn(3);
-
-	     zalColumn.setCellRenderer(new WsQuantityControlCellRenderer());
+	     getColumnModel().getColumn(10).setCellRenderer(new WsQuantityControlCellRenderer());
 	     
-	     TableColumn imZalColumn = getColumnModel().getColumn(2);
-
-	     imZalColumn.setCellRenderer(new WsQuantityControlCellRenderer());
+	     getColumnModel().getColumn(11).setCellRenderer(new WsQuantityControlCellRenderer());
+	     
+	     getColumnModel().getColumn(3).setCellRenderer(new WsQuantityControlCellRenderer());
+	     
+	     getColumnModel().getColumn(2).setCellRenderer(new WsQuantityControlCellRenderer());
 	     
 	     setCustomFont();
 	     
@@ -185,8 +200,6 @@ public class WsMovePartsEditTable extends JTable {
 		
 		if(WsUtils.HIDE_ID_COLUMNS) {
 			
-			//removeColumn(getColumnModel().getColumn(14));
-		
 		}
 	}
 	
@@ -202,6 +215,15 @@ public class WsMovePartsEditTable extends JTable {
 		
 		WsGuiTools.changeFont( m_popupMenu, f);
 			
+	}
+	
+	public  WsSkladMoveDataColumn getSelectedData() {
+		
+		int r = getSelectedRow();
+		
+		if(r == -1) { return null; }
+		
+		return m_model.getDataAt(r);
 	}
 }
 	

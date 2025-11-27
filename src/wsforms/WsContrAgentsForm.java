@@ -44,7 +44,6 @@ public class WsContrAgentsForm extends JPanel {
 
 	{
 		WsEventDispatcher.get().addConnect(WsEventDispatcher.ENABLE_EVENT, this, "refreshData");
-		
 			
 	}
 	
@@ -173,9 +172,7 @@ public class WsContrAgentsForm extends JPanel {
 				m_table.refreshData(index, 0);
 	          
 	       }
-	    }
-
-	      
+	    }   
 	}
 	
 	
@@ -273,7 +270,6 @@ public class WsContrAgentsForm extends JPanel {
                } 
 		}
 	};
-	
 	
 	private void setToolTips() {
 		

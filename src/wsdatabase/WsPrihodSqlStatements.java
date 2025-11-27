@@ -479,8 +479,6 @@ public class WsPrihodSqlStatements {
 		
         Statement st;
         
-     
-        
 		try {
 			
 			st = conn.createStatement();
@@ -538,7 +536,7 @@ public class WsPrihodSqlStatements {
 	        		d.name = rs.getString(3);
 	        		
 	        		d.quantity = rs.getDouble(4);
-	        		
+	        		        		
 	        		d.rest = rs.getDouble(5);
 	        		
 	        		d.units_name = rs.getString(6);

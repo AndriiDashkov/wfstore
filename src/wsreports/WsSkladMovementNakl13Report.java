@@ -428,7 +428,7 @@ public class WsSkladMovementNakl13Report extends WSReportViewer {
 					
 					 sHeader3_b.append("<td style='border-left: 1px solid;border-top: 1px solid ; text-align: center;'><font size =4>"); 
 					
-					 sHeader3_b.append(getGuiStrs("rashodNameReportColumn") );
+					 sHeader3_b.append(getGuiStrs("quantityNameVibuloReportColumn") );
 					 
 					 sHeader3_b.append( "</font></td>");
 					
@@ -807,9 +807,9 @@ public class WsSkladMovementNakl13Report extends WSReportViewer {
 		
 		for(int i = 0; i < vec_all_parts.size(); ++i) {
 			
-			WsSkladMoveDataRow d_row = vec_all_parts.elementAt(i);
+			 WsSkladMoveDataRow d_row = vec_all_parts.elementAt(i);
 			
-			Vector<WsSkladMoveDataColumn> row_vec = d_row.pages_row_vec.elementAt( page_number);
+			 Vector<WsSkladMoveDataColumn> row_vec = d_row.pages_row_vec.elementAt( page_number);
 			
 			 String bottomBorder = "";
 			 
@@ -1019,7 +1019,7 @@ public class WsSkladMovementNakl13Report extends WSReportViewer {
 					 
 					 sHeader03.append("<td style='border-left: 1px solid;border-top: 1px solid ; text-align: center;'><font size =4>");
 					 
-					 sHeader03.append(getGuiStrs("rashodNameReportColumn")); 
+					 sHeader03.append(getGuiStrs("quantityNameVibuloReportColumn")); 
 					 
 					 sHeader03.append("</font></td>");
 					 

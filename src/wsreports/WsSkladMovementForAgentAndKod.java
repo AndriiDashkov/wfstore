@@ -251,7 +251,7 @@ public class  WsSkladMovementForAgentAndKod  extends WSReportViewer {
 		
 		sHeader_b.append( "<font size =4>&nbsp;" );
 		
-		sHeader_b.append(getGuiStrs("vibuloReportName") );
+		sHeader_b.append(getGuiStrs("quantityNameVibuloReportColumn") );
 		
 		sHeader_b.append( "&nbsp;</font></td>");
 		
@@ -715,7 +715,7 @@ public class  WsSkladMovementForAgentAndKod  extends WSReportViewer {
 		   
 		   createCell(rowHeader0, 3, getGuiStrs("periodReportName"), creationHelper);
 		   
-		   createCell(rowHeader0, 4, getGuiStrs("vibuloReportName"), creationHelper);
+		   createCell(rowHeader0, 4, getGuiStrs("quantityNameVibuloReportColumn"), creationHelper);
 		   
 		   createCell(rowHeader0, 5, getGuiStrs("unitsNameInReport"), creationHelper);
 		   

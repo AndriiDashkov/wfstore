@@ -268,11 +268,11 @@ public class  WsSkladMoveCompareZsuProd  extends WSReportViewer {
 		
 		sHeader_b.append( "<td   style='border-left: 1px solid;border-top: 1px solid ;text-align: center;'>");
 		
-		sHeader_b.append("<font size =4>&nbsp;" +  getGuiStrs("vibuloReportName") + "&nbsp;</font></td>");
+		sHeader_b.append("<font size =4>&nbsp;" +  getGuiStrs("quantityNameVibuloReportColumn") + "&nbsp;</font></td>");
 		
 		sHeader_b.append("<td   style='border-left: 1px solid;border-top: 1px solid ;text-align: center;'>");
 		
-		sHeader_b.append("<font size =4>&nbsp;" + getGuiStrs("vibuloReportName") + " Prod" + "&nbsp;</font></td>");
+		sHeader_b.append("<font size =4>&nbsp;" + getGuiStrs("quantityNameVibuloReportColumn") + " Prod" + "&nbsp;</font></td>");
 		
 		sHeader_b.append("<td   style='border-left: 1px solid;border-top: 1px solid ;text-align: center ;'>");
 		
@@ -778,9 +778,9 @@ public class  WsSkladMoveCompareZsuProd  extends WSReportViewer {
 		   
 		   createCell(rowHeader0, 5, getGuiStrs("pribuloProdReportName"), creationHelper);
 		   
-		   createCell(rowHeader0, 6, getGuiStrs("vibuloReportName"), creationHelper);
+		   createCell(rowHeader0, 6, getGuiStrs("quantityNameVibuloReportColumn"), creationHelper);
 		   
-		   createCell(rowHeader0, 7, getGuiStrs("vibuloReportName") + " Prod", creationHelper);
+		   createCell(rowHeader0, 7, getGuiStrs("quantityNameVibuloReportColumn") + " Prod", creationHelper);
 		   
 		   createCell(rowHeader0, 8, getGuiStrs("restNameInReport"), creationHelper);
 		   

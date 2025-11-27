@@ -167,6 +167,8 @@ public class WsMovePartsEditTableModel extends AbstractTableModel{
 	
 	public WsSkladMoveDataColumn getDataAt(int row) {
 		
+		if(row >= m_vec.size()) { return null; }
+		
 		return m_vec.elementAt(row);
 		
 	}

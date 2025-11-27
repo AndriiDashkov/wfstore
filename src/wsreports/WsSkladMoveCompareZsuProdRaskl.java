@@ -331,7 +331,7 @@ public class  WsSkladMoveCompareZsuProdRaskl  extends WSReportViewer {
 		
 		sHeader_b.append( "<font size =4>&nbsp;" );
 		
-		sHeader_b.append(getGuiStrs("vibuloReportName") );
+		sHeader_b.append(getGuiStrs("quantityNameVibuloReportColumn") );
 		
 		sHeader_b.append("&nbsp;</font></td>");
 		
@@ -339,7 +339,7 @@ public class  WsSkladMoveCompareZsuProdRaskl  extends WSReportViewer {
 		
 		sHeader_b.append( "<font size =4>&nbsp;" );
 		
-		sHeader_b.append(getGuiStrs("vibuloReportName") );
+		sHeader_b.append(getGuiStrs("quantityNameVibuloReportColumn") );
 		
 		sHeader_b.append(" Prod" );
 		
@@ -843,9 +843,9 @@ public class  WsSkladMoveCompareZsuProdRaskl  extends WSReportViewer {
 		   
 		   createCell(rowHeader0, 5, getGuiStrs("pribuloProdReportName"), creationHelper);
 		   
-		   createCell(rowHeader0, 6, getGuiStrs("vibuloReportName"), creationHelper);
+		   createCell(rowHeader0, 6, getGuiStrs("quantityNameVibuloReportColumn"), creationHelper);
 		   
-		   createCell(rowHeader0, 7, getGuiStrs("vibuloReportName") + " Prod", creationHelper);
+		   createCell(rowHeader0, 7, getGuiStrs("quantityNameVibuloReportColumn") + " Prod", creationHelper);
 		   
 		   createCell(rowHeader0, 8, getGuiStrs("restNameInReport"), creationHelper);
 		   

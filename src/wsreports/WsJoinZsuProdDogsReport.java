@@ -218,7 +218,7 @@ public class  WsJoinZsuProdDogsReport  extends WSReportViewer {
 		
 		sHeader_b.append("<td   style='border-left: 1px solid;border-top: 1px solid ;text-align: center;'>");
 		
-		sHeader_b.append("<font size =4>&nbsp;" + getGuiStrs("vibuloReportName") + " Prod" + "&nbsp;</font></td>");
+		sHeader_b.append("<font size =4>&nbsp;" + getGuiStrs("quantityNameVibuloReportColumn") + " Prod" + "&nbsp;</font></td>");
 		
 		sHeader_b.append("<td   style='border-left: 1px solid;border-top: 1px solid ;text-align: center; border-right: 1px solid ;'>");
 		
@@ -638,7 +638,7 @@ public class  WsJoinZsuProdDogsReport  extends WSReportViewer {
 		   
 		   createCell(rowHeader0, 4, getGuiStrs("pribuloReportName"), creationHelper);
 
-		   createCell(rowHeader0, 5, getGuiStrs("vibuloReportName"), creationHelper);
+		   createCell(rowHeader0, 5, getGuiStrs("quantityNameVibuloReportColumn"), creationHelper);
 		   
 		   createCell(rowHeader0, 6, getGuiStrs("restNameInReport"), creationHelper);
 		   

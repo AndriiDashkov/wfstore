@@ -183,7 +183,7 @@ public class  WsSkladMovementReportZved  extends WSReportViewer {
 			}
 		
 			HashMap<Integer, WsSkladMoveDataColumn> vec_map = WsReportsSqlStatements.getRestForAgents(m_date.getSqlStartDate(), 
-					m_date.getSqlEndDate(), m_table_control.getData());
+					m_date.getSqlEndDate(), m_table_control.getData()).map1;
 		
 			
 			if(!vec_all.isEmpty()) {

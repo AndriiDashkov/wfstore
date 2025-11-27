@@ -2,10 +2,12 @@
 package wsforms;
 
 import static wsmain.WsUtils.getGuiStrs;
+import static wsmain.WsUtils.getMenusStrs;
 import static wsmain.WsUtils.getMessagesStrs;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -24,7 +26,9 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
@@ -40,9 +44,11 @@ import wscontrols.WsFileTableControl2;
 import wscontrols.WsMutableString;
 import wsdatabase.WsReportsSqlStatements;
 import wsdatastruct.WsAgentData;
+import wsdatastruct.WsMoveMapsData;
 import wsdatastruct.WsPair;
 import wsdatastruct.WsSkladMoveDataColumn;
 import wsdialogs.WsImportRestExcelDialog;
+import wsdialogs.WsMovementExrDbDialog;
 import wsedittables.WsMovePartsEditTable;
 import wsevents.WsEventDispatcher;
 import wsevents.WsEventEnable;
@@ -99,6 +105,12 @@ public class WsSpisRaskladkaForm extends JPanel {
 	private Vector<WsImportData> m_vec_raskl_data = null;
 	
 	protected static  WsMutableString m_excel_save_folder = new  WsMutableString(".");
+	
+	HashMap<Integer, Vector<WsSkladMoveDataColumn>> m_ext_databases_data = null;
+	
+	Vector<WsSkladMoveDataColumn> m_current_database_data = null;
+	
+	JPopupMenu m_popupMenu = null;
    
 	public WsSpisRaskladkaForm() {
 		
@@ -112,6 +124,8 @@ public class WsSpisRaskladkaForm extends JPanel {
 		
 		setListeners();
 		
+		setCustomFont();
+		
 		setGuiEnabled(false);
 		
 	}
@@ -122,7 +136,6 @@ public class WsSpisRaskladkaForm extends JPanel {
 	
 	private void createGUI() {
 		
-
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		JPanel date_panel = WsGuiTools.createHorizontalPanel();
@@ -232,6 +245,16 @@ public class WsSpisRaskladkaForm extends JPanel {
 	}
 	
 	private void setPopupMenu() {
+		
+		m_popupMenu = new JPopupMenu();
+
+		JMenuItem itemShowDetails = new JMenuItem(getMenusStrs("detailsDbSpisItemMenu"));
+		
+		m_popupMenu.add(itemShowDetails);
+		   
+		itemShowDetails.addActionListener( new CustomPopupListener());
+	        
+	    m_table.setComponentPopupMenu(m_popupMenu);
 		    
 	}
 	
@@ -396,16 +419,17 @@ public class WsSpisRaskladkaForm extends JPanel {
 		@SuppressWarnings("unchecked")
 		HashMap<Integer, WsSkladMoveDataColumn> foreign_data = (HashMap<Integer, WsSkladMoveDataColumn>)p.complex;
 
-		Vector<WsSkladMoveDataColumn> vec_tmp = 
-				WsReportsSqlStatements.getPrihodRashodBookForDate2(m_dates.getSqlStartDate(), m_dates.getSqlEndDate(), -1);
+		m_current_database_data = 
+				WsReportsSqlStatements.getPrihodRashodBookForDate2(m_dates.getSqlStartDate(), 
+						m_dates.getSqlEndDate(), -1);
 		
 		Vector<WsSkladMoveDataColumn> vec_sklad = new Vector<WsSkladMoveDataColumn>();
 		
 		double thr = WsUtils.getRZL();
 		
-		for(int i = 0; i < vec_tmp.size(); ++i) {
+		for(int i = 0; i < m_current_database_data.size(); ++i) {
 			
-			WsSkladMoveDataColumn d = vec_tmp.elementAt(i);
+			WsSkladMoveDataColumn d = m_current_database_data.elementAt(i);
 			
 			if(d.in_quantity > thr || d.out_quantity > thr || d.rest > thr
 					|| d.initial_rest > thr) {
@@ -415,7 +439,7 @@ public class WsSpisRaskladkaForm extends JPanel {
 			}
 		}
 		
-		vec_tmp.clear();
+		//m_current_database_data.clear();
 	
 		Vector<WsSkladMoveDataColumn> table_vec = m_table.getData();
 		
@@ -508,10 +532,15 @@ public class WsSpisRaskladkaForm extends JPanel {
 			
 		}
 		
-		HashMap<Integer, WsSkladMoveDataColumn> agents_data = getRestAgents();
-		//load from agents
+		//load from external databases
+		WsMoveMapsData res = WsReportsSqlStatements.getRestForAgents(m_dates.getSqlStartDate(), 
+				m_dates.getSqlEndDate(), m_table_control.getData());
 		
-		if(agents_data == null || agents_data.isEmpty()) {
+		HashMap<Integer, WsSkladMoveDataColumn> ext_data_map = res.map1;
+		
+		m_ext_databases_data = res.map2;
+		
+		if(ext_data_map == null || ext_data_map.isEmpty()) {
 			
 			m_table.setColumnName(getGuiStrs("prihodPartsColumnRestName"), 3);
 			
@@ -525,7 +554,7 @@ public class WsSpisRaskladkaForm extends JPanel {
 			
 		}
 		
-		for (Map.Entry<Integer, WsSkladMoveDataColumn> set : agents_data.entrySet()) {
+		for (Map.Entry<Integer, WsSkladMoveDataColumn> set : ext_data_map.entrySet()) {
 			
 			int kod = set.getKey();
 			
@@ -1065,14 +1094,125 @@ public class WsSpisRaskladkaForm extends JPanel {
 		}
 	}
 	
-	
-	private HashMap<Integer, WsSkladMoveDataColumn> getRestAgents() {
+	private Vector<WsSkladMoveDataColumn> getMovementForKod(int kod) {
 		
-		return WsReportsSqlStatements.getRestForAgents(m_dates.getSqlStartDate(), 
-				m_dates.getSqlEndDate(), m_table_control.getData());
+		Vector<WsSkladMoveDataColumn> data = new Vector<WsSkladMoveDataColumn>();
+		
+
+		WsSkladMoveDataColumn d_current = findKodInVector(kod, m_current_database_data);
+	 
+		if(d_current == null) {
+
+			d_current = new WsSkladMoveDataColumn();
 			
+		}
+		
+		d_current.contract_name = getGuiStrs("currentSkl");
+		
+		data.add(d_current);
+		
+		for(Integer i : m_ext_databases_data.keySet()) {
+			
+			Vector<WsSkladMoveDataColumn> vec_next = m_ext_databases_data.get(i);
+			
+			d_current = findKodInVector(kod, vec_next);
+			
+			if(d_current == null) {
+
+				d_current = new WsSkladMoveDataColumn();
+				
+			}
+			
+			d_current.contract_name = getGuiStrs("databaseListId") + " " + String.valueOf(i + 1);
+			
+			data.add(d_current);
+			
+		}
+
+		return data;
+
+	}
+	
+	private WsSkladMoveDataColumn findKodInVector(int kod, Vector<WsSkladMoveDataColumn> vec) {
+		
+		for(int i = 0; i < vec.size(); ++i) {
+			
+			WsSkladMoveDataColumn d = vec.elementAt(i);
+			
+			if(d.kod == kod) { return d; }
+			
+		}
+		
+		return null;
+		
 	}
 	
 	
+	private class CustomPopupListener implements ActionListener {
 
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			WsSkladMoveDataColumn d = m_table.getSelectedData();
+			
+			if(d != null) {
+			
+				Vector<WsSkladMoveDataColumn> data = getMovementForKod(d.kod);
+				
+				WsMovementExrDbDialog dialog =  new WsMovementExrDbDialog(WsUtils.get().getMainWindow(), data,
+						 getCaption(d.name, d.kod,m_dates.getSqlStartDate(), m_dates.getSqlEndDate()));
+			
+				dialog.setVisible(true);
+			}
+		}
+
+	}; 
+	
+	private String getCaption(String name, int kod, java.sql.Date d1,  java.sql.Date d2) {
+		
+		StringBuilder b =  new StringBuilder();
+		
+		b.append(kod);
+		
+		b.append(" ");
+		
+		b.append(name);
+		
+		b.append(" ");
+		
+		b.append(getGuiStrs("priod"));
+		
+		b.append(" ");
+		
+		b.append( WsUtils.dateSqlToString(d1, "dd-MM-yy" ));
+		
+		b.append(" ");
+		
+		b.append(getGuiStrs("bookSkladPoReportName" ));
+		
+		b.append(" ");
+		
+		b.append(WsUtils.dateSqlToString(d2, "dd-MM-yy" ));
+		
+		return b.toString();
+	}
+	
+	
+	private void setCustomFont() {
+		
+		Font f = WsGuiTools.getCustomFont( );
+		
+		if(null == f) {
+			
+			return;
+		}
+		
+		WsGuiTools.changeFont(this, f); 
+		
+		m_table.getTableHeader().setFont(f);
+		
+		WsGuiTools.changeFont(m_popupMenu, f);
+		
+			
+	}
 }
