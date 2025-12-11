@@ -231,7 +231,8 @@ public class WsReportsSqlStatements {
 	}
 	
 	
-	public static Vector<WsSkladMoveDataColumn> getRestPartsListForDate(Connection conn, Date end_date, int id_contract) {
+	public static Vector<WsSkladMoveDataColumn> getRestPartsListForDate(Connection conn,
+			Date end_date, int id_contract) {
 	
        
 		try {
@@ -1072,7 +1073,8 @@ public class WsReportsSqlStatements {
 	}
 
 
-	public static Vector<WsSkladMoveDataColumn> getPrihodRashodBookForDate2(Date start_date, Date end_date, int id_contract) {
+	public static Vector<WsSkladMoveDataColumn> getPrihodRashodBookForDate2(Date start_date, 
+			Date end_date, int id_contract) {
 		
 		WsConnect.get();
 		

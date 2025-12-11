@@ -113,7 +113,7 @@ public class WsContractsComboBox extends JComboBox<String> {
 		this.setLastItemSelected();
 	}
 	
-	public 	WsContractData getSelectedPartData() {
+	public 	WsContractData getSelectedContract() {
 		
 		int id = getCurrentSQLId();
 		

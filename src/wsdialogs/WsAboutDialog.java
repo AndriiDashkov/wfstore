@@ -34,7 +34,7 @@ public class WsAboutDialog extends JDialog {
 				
 		getContentPane().add(createGUI(),BorderLayout.CENTER);
 		
-		//setBounds(250, 150, 225, 220);
+		//setBounds(250, 150, 225, 220);  
 		
 		setLocation(250, 150);
 		

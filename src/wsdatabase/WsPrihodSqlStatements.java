@@ -658,10 +658,10 @@ public class WsPrihodSqlStatements {
 		            	
 		            	WsPrihodPartData d = (WsPrihodPartData) value.next();
 		            	
-		            	if(d.kod == 4117) {
+		            	//if(d.kod == 4117) {
 		            		
-		            		insertion_parts_b.append("");
-		            	}
+		            	//	insertion_parts_b.append("");
+		            	//}
 		            	
 		            	insertion_parts_b.append("(" );
 		            	

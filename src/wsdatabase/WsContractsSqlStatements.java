@@ -408,7 +408,7 @@ public class WsContractsSqlStatements {
 	        	
 	        	s_b.append( s_order);
 	        	
-	        	ResultSet rs =   st.executeQuery(s_b.toString());
+	        	ResultSet rs =  st.executeQuery(s_b.toString());
 	        	
 	        	while(rs.next()) {
 	        		
