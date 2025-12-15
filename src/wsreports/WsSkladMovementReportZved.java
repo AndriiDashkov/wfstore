@@ -20,6 +20,7 @@ import java.util.Vector;
 import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
@@ -32,11 +33,15 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import wscomparators.WsKodComparator;
+import wscontrols.WsContractsComboBox;
 import wscontrols.WsFileTableControl;
 import wscontrols.WsSignsControlPanel;
+import wsdatabase.WsContractsSqlStatements;
 import wsdatabase.WsReportsSqlStatements;
 import wsdatastruct.WsAgentData;
+import wsdatastruct.WsContractPriceData;
 import wsdatastruct.WsSkladMoveDataColumn;
+import wsevents.WsEventDispatcher;
 import wsmain.WsGuiTools;
 import wsmain.WsUtils;
 
@@ -51,6 +56,8 @@ public class  WsSkladMovementReportZved  extends WSReportViewer {
 	WsFileTableControl m_table_control = new WsFileTableControl(columnNames, getGuiStrs("chooserBazaFileLabelName"), true);
 	
 	JCheckBox m_includeSklad = null;
+	
+	JCheckBox m_insertContractPrice = null;
 
 	int m_id_contract = -1;
 	
@@ -59,6 +66,10 @@ public class  WsSkladMovementReportZved  extends WSReportViewer {
 	public static java.sql.Date m_date_start_static = null;
 	
 	public static java.sql.Date m_date_end_static = null;
+	
+	WsContractsComboBox m_contrComboBox = new  WsContractsComboBox(); 
+	
+	double m_price_sum = 0.0;
 	 
 	public  WsSkladMovementReportZved (JFrame f, String nameFrame) {
 		super(f, nameFrame);
@@ -127,11 +138,37 @@ public class  WsSkladMovementReportZved  extends WSReportViewer {
 		
 		JPanel panelH1 = WsGuiTools.createHorizontalPanel();
 		
+		JPanel panelH22 = WsGuiTools.createHorizontalPanel();
+		
+		JPanel panelH23 = WsGuiTools.createHorizontalPanel();
+		
+		JPanel panelV2 = WsGuiTools.createVerticalPanel();
+		
 		m_includeSklad = new JCheckBox(getGuiStrs("useCurrentSklad"));
+		
+		m_insertContractPrice = new JCheckBox(getGuiStrs("insertConPriceSklad"));
+		
+		panelH22.add(m_includeSklad);  panelH22.add(Box.createHorizontalGlue());
+		
+		panelH23.add(m_insertContractPrice);  panelH23.add(Box.createHorizontalGlue());
+		
+		m_contrComboBox = new  WsContractsComboBox();
 		
 		panelH1.add(m_table_control);
 		
-		panelH1.add(m_includeSklad);
+		panelH1.add(panelV2);
+		
+		panelV2.add(panelH22);
+		
+		panelV2.add(panelH23);
+		
+		panelV2.add(Box.createVerticalGlue());
+		
+		JPanel panelH2 = WsGuiTools.createHorizontalPanel();
+		
+		panelH2.add(new JLabel(getGuiStrs("contractsComboLabel"))); panelH2.add(m_contrComboBox);
+		
+		panelV2.add(panelH2);
 		
 		WsGuiTools.setComponentFixedHeight(m_table_control, 100);
 		
@@ -228,10 +265,40 @@ public class  WsSkladMovementReportZved  extends WSReportViewer {
 			
 			}
 			
+			m_price_sum = 0.0;
+			
+			if(m_insertContractPrice.isSelected()) {
+				
+				HashMap<Integer, WsContractPriceData> map_prices = 
+						WsContractsSqlStatements.getContractPriceListMap(m_contrComboBox.getSelectedContract().id);
+			
+				if(map_prices != null && !map_prices.isEmpty() ) {
+				
+					for(int i = 0; i < vec_all_1.size(); ++i) {
+						
+						WsSkladMoveDataColumn d =  vec_all_1.elementAt(i);
+						
+						WsContractPriceData dp =  map_prices.get(d.kod);
+						
+						if(dp != null) {
+							
+							d.out_cost = dp.costwnds;
+							
+							d.rest_1 = d.out_cost * d.rest;
+							
+							m_price_sum += d.rest_1;
+						}
+											
+					}
+				
+				}
+			}
+			
+
 			vec.clear();
 			
 			vec_all.clear();
-			
+
 			vec_all = vec_all_1;
 			
 			Collections.sort(vec_all, new WsKodComparator());
@@ -242,7 +309,7 @@ public class  WsSkladMovementReportZved  extends WSReportViewer {
 			
 			if(rows_number == 0) { 
 				
-				String page = getPrintHtml(null, 1, 0, 0); //empty page
+				String page = getPrintHtml(null, 1, 0, 0, 0); //empty page
 				
 				vec_pages.add(page);
 				
@@ -269,7 +336,7 @@ public class  WsSkladMovementReportZved  extends WSReportViewer {
 			
 			for(int k = 0; k < pages_number; ++k) { 
 				
-				String page = getPrintHtml(vec_all, start_row, end_row, k);
+				String page = getPrintHtml(vec_all, start_row, end_row, k, pages_number);
 				
 				vec_pages.add(page);
 				
@@ -313,7 +380,8 @@ public class  WsSkladMovementReportZved  extends WSReportViewer {
 		return b.toString();
 	}
 	
-	public String getPrintHtml(Vector<WsSkladMoveDataColumn> vec_all, int start, int end, int page_number) {
+	public String getPrintHtml(Vector<WsSkladMoveDataColumn> vec_all, int start, int end,
+			int page_number, int pages_number) {
 		
 		m_p_panel.setComboStatic();
 
@@ -363,13 +431,43 @@ public class  WsSkladMovementReportZved  extends WSReportViewer {
 		
 		sHeader_b.append("&nbsp;</font></td>");
 		
-		sHeader_b.append("<td   style='border-left: 1px solid;border-top: 1px solid ;text-align: center; border-right: 1px solid ;'>");
-		
-		sHeader_b.append("<font size =4>&nbsp;" );
-		
-		sHeader_b.append(getGuiStrs("prihodPartsColumnRestName"));
-		
-		sHeader_b.append("&nbsp;</font></td></tr>");
+		if(!m_insertContractPrice.isSelected()) {
+			
+			sHeader_b.append("<td   style='border-left: 1px solid;border-top: 1px solid ;text-align: center; border-right: 1px solid ;'>");
+			
+			sHeader_b.append("<font size =4>&nbsp;" );
+			
+			sHeader_b.append(getGuiStrs("prihodPartsColumnRestName"));
+			
+			sHeader_b.append("&nbsp;</font></td></tr>");
+			
+		}
+		else {
+			
+			sHeader_b.append("<td   style='border-left: 1px solid;border-top: 1px solid ;text-align: center;'>");
+			
+			sHeader_b.append("<font size =4>&nbsp;");
+			
+			sHeader_b.append(getGuiStrs("prihodPartsColumnRestName") );
+			
+			sHeader_b.append("&nbsp;</font></td>");
+			
+			sHeader_b.append("<td   style='border-left: 1px solid;border-top: 1px solid ;text-align: center;'>");
+			
+			sHeader_b.append("<font size =4>&nbsp;");
+			
+			sHeader_b.append(getGuiStrs("prWithPdv") );
+			
+			sHeader_b.append("&nbsp;</font></td>");
+			
+			sHeader_b.append("<td   style='border-left: 1px solid;border-top: 1px solid ;text-align: center; border-right: 1px solid ;'>");
+			
+			sHeader_b.append("<font size =4>&nbsp;" );
+			
+			sHeader_b.append(getGuiStrs("sumWithNdsLabel"));
+			
+			sHeader_b.append("&nbsp;</font></td></tr>");
+		}
 
 		StringBuilder row_s_b = new StringBuilder();
 		
@@ -444,15 +542,54 @@ public class  WsSkladMovementReportZved  extends WSReportViewer {
 		     
 		     row_s_b.append("&nbsp;</font></td>"); 
 		     
-			 row_s_b.append("<td nowrap style=' max-width: 250px; border-left: 1px solid; border-top: 1px solid ; border-right: 1px solid ; ");  
-			
-			 row_s_b.append(bottomBorder);  
+		     if(m_insertContractPrice.isSelected()) {
+		    	 
+			     row_s_b.append("<td nowrap style=' max-width: 250px; border-left: 1px solid; border-top: 1px solid ;  "); 
+				 
+			     row_s_b.append(bottomBorder ); 
+			     
+			     row_s_b.append("'><font size =4>&nbsp;" ); 
+			     
+			     row_s_b.append(WsUtils.getDF(d.rest)); 
+			     
+			     row_s_b.append("&nbsp;</font></td>"); 
+			     
+			     
+			     row_s_b.append("<td nowrap style=' max-width: 250px; border-left: 1px solid; border-top: 1px solid ;  "); 
+				 
+			     row_s_b.append(bottomBorder ); 
+			     
+			     row_s_b.append("'><font size =4>&nbsp;" ); 
+			     
+			     row_s_b.append(WsUtils.getDF(d.out_cost)); 
+			     
+			     row_s_b.append("&nbsp;</font></td>");
+			     
+			     
+				 row_s_b.append("<td nowrap style=' max-width: 250px; border-left: 1px solid; border-top: 1px solid ; border-right: 1px solid ; ");  
+					
+				 row_s_b.append(bottomBorder);  
+				 
+				 row_s_b.append("'><font size =4>&nbsp;" ); 
+				 
+				 row_s_b.append(WsUtils.getDF(d.rest_1) ); 
 			 
-			 row_s_b.append("'><font size =4>&nbsp;" ); 
+				 row_s_b.append("&nbsp;</font></td></tr>");
+		     
+		     }
+		     else {
+		     
+				 row_s_b.append("<td nowrap style=' max-width: 250px; border-left: 1px solid; border-top: 1px solid ; border-right: 1px solid ; ");  
+				
+				 row_s_b.append(bottomBorder);  
+				 
+				 row_s_b.append("'><font size =4>&nbsp;" ); 
+				 
+				 row_s_b.append(WsUtils.getDF(d.rest) ); 
+				 
+				 row_s_b.append("&nbsp;</font></td></tr>");
 			 
-			 row_s_b.append(WsUtils.getDF(d.rest) ); 
-			 
-			 row_s_b.append("&nbsp;</font></td></tr>");
+		     }
 		
 		}
 		
@@ -477,7 +614,7 @@ public class  WsSkladMovementReportZved  extends WSReportViewer {
 		
 		hS_b.append("</style><body>");
 		
-		hS_b.append(formApproveHeader(m_p_panel.getApprovePerson()));
+		if(page_number  == 0) { hS_b.append(formApproveHeader(m_p_panel.getApprovePerson())); }
 		
 		hS_b.append("<h2 align='center' ><font size =5>");
 		
@@ -507,13 +644,31 @@ public class  WsSkladMovementReportZved  extends WSReportViewer {
 		
 		hS_b.append(row_s_b.toString()); 
 		
+		if(page_number == ( pages_number -1) && m_insertContractPrice.isSelected())  {
+			
+			hS_b.append("<tr><td colspan='8'><font size =4>&nbsp;"); 
+			 
+			hS_b.append(getGuiStrs("zagalomReportName") ); 
+			 
+			hS_b.append("&nbsp;</font></td><td><font size =4>&nbsp;"); 
+			 
+			hS_b.append( WsUtils.getDF(m_price_sum) ); 
+			 
+			hS_b.append("&nbsp;</font></td></tr>"); 
+			
+		}
+		
 		hS_b.append("</table><br>");
 		
-		hS_b.append(formPidpFooter(m_p_panel.getP1Person()));
+		if(page_number == ( pages_number -1))  { 
+			
+			hS_b.append(formPidpFooter(m_p_panel.getP1Person())); 
 		
-		hS_b.append("<br>");
+			hS_b.append("<br>");
 		
-		hS_b.append(formPidpFooter(m_p_panel.getP2Person()));
+			hS_b.append(formPidpFooter(m_p_panel.getP2Person()));
+		
+		}
 		
 		hS_b.append("</body></html>");
 
@@ -845,8 +1000,14 @@ public class  WsSkladMovementReportZved  extends WSReportViewer {
 	}
 	
 	protected void closeAllEventConnections() {
+		
+		WsEventDispatcher.get().disconnect(m_contrComboBox);
+		
+		super.closeAllEventConnections();
 			
 	}
+	
+
 	
 	
 }

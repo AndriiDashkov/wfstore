@@ -32,7 +32,6 @@ import wsreports.WsSkladMovementReport;
 import wsreports.WsSkladMovementReport2;
 import wsreports.WsSkladMovementReport3;
 import wsreports.WsSkladMovementReport4;
-import wsreports.WsSkladMovementReport5;
 import wsreports.WsSkladMovementReportZved;
 import wsreports.WsWaterMovementReport;
 
@@ -123,13 +122,6 @@ public class WsReportsList extends JPanel  {
 	    root.add(moveRepNode1);
 	    
 	    m_move_reports_nodes.add(moveRepNode1);
-	    
-	    DefaultMutableTreeNode moveRepNode12 = new DefaultMutableTreeNode(getGuiStrs("reportRuhClassicVed5"));
-	    
-	    root.add(moveRepNode12);
-	    
-	    m_move_reports_nodes.add(moveRepNode12);
-	    
 	    
 	    DefaultMutableTreeNode moveRepNode2 = new DefaultMutableTreeNode(getGuiStrs("movementZvitNaklDialogWinCaption"));
 	    
@@ -301,16 +293,9 @@ public class WsReportsList extends JPanel  {
 			
 			dialog.setVisible(true);
 		}
+		
 		else
 		if(node == m_move_reports_nodes.elementAt(1)) {
-			
-			WsSkladMovementReport5 dialog = new WsSkladMovementReport5(WsUtils.get().getMainWindow(), 
-					getGuiStrs("movementZvitNaklDialogWinCaption"));
-			
-			dialog.setVisible(true);
-		}
-		else
-		if(node == m_move_reports_nodes.elementAt(2)) {
 			
         	WsSkladMovementNakl13Report dialog = new WsSkladMovementNakl13Report(WsUtils.get().getMainWindow(), 
 					getGuiStrs("movementZvitNaklDialogWinCaption"));
@@ -318,7 +303,7 @@ public class WsReportsList extends JPanel  {
 			dialog.setVisible(true);
 		}
 		else
-		if(node == m_move_reports_nodes.elementAt(3)) {
+		if(node == m_move_reports_nodes.elementAt(2)) {
 			
         	WsSkladMovementForAgentAndKod dialog = new WsSkladMovementForAgentAndKod(WsUtils.get().getMainWindow(), 
 					getGuiStrs("moveAgentCodeDialogWinCaption"));
@@ -326,7 +311,7 @@ public class WsReportsList extends JPanel  {
 			dialog.setVisible(true);
 		}
 		else
-		if(node == m_move_reports_nodes.elementAt(4)) {
+		if(node == m_move_reports_nodes.elementAt(3)) {
 			
        	 	WsWaterMovementReport dialog = new  WsWaterMovementReport(WsUtils.get().getMainWindow(), 
 					getGuiStrs("moveWaterReportDialogWinCaption"));
@@ -334,7 +319,7 @@ public class WsReportsList extends JPanel  {
 			dialog.setVisible(true);
 		}
 		else
-		if(node == m_move_reports_nodes.elementAt(5)) {
+		if(node == m_move_reports_nodes.elementAt(4)) {
 			
         	WsKartkaZvitReport dialog = new  WsKartkaZvitReport(WsUtils.get().getMainWindow(), 
 					getGuiStrs("kartkaZvitReportDialogWinCaption"));
@@ -342,7 +327,7 @@ public class WsReportsList extends JPanel  {
 			dialog.setVisible(true);
 		}
 		else
-		if(node == m_move_reports_nodes.elementAt(6)) {
+		if(node == m_move_reports_nodes.elementAt(5)) {
 			
         	WsForeignSklads46Report dialog = new WsForeignSklads46Report(WsUtils.get().getMainWindow(), 
 					getGuiStrs("dodatok46ReportDialogWinCaption"));
@@ -350,7 +335,7 @@ public class WsReportsList extends JPanel  {
 			dialog.setVisible(true);
 		}
 		else
-		if(node == m_move_reports_nodes.elementAt(7)) {
+		if(node == m_move_reports_nodes.elementAt(6)) {
 			
         	WsPeopleCountReport dialog = new WsPeopleCountReport(WsUtils.get().getMainWindow(), 
 					getGuiStrs("sumRuhPeopleDialogWinCaption"));
@@ -358,7 +343,7 @@ public class WsReportsList extends JPanel  {
 			dialog.setVisible(true);
 		}
 		else
-		if(node == m_move_reports_nodes.elementAt(8)) {
+		if(node == m_move_reports_nodes.elementAt(7)) {
 			
         	WsSkladMovementReport3 dialog = new WsSkladMovementReport3(WsUtils.get().getMainWindow(), 
 					getGuiStrs("movementZvitDialogWinCaption2"));
@@ -366,7 +351,7 @@ public class WsReportsList extends JPanel  {
 			dialog.setVisible(true);
 		}
 		else
-		if(node == m_move_reports_nodes.elementAt(9)) {
+		if(node == m_move_reports_nodes.elementAt(8)) {
 			
         	WsSkladMovementReport4 dialog = new WsSkladMovementReport4(WsUtils.get().getMainWindow(), 
 					getGuiStrs("movementZvitDialogWinCaption2"));

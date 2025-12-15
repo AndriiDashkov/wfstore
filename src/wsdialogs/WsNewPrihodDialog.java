@@ -522,6 +522,7 @@ public class WsNewPrihodDialog extends JDialog {
 	                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 	        
 		panel_table.add(scroll);
+		
 		panel_table.add(getSumGuiPanel());
 		
 		JScrollPane scroll_kod = new JScrollPane(m_kod_table);
