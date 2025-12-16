@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.util.Vector;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
