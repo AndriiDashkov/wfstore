@@ -14,7 +14,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCreationHelper;
@@ -25,6 +30,7 @@ import wscontrols.WsSignsControlPanel;
 import wsdatabase.WsReportsSqlStatements;
 import wsdatastruct.WsSkladMoveDataColumn;
 import wsdatastruct.WsSkladMoveDataRow;
+import wsmain.WsGuiTools;
 import wsmain.WsUtils;
 
 /**
@@ -40,6 +46,8 @@ public class WsSkladMovementNakl13Report extends WSReportViewer {
 	Vector<WsSkladMoveDataRow> m_vec_all_parts = null;
 	
 	WsSignsControlPanel m_p_panel = null;
+	
+	JCheckBox m_checkBox = new JCheckBox(getGuiStrs("formInfoNaklEvrPage"));
 	
 	/**
 	 * @param f
@@ -109,7 +117,21 @@ public class WsSkladMovementNakl13Report extends WSReportViewer {
 		
 		m_p_panel = new WsSignsControlPanel();
 		
-		m_control_panel2.add(m_p_panel);
+		JPanel p1 = WsGuiTools.createVerticalPanel();
+		
+		JPanel p2 = WsGuiTools.createHorizontalPanel();
+		
+		p2.add(m_checkBox);
+		
+		p2.add(Box.createHorizontalGlue());
+		
+		p1.add(p2);
+		
+		p1.add(m_p_panel);
+		
+		m_control_panel2.add(p1);
+		
+		m_checkBox.setSelected(true);
 		
 	}
 	
@@ -168,7 +190,7 @@ public class WsSkladMovementNakl13Report extends WSReportViewer {
 		
 		for(int k = 0; k < pages_number; ++k) { 
 			
-			String page = getPrintHtml2(vec_all_parts, k);
+			String page = getPrintHtml2(vec_all_parts, k, pages_number);
 			
 			vec_pages.add(page);
 		}
@@ -180,7 +202,7 @@ public class WsSkladMovementNakl13Report extends WSReportViewer {
 		return vec_pages;	
 	}
 	
-	
+	/*
 	public String getPrintHtml(Vector<WsSkladMoveDataRow> vec_all_parts, int page_number) {
 		
 		String firm_name = WsUtils.getFirmName();
@@ -465,7 +487,7 @@ public class WsSkladMovementNakl13Report extends WSReportViewer {
 		
 		hS_b.append( "        width: 297mm;\r\n");
 		
-		hS_b.append("        /* to centre page on screen*/\r\n");
+		hS_b.append("      \r\n");
 		
 		hS_b.append( "        margin-left: 20;\r\n");
 		
@@ -517,6 +539,7 @@ public class WsSkladMovementNakl13Report extends WSReportViewer {
 		return hS_b.toString();
 		 
 	}
+*/
 	
 	class ItemChangeListener implements ItemListener{
 
@@ -753,7 +776,8 @@ public class WsSkladMovementNakl13Report extends WSReportViewer {
 	}*/
 	
 	
-	public String getPrintHtml2(Vector<WsSkladMoveDataRow> vec_all_parts, int page_number) {
+	public String getPrintHtml2(Vector<WsSkladMoveDataRow> vec_all_parts, int page_number,
+			int pages_number) {
 		
 		String firm_name = WsUtils.getFirmName();
 		
@@ -763,45 +787,57 @@ public class WsSkladMovementNakl13Report extends WSReportViewer {
 		
 		StringBuilder sHeader01 = new StringBuilder();
 		
-		sHeader01.append("<td colspan='4' style='border-left: 1px solid;border-top: 1px solid ; text-align: center;'> ");
+		if(page_number == 0 || m_checkBox.isSelected()) {
 		
-		sHeader01.append(getGuiStrs("reportBookNameGoodColumn")); 
+			sHeader01.append("<td colspan='4' style='border-left: 1px solid;border-top: 1px solid ; text-align: center;'> ");
+			
+			sHeader01.append(getGuiStrs("reportBookNameGoodColumn")); 
+			
+			sHeader01.append("</td>");
 		
-		sHeader01.append("</td>");
+		}
 		
 		StringBuilder sHeader02 = new StringBuilder();
 		
-		sHeader02.append("<td colspan='4' style='border-left: 1px solid;border-top: 1px solid ;text-align: center;'><font size =4>"); 
-		
-		sHeader02.append(getGuiStrs("reportBookKodGoodColumn")); 
-		
-		sHeader02.append("</font></td>");
+		if(page_number == 0 || m_checkBox.isSelected()) {
+			
+			sHeader02.append("<td colspan='4' style='border-left: 1px solid;border-top: 1px solid ;text-align: center;'><font size =4>"); 
 				
+			sHeader02.append(getGuiStrs("reportBookKodGoodColumn")); 
+				
+			sHeader02.append("</font></td>");
+		
+		}
+			
 		StringBuilder sHeader03 = new StringBuilder();
+		
+		if(page_number == 0 || m_checkBox.isSelected()) {
 
-		sHeader03.append("<tr><td   style='border-left: 1px solid;border-top: 1px solid ; text-align: center;'>" );
+			sHeader03.append("<tr><td   style='border-left: 1px solid;border-top: 1px solid ; text-align: center;'>" );
+			
+			sHeader03.append( getGuiStrs("nmbStr") );
+			
+			sHeader03.append(" </td>");
+			
+			sHeader03.append("<td   style='border-left: 1px solid;border-top: 1px solid ; text-align: center;'> "); 
+			
+			sHeader03.append(getGuiStrs("reportBookInDateNameColumn")); 
+			
+			sHeader03.append("</td>"); 
+			
+			sHeader03.append("<td  style='border-left: 1px solid;border-top: 1px solid ; text-align: center;'> ");
+			
+			sHeader03.append(getGuiStrs("reportBookNameColumn")); 
+			
+			sHeader03.append("</td>");
+			
+			sHeader03.append("<td style='border-left: 1px solid;border-top: 1px solid ; text-align: center;'>"); 
+			
+			sHeader03.append(getGuiStrs("reportBookNaklPostOder"));  
+			
+			sHeader03.append("</td>");
 		
-		sHeader03.append( getGuiStrs("nmbStr") );
-		
-		sHeader03.append(" </td>");
-		
-		sHeader03.append("<td   style='border-left: 1px solid;border-top: 1px solid ; text-align: center;'> "); 
-		
-		sHeader03.append(getGuiStrs("reportBookInDateNameColumn")); 
-		
-		sHeader03.append("</td>"); 
-		
-		sHeader03.append("<td  style='border-left: 1px solid;border-top: 1px solid ; text-align: center;'> ");
-		
-		sHeader03.append(getGuiStrs("reportBookNameColumn")); 
-		
-		sHeader03.append("</td>");
-		
-		sHeader03.append("<td style='border-left: 1px solid;border-top: 1px solid ; text-align: center;'>"); 
-		
-		sHeader03.append(getGuiStrs("reportBookNaklPostOder"));  
-		
-		sHeader03.append("</td>");
+		}
 		
 		StringBuilder row_s = new StringBuilder();
 		
@@ -899,51 +935,57 @@ public class WsSkladMovementNakl13Report extends WSReportViewer {
 			 
 			StringBuilder s = new StringBuilder();
 			
-			s.append("<tr><td style='border-left: 1px solid;border-top: 1px solid ; ");  
+			s.append("<tr>");
 			
-			s.append(bottomBorder); s.append( "'><font size =4>&nbsp;"); 
+			if(page_number == 0 || m_checkBox.isSelected()) {
+		
+				s.append("<td style='border-left: 1px solid;border-top: 1px solid ; ");  
+				
+				s.append(bottomBorder); s.append( "'><font size =4>&nbsp;"); 
+				
+				s.append(String.valueOf(i + 1));  
+				
+				s.append("&nbsp;</font></td>");
+				
+				s.append("<td nowrap style=' max-width: 250px; text-overflow:ellipsis; overflow: hidden; border-left: 1px solid; border-top: 1px solid ;  "); 
+				
+				s.append(bottomBorder);
+				
+				s.append("'><font size =4>"); 
+				
+				s.append(" ");
+				
+				s.append(dateIn); 
+				
+				s.append(" ");
+				
+				s.append("</font></td>");
+				
+				s.append("<td nowrap style=' min-width: 250px; text-overflow:ellipsis; overflow: hidden; border-left: 1px solid; border-top: 1px solid ;  "); 
+				
+				s.append(bottomBorder); 
+				
+				s.append("'><font size =4>");  
+				
+				s.append(nameRow_b.toString()); 
+				
+				s.append("</font></td>");
+				
+				s.append("<td nowrap style=' max-width: 250px; text-overflow:ellipsis; overflow: hidden; border-left: 1px solid; border-top: 1px solid ;  ");  
+				
+				s.append(bottomBorder);
+				
+				s.append("'><font size =4>");
+				
+				s.append(" ");
+				
+				s.append(agentName);
+				
+				s.append(" ");
+				
+				s.append("</font></td>");
 			
-			s.append(String.valueOf(i + 1));  
-			
-			s.append("&nbsp;</font></td>");
-			
-			s.append("<td nowrap style=' max-width: 250px; text-overflow:ellipsis; overflow: hidden; border-left: 1px solid; border-top: 1px solid ;  "); 
-			
-			s.append(bottomBorder);
-			
-			s.append("'><font size =4>"); 
-			
-			s.append(" ");
-			
-			s.append(dateIn); 
-			
-			s.append(" ");
-			
-			s.append("</font></td>");
-			
-			s.append("<td nowrap style=' min-width: 250px; text-overflow:ellipsis; overflow: hidden; border-left: 1px solid; border-top: 1px solid ;  "); 
-			
-			s.append(bottomBorder); 
-			
-			s.append("'><font size =4>");  
-			
-			s.append(nameRow_b.toString()); 
-			
-			s.append("</font></td>");
-			
-			s.append("<td nowrap style=' max-width: 250px; text-overflow:ellipsis; overflow: hidden; border-left: 1px solid; border-top: 1px solid ;  ");  
-			
-			s.append(bottomBorder);
-			
-			s.append("'><font size =4>");
-			
-			s.append(" ");
-			
-			s.append(agentName);
-			
-			s.append(" ");
-			
-			s.append("</font></td>");
+			}
 						
 			for(int j = 0; j < row_vec.size(); ++j) {
 			
@@ -1055,7 +1097,10 @@ public class WsSkladMovementNakl13Report extends WSReportViewer {
 		
 		hS.append("        margin-left: 20;\r\n     margin-right: auto;\r\n }</style><body>");
 		
-		hS.append(formApproveHeader(m_p_panel.getApprovePerson()));
+		if(page_number == 0) {
+		
+			hS.append(formApproveHeader(m_p_panel.getApprovePerson()));
+		}
 		
 		hS.append("<h2 align='center' ><font size =5>");
 		
@@ -1095,15 +1140,18 @@ public class WsSkladMovementNakl13Report extends WSReportViewer {
 		
 		hS.append("</table><br>");
 		  
-		hS.append(formPidpFooter(m_p_panel.getP1Person()));
-		
-		hS.append("<br>");
-		
-		hS.append(formPidpFooter(m_p_panel.getP2Person()));
+		if(page_number == (pages_number - 1)) {
+			
+			hS.append(formPidpFooter(m_p_panel.getP1Person()));
+			
+			hS.append("<br>");
+			
+			hS.append(formPidpFooter(m_p_panel.getP2Person()));
+			
+		}
 		
 		hS.append("</body></html>");
 		  
-		
 		return hS.toString();
 		 
 	}
