@@ -163,6 +163,8 @@ public class WsNewRashodDialog extends JDialog  {
 	
 	WsFindKodField m_findKod = null ;
 	
+	TitledBorder m_title = null;
+	
 	JFrame m_owner = null;
 
 	protected WsRashodPartEditTable m_table = new WsRashodPartEditTable();
@@ -631,17 +633,17 @@ private JPanel createGrid() {
 		
 		JPanel buttons_panel = WsGuiTools.createHorizontalPanel();
 
-		TitledBorder title;
+		m_title = BorderFactory.createTitledBorder(getGuiStrs("filterSkladBorderTitle"));
 		
-		title = BorderFactory.createTitledBorder(getGuiStrs("filterSkladBorderTitle"));
-		
-		buttons_panel.setBorder(title);
+		buttons_panel.setBorder(m_title);
 		
 		buttons_panel.add( m_radioDateSort);
 		
 		buttons_panel.add( m_radioTypeNameSort);
 		
 		buttons_panel.add(m_radioNameSort);
+		
+		
 
 		m_butGroup.add(m_radioDateSort);
 		
@@ -694,6 +696,8 @@ private JPanel createGrid() {
 	    panelLeft.add(panelTop);
 	    
 	    panelLeft.add(scroll_left);
+	    
+	    WsGuiTools.fixComponentHeightToMin(panelTop);
 			
 		return panelLeft;
 	}
@@ -1235,6 +1239,9 @@ private JPanel createGrid() {
 		m_table.getTableHeader().setFont(f);
 		
 		m_sklad_table.getTableHeader().setFont(f);
+		
+		m_title.setTitleFont(f);	
+		
 		
 	}
 
