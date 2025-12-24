@@ -121,7 +121,7 @@ public class WsSpisRaskladkaForm extends JPanel {
 		m_dates.setSqlEndDate( WsUtils.sqlDatePlusDays(Calendar.getInstance().getTime(), 6)  );
 		
 		setPopupMenu();
-		
+		                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 		setListeners();
 		
 		setCustomFont();

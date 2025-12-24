@@ -65,9 +65,13 @@ public class WsPrihodTable extends JTable {
 	     
 	     getColumnModel().getColumn(0).setMaxWidth(250);
 	     
-	     getColumnModel().getColumn(1).setMaxWidth(100);
+	     getColumnModel().getColumn(1).setMinWidth(120);
 	     
-	     getColumnModel().getColumn(2).setMaxWidth(100);
+	     getColumnModel().getColumn(2).setMinWidth(120);
+	     
+          getColumnModel().getColumn(1).setMaxWidth(160);
+	     
+	     getColumnModel().getColumn(2).setMaxWidth(160);
 	     
 	     getColumnModel().getColumn(3).setMinWidth(250);
 	     

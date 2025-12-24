@@ -4,6 +4,7 @@ package wsforms;
 import static wsmain.WsUtils.getGuiStrs;
 import static wsmain.WsUtils.getMessagesStrs;
 
+import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -96,7 +97,7 @@ public class WsBaseInfoForm extends JPanel {
 		
 	}
 	
-	private void createGUI() {
+	private void createGUI1() {
 		
 		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		
@@ -240,6 +241,174 @@ public class WsBaseInfoForm extends JPanel {
 		
 		setToolTips();
 			
+	}
+	
+	private void createGUI() {
+		
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		
+		JPanel panel0 = WsGuiTools.createVerticalPanel();
+		
+		//JPanel panel1 = WsGuiTools.createHorizontalPanel();
+		
+	
+		JPanel partTypesPanel = WsGuiTools.createVerticalPanel();
+		
+		JPanel partTypesLablePanel = WsGuiTools.createHorizontalPanel();
+		
+		JPanel infoPanel  = WsGuiTools.createVerticalPanel();
+		
+		JPanel infoLablePanel = WsGuiTools.createHorizontalPanel();
+		
+		
+		JScrollPane scrollPartTypes = new JScrollPane(m_part_types_table);
+        
+		scrollPartTypes.setHorizontalScrollBarPolicy(
+	                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	        
+		scrollPartTypes.setVerticalScrollBarPolicy(
+	                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		  
+		partTypesLablePanel.add(m_part_types_label);
+		
+		partTypesLablePanel.add(Box.createHorizontalGlue());
+		
+		partTypesLablePanel.add(m_excelExportButton);
+		
+		partTypesLablePanel.add(m_importButton);
+		
+
+		partTypesLablePanel.add(Box.createHorizontalStrut(WsUtils.HOR_STRUT));
+		
+		WsGuiTools.fixComponentHeightToMin(partTypesLablePanel);
+		
+		partTypesPanel.add(Box.createVerticalStrut(WsUtils.VERT_STRUT));
+		
+		partTypesPanel.add(partTypesLablePanel);
+		
+		partTypesPanel.add(Box.createVerticalStrut(WsUtils.VERT_STRUT));
+		
+		partTypesPanel.add(scrollPartTypes);
+		
+
+		JScrollPane scrollInfo = new JScrollPane(m_info_table);
+        
+		scrollInfo.setHorizontalScrollBarPolicy(
+	                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	        
+		scrollInfo.setVerticalScrollBarPolicy(
+	                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		  
+		infoLablePanel.add(m_info_label);
+		
+		infoLablePanel.add(Box.createHorizontalGlue());
+		
+		infoPanel.add(infoLablePanel);
+		
+		infoPanel.add(scrollInfo);
+		
+		panel0.add(createRightTopPane());
+		
+		panel0.add(infoPanel);
+		
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+				partTypesPanel, panel0);
+
+		splitPane.setOneTouchExpandable(true);
+		
+		splitPane.setDividerLocation(400);
+		
+		add(splitPane);
+		
+		m_importButton.setVisible(false);
+		
+		setToolTips();
+			
+	}
+	
+	JPanel createRightTopPane() {
+		
+		JPanel unitsPanel = WsGuiTools.createVerticalPanel();
+		
+		JPanel unitsLablePanel = WsGuiTools.createHorizontalPanel();
+		
+		JScrollPane scrollUnits = new JScrollPane(m_units_table);
+        
+		scrollUnits.setHorizontalScrollBarPolicy(
+	                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	        
+		scrollUnits.setVerticalScrollBarPolicy(
+	                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		  
+		unitsLablePanel.add(m_units_label);
+		
+		unitsLablePanel.add(Box.createHorizontalGlue());
+		
+		unitsPanel.add(unitsLablePanel);
+		
+		unitsPanel.add(scrollUnits);
+		
+		JPanel signsPanel = WsGuiTools.createVerticalPanel();
+		
+		JPanel signsLablePanel = WsGuiTools.createHorizontalPanel();
+		
+		JScrollPane scrollSigns = new JScrollPane(m_signs_table);
+        
+		scrollSigns.setHorizontalScrollBarPolicy(
+	                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	        
+		scrollSigns.setVerticalScrollBarPolicy(
+	                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		  
+		signsLablePanel.add(m_signs_label);
+		
+		signsLablePanel.add(Box.createHorizontalGlue());
+		
+		signsPanel.add(signsLablePanel);
+		
+		signsPanel.add(scrollSigns);
+		
+		JPanel agentTypesPanel = WsGuiTools.createVerticalPanel();
+		
+		JPanel agentTypesLablePanel = WsGuiTools.createHorizontalPanel();
+		
+		JScrollPane scrollAgentTypes = new JScrollPane(m_agent_types_table);
+        
+		scrollAgentTypes.setHorizontalScrollBarPolicy(
+	                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	        
+		scrollAgentTypes.setVerticalScrollBarPolicy(
+	                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		  
+		agentTypesLablePanel.add(m_agent_types_label);
+		
+		agentTypesLablePanel.add(Box.createHorizontalGlue());
+		
+		agentTypesPanel.add(agentTypesLablePanel);
+		
+		agentTypesPanel.add(scrollAgentTypes);
+		
+		
+		JSplitPane splitPane1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+				unitsPanel, signsPanel);
+		
+		JSplitPane splitPane2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+				  splitPane1, agentTypesPanel);
+		
+		splitPane1.setOneTouchExpandable(true);
+		
+		splitPane2.setOneTouchExpandable(true);
+		
+		JPanel p = WsGuiTools.createHorizontalPanel();
+		
+		p.add(splitPane2, BorderLayout.CENTER);
+		
+		splitPane1.setDividerLocation(250);
+		
+	    splitPane2.setDividerLocation(500);
+		
+		return p;
+		
 	}
 	
 	

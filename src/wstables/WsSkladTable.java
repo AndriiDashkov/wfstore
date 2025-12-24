@@ -87,9 +87,9 @@ public class WsSkladTable extends JTable {
 	     
 	     setFillsViewportHeight(true);
 	     
-	     getColumnModel().getColumn(0).setMaxWidth(85);
+	     getColumnModel().getColumn(0).setMaxWidth(150);
 	     
-	     getColumnModel().getColumn(0).setMinWidth(85);
+	     getColumnModel().getColumn(0).setMinWidth(110);
 	     
 	     getColumnModel().getColumn(1).setMinWidth(100);
 	     

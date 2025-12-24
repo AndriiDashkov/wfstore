@@ -65,7 +65,9 @@ public class WsContractsTable extends JTable {
 	     
 	     getColumnModel().getColumn(0).setMaxWidth(150);
 	     
-	     getColumnModel().getColumn(1).setMaxWidth(100);
+	     getColumnModel().getColumn(1).setMinWidth(120);
+	     
+	     getColumnModel().getColumn(1).setMaxWidth(160);
 	     
 	     hideColumns();
 	     
