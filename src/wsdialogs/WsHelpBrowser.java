@@ -3,12 +3,16 @@ package wsdialogs;
 import static wsmain.WsUtils.*;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -35,6 +39,12 @@ public class WsHelpBrowser extends JFrame
 	private JTree m_tree; //main tree for contents info
 	
 	private JEditorPane m_textArea; //field for manual texts
+	
+	private JButton m_zoomIn = new JButton("+", WsUtils.get().getIconFromResource( 
+			"wszoomout.png"));
+	
+	private JButton m_zoomOut = new JButton("-", WsUtils.get().getIconFromResource( 
+			"wszoomin.png"));
 	
 	private WsTreeNode m_root; //root node of the tree
 	
@@ -97,8 +107,23 @@ public class WsHelpBrowser extends JFrame
 		
 		m_textArea.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
 		
+		
+		JPanel buttons_panel = WsGuiTools.createHorizontalPanel();
+		
+		buttons_panel.add(Box.createHorizontalGlue());
+		
+		buttons_panel.add(this.m_zoomIn);
+		
+		buttons_panel.add(this.m_zoomOut);
+		
+		JPanel text_panel = WsGuiTools.createVerticalPanel();
+		
+		text_panel.add(buttons_panel);
+		
+		text_panel.add(scrollPanel2);
+		
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-				panelTree, scrollPanel2);
+				panelTree, text_panel);
 		
 		splitPane.setOneTouchExpandable(true);
 		
@@ -141,8 +166,12 @@ public class WsHelpBrowser extends JFrame
 										
 					}
 					if(sText != null) {
+						
+						
 							
 							m_textArea.setText(sText);
+							
+			
 							
 							m_textArea.setCaretPosition(0);
 							
@@ -154,6 +183,49 @@ public class WsHelpBrowser extends JFrame
 				
 		    }
 		});
+	
+	m_zoomOut.addActionListener(new ActionListener() {
+	        
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				Font f = m_textArea.getFont();
+				
+				float size  = f.getSize() - 1;
+				
+				if(size < 8) { size = 8; }
+				
+				f = f.deriveFont(size);
+				
+				m_textArea.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+				
+				m_textArea.setFont(f);
+	
+			}
+    });
+	
+	m_zoomIn.addActionListener(new ActionListener() {
+		
+		@Override
+        public void actionPerformed(ActionEvent e) {
+			
+			Font f = m_textArea.getFont();
+			
+			float size  = f.getSize() + 1;
+			
+			if(size > 24) { size = 24; }
+			
+			f = f.deriveFont(size);
+			
+			m_textArea.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+			
+			m_textArea.setFont(f);
+			
+        }
+	});
+	
+	
+	
 	}
 	
 	/**

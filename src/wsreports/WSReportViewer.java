@@ -359,15 +359,17 @@ public class WSReportViewer extends JDialog {
 		
 		m_control_panel.add(m_date);
 		
+		m_control_panel.add(Box.createHorizontalStrut(WsUtils.HOR_STRUT));
+		
 		m_control_panel.add(m_genButton);
 		
-		m_control_panel.add(Box.createHorizontalGlue());
+		m_control_panel.add(Box.createHorizontalStrut(WsUtils.HOR_STRUT));
 		
 		m_control_panel.add(m_leftPageButton);
 		
 		m_control_panel.add(m_righPageButton);
 		
-		m_control_panel.add(Box.createHorizontalGlue());
+		m_control_panel.add(Box.createHorizontalStrut(WsUtils.HOR_STRUT));
 		
 		m_control_panel.add(m_saveButton);
 		
@@ -377,7 +379,9 @@ public class WSReportViewer extends JDialog {
 
 		WsGuiTools.setFixedSizeBehavior(m_date);
 		
-		WsGuiTools.setComponentFixedWidth(m_date, 300);
+		WsGuiTools.fixComponentHeightToMin(m_control_panel);
+		
+		//WsGuiTools.setComponentFixedWidth(m_date, 300);
 		
 		top_panel.add(m_control_panel); 
 		

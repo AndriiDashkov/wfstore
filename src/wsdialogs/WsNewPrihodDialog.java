@@ -497,7 +497,7 @@ public class WsNewPrihodDialog extends JDialog {
 
 		panel_MAIN.setBorder(BorderFactory.createEmptyBorder(WsUtils.VERT_STRUT,WsUtils.VERT_STRUT,WsUtils.VERT_STRUT,WsUtils.VERT_STRUT));
 		
-		JPanel south_right = new JPanel( new FlowLayout( FlowLayout.RIGHT, 5, 0) );
+		//JPanel south_right = new JPanel( new FlowLayout( FlowLayout.RIGHT, 5, 0) );
 		
 		JPanel panel_Ok_Cancel = new JPanel( new GridLayout( 1,2,5,0) );
 		
@@ -509,9 +509,9 @@ public class WsNewPrihodDialog extends JDialog {
 		
 		panel_Ok_Cancel.add(m_CancelButton);
 	
-		south_right.add(m_infoLabel);
+		//south_right.add(m_infoLabel);
 		
-		south_right.add(panel_Ok_Cancel);
+		//south_right.add(panel_Ok_Cancel);
 		
 	    JScrollPane scroll = new JScrollPane(m_table);
 	        
@@ -563,7 +563,9 @@ public class WsNewPrihodDialog extends JDialog {
 		
 		panel_kod_label.add(Box.createHorizontalGlue());
 		
-		panel_kod_label.add(south_right);
+		panel_kod_label.add(panel_Ok_Cancel);
+		
+		WsGuiTools.fixComponentHeightToMin(panel_kod_label);
 		
 		JPanel panel_kod = WsGuiTools.createVerticalPanel();
 		
