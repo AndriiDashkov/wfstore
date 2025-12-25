@@ -69,21 +69,27 @@ public class WsContractPricesEditTable extends JTable {
 	    
 	     setPopupMenu();
 	    
-	     getColumnModel().getColumn(0).setMaxWidth(100);
+	     getColumnModel().getColumn(0).setMaxWidth(120);
 	     
 	     getColumnModel().getColumn(0).setMinWidth(100);
 	     
-	     getColumnModel().getColumn(1).setMinWidth(350);
+	     getColumnModel().getColumn(1).setMinWidth(250);
 	     
-	     getColumnModel().getColumn(2).setMaxWidth(70);
+	     getColumnModel().getColumn(2).setMaxWidth(120);
 	     
-	     getColumnModel().getColumn(2).setMinWidth(70);
+	     getColumnModel().getColumn(2).setMinWidth(100);
 	     
 	     getColumnModel().getColumn(3).setMaxWidth(150);
 	     
 	     getColumnModel().getColumn(4).setMaxWidth(100);
 	     
 	     getColumnModel().getColumn(5).setMaxWidth(150);
+	     
+	     getColumnModel().getColumn(3).setMinWidth(100);
+	     
+	     getColumnModel().getColumn(4).setMinWidth(80);
+	     
+	     getColumnModel().getColumn(5).setMinWidth(100);
 	     
 	     //getColumnModel().getColumn(3).setMinWidth(200);
 	     

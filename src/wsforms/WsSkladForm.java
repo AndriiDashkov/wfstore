@@ -178,9 +178,7 @@ public class WsSkladForm extends JPanel {
 	    mainPanel.add(bottom_panel);
 	    
 	    mainPanel.add(scroll);
-	    
-	    mainPanel.add(Box.createVerticalGlue());
-	
+
 	    setLayout(new BorderLayout());
 		
 		add(mainPanel);

@@ -179,11 +179,9 @@ public class WsReturnForm extends JPanel {
 		
 		mainPanel.add(butPanel);
 		
-		//mainPanel.add(Box.createVerticalStrut(WsUtils.VERT_STRUT));
-		
 		mainPanel.add(butPanel2);
 		
-		//mainPanel.add(Box.createVerticalStrut(WsUtils.VERT_STRUT));
+		mainPanel.add(Box.createVerticalStrut(WsUtils.VERT_STRUT/2));
 		
 		JScrollPane scroll = new JScrollPane(m_table);
 	        
@@ -195,7 +193,7 @@ public class WsReturnForm extends JPanel {
 		
 		mainPanel.add(scroll);
 		
-		mainPanel.add(Box.createVerticalGlue());
+		//mainPanel.add(Box.createVerticalGlue());
 		
 		Dimension d = m_table.getPreferredSize();
 		

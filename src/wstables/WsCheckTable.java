@@ -60,9 +60,15 @@ public class WsCheckTable extends JTable {
 	
 
 	String[] m_columnNames = {
-	getGuiStrs("colNameInvoicePartId"),getGuiStrs("colNameKod"), getGuiStrs("colNameInPrihodNaklNumber"),
-	getGuiStrs("colNameDateInPrihod"),getGuiStrs("colNameAuantityInPrihod"), getGuiStrs("colNameRest"),
-	getGuiStrs("colNameQuantityOutRashod"), getGuiStrs("colNameDateOutRashod"), getGuiStrs("colNameOutRashodNaklNumber")};
+		getGuiStrs("colNameInvoicePartId"),
+		getGuiStrs("colNameKod"), 
+		getGuiStrs("colNameInPrihodNaklNumber"),
+		getGuiStrs("colNameDateInPrihod"),
+		getGuiStrs("colNameAuantityInPrihod"), 
+		getGuiStrs("colNameRest"),
+		getGuiStrs("colNameQuantityOutRashod"), 
+		getGuiStrs("colNameDateOutRashod"), 
+		getGuiStrs("colNameOutRashodNaklNumber")};
 	
 	public WsCheckTable( ) {
 		
@@ -85,31 +91,17 @@ public class WsCheckTable extends JTable {
 	      
 	      getColumnModel().getColumn(1).setMinWidth(60);
 	      
-	      getColumnModel().getColumn(2).setMaxWidth(150);
-	      
 	      getColumnModel().getColumn(2).setMinWidth(150);
 	      
-	      getColumnModel().getColumn(7).setMaxWidth(100);
-	      
-	      getColumnModel().getColumn(7).setMinWidth(100);
-	      
-	      getColumnModel().getColumn(3).setMaxWidth(100);
+	      getColumnModel().getColumn(7).setMinWidth(150);
 	      
 	      getColumnModel().getColumn(3).setMinWidth(100);
 	      
-	      getColumnModel().getColumn(4).setMaxWidth(150);
-	      
 	      getColumnModel().getColumn(4).setMinWidth(150);
-	      
-	      getColumnModel().getColumn(5).setMaxWidth(150);
 	      
 	      getColumnModel().getColumn(5).setMinWidth(150);
 	      
-	      getColumnModel().getColumn(6).setMaxWidth(150);
-	      
 	      getColumnModel().getColumn(6).setMinWidth(150);
-	      
-	      getColumnModel().getColumn(8).setMaxWidth(150);
 	      
 	      getColumnModel().getColumn(8).setMinWidth(150);
 

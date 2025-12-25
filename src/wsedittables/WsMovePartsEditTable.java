@@ -68,9 +68,9 @@ public class WsMovePartsEditTable extends JTable {
 	       
 	     setPopupMenu();
 	     
-	     getColumnModel().getColumn(0).setMaxWidth(50);
+	     getColumnModel().getColumn(0).setMaxWidth(100);
 	     
-	     getColumnModel().getColumn(0).setMinWidth(50);
+	     getColumnModel().getColumn(0).setMinWidth(70);
 
 	     getColumnModel().getColumn(1).setMinWidth(150);
  
