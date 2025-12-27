@@ -272,7 +272,7 @@ public class WsNewContractPriceDialog extends JDialog {
 		
 		panel_cost.add(Box.createHorizontalStrut(WsUtils.HOR_STRUT));
 		
-		panel_cost.add( new JLabel(getGuiStrs("varWithNdsLabel")+ " "));
+		panel_cost.add( new JLabel(getGuiStrs("prWithPdv")+ " "));
 		
 		panel_cost.add(m_costwnds);
 		

@@ -55,14 +55,26 @@ public class  WsImportExcelEditTable extends JTable {
 		setModel(m_model);
 		
 		if(columnNames.length > 1 ) {
+			
+
+			  
+			 Font f  = WsGuiTools.getCustomFont( );
 		
 		     TableColumn agColumn = getColumnModel().getColumn(1);
 		     
-		     WsAgentsCellEditor ed_part = new WsAgentsCellEditor();
+		     WsAgentsCellEditor ed_part = new WsAgentsCellEditor(f);
 		     
 		     agColumn.setCellEditor(ed_part);
 		     
-		     agColumn.setCellRenderer(new WsAgentsCellRenderer());
+		     WsAgentsCellRenderer cellRen = new WsAgentsCellRenderer();
+		     
+		     if(null != f) {
+		    	 
+		    	 cellRen.setFont(f);
+		     }
+		     
+		     agColumn.setCellRenderer(cellRen);
+		     
 		
 		}
 	     

@@ -85,35 +85,35 @@ public class WsRashodPartsTable extends JTable {
 	     
 	     setFillsViewportHeight(true);
 	     
-	     getColumnModel().getColumn(0).setMaxWidth(100);
+	     getColumnModel().getColumn(0).setMaxWidth(120);
 	     
 	     getColumnModel().getColumn(0).setMinWidth(100);
 	     
 	     getColumnModel().getColumn(1).setMinWidth(150);
 	     
-	     getColumnModel().getColumn(2).setMinWidth(150);
+	     getColumnModel().getColumn(2).setMinWidth(120);
 	     
-	     getColumnModel().getColumn(2).setMaxWidth(200);
+	     getColumnModel().getColumn(2).setMaxWidth(180);
 	     
-	     getColumnModel().getColumn(3).setMinWidth(150);
+	     getColumnModel().getColumn(3).setMinWidth(110);
 	     
-	     getColumnModel().getColumn(3).setMaxWidth(200);
+	     getColumnModel().getColumn(3).setMaxWidth(180);
 	     
-	     getColumnModel().getColumn(4).setMinWidth(80);
+	     getColumnModel().getColumn(4).setMinWidth(100);
 	     
-	     getColumnModel().getColumn(4).setMaxWidth(80);
+	     getColumnModel().getColumn(4).setMaxWidth(100);
 	     
-	     getColumnModel().getColumn(5).setMaxWidth(100);
+	     getColumnModel().getColumn(5).setMaxWidth(150);
 	     
-	     getColumnModel().getColumn(5).setMinWidth(100);
+	     getColumnModel().getColumn(5).setMinWidth(120);
 	     
 	     getColumnModel().getColumn(6).setMaxWidth(80);
 	     
 	     getColumnModel().getColumn(6).setMinWidth(80);
 	     
-	     getColumnModel().getColumn(7).setMaxWidth(100);
+	     getColumnModel().getColumn(7).setMaxWidth(150);
 	     
-	     getColumnModel().getColumn(7).setMinWidth(100);
+	     getColumnModel().getColumn(7).setMinWidth(120);
 	     
 	     TableColumn quantityColumn = getColumnModel().getColumn(2);
 

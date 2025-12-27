@@ -75,13 +75,13 @@ public class WsExcelImportGroupRashodDialog  extends JDialog  {
 		
 		add(createGUI());
 		
-		setBounds(100, 100, 600, 150);
+		setBounds(50, 50, 800, 500);
 		
 		init();
 		
 		setCustomFont();
 
-		pack();
+		//pack();
 		
 	}
 		
@@ -189,7 +189,7 @@ public class WsExcelImportGroupRashodDialog  extends JDialog  {
 		
 		panel_MAIN.add(Box.createVerticalStrut(WsUtils.VERT_STRUT));
 		
-		WsGuiTools.setComponentFixedHeight(m_table, 250);
+		//WsGuiTools.setComponentFixedHeight(m_table, 250);
 		
 		panel_MAIN.setBorder(BorderFactory.createEmptyBorder(WsUtils.VERT_STRUT,WsUtils.VERT_STRUT,WsUtils.VERT_STRUT,WsUtils.VERT_STRUT));
 		

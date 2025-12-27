@@ -3,6 +3,7 @@
 package wsedittables;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.AbstractCellEditor;
@@ -28,9 +29,12 @@ public class WsAgentsCellEditor extends AbstractCellEditor implements TableCellE
 	private static final long serialVersionUID = 1L;
 	
 	private WsAgentData m_agent;
+	
+	Font m_font = null;
     
-    public WsAgentsCellEditor() {
+    public WsAgentsCellEditor(Font f) {
     	
+    	m_font = f;
     }
      
     @Override
@@ -49,6 +53,8 @@ public class WsAgentsCellEditor extends AbstractCellEditor implements TableCellE
         }
          
         WsAgentComboBox combo = new WsAgentComboBox();
+        
+        if(m_font != null) { combo.setFont(m_font); }
         
         combo.setRowIndex(row);
          

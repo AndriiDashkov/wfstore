@@ -71,9 +71,9 @@ public class WsPrihodPartsTable extends JTable {
 			getGuiStrs("prihodPartsColumnQuantityName"), 
 			getGuiStrs("prihodPartsColumnRestName"),
 			getGuiStrs("prihodPartsColumnUnitsNameName"), 
-			getGuiStrs("prihodPartsColumnCostName"), 
+			getGuiStrs("costNameInReportNoNDS"), 
 			getGuiStrs("prihodPartsColumnNdsName"),
-			getGuiStrs("varWithNdsLabel"),
+			getGuiStrs("prWithPdv"),
 			getGuiStrs("prihodPartsColumnInfoName"),
 			"id_invoice","id_part_type", "id_units","id", 
 			getGuiStrs("prihodPartsColumnPartTypeName"),};
@@ -97,11 +97,11 @@ public class WsPrihodPartsTable extends JTable {
 	     
 	     getColumnModel().getColumn(2).setMaxWidth(140);
 	     
-	     getColumnModel().getColumn(2).setMinWidth(140);
+	     getColumnModel().getColumn(2).setMinWidth(120);
 	     
 	     getColumnModel().getColumn(3).setMaxWidth(140);
 
-	     getColumnModel().getColumn(3).setMinWidth(140);
+	     getColumnModel().getColumn(3).setMinWidth(120);
 	     
 	     int prwidth = 140;
 	     
@@ -117,7 +117,7 @@ public class WsPrihodPartsTable extends JTable {
 
 	     getColumnModel().getColumn(7).setMinWidth(prwidth);
 	     
-	     getColumnModel().getColumn(4).setMaxWidth(100);
+	     getColumnModel().getColumn(4).setMaxWidth(120);
 	     
 	     getColumnModel().getColumn(10).setMaxWidth(30);
 	     

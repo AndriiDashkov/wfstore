@@ -35,9 +35,9 @@ public class WsPrihodPartEditTableModel extends AbstractTableModel{
 			getGuiStrs("prihodPartsColumnQuantityName"), 
 			getGuiStrs("prihodPartsColumnRestName"),
 			getGuiStrs("prihodPartsColumnUnitsNameName"), 
-			getGuiStrs("prihodPartsColumnCostName"), 
+			getGuiStrs("costNameInReportNoNDS"), 
 			getGuiStrs("prihodPartsColumnNdsName"), 
-			getGuiStrs("varWithNdsLabel"),
+			getGuiStrs("prWithPdv"),
 			getGuiStrs("prihodPartsColumnInfoName"),
 			getGuiStrs("prihodPartsColumnClosedName"),
 			"id_invoice","id_part_type", "id_units","rest", "id"};
