@@ -73,9 +73,15 @@ public class WsContractsChooser extends JPanel {
 		
 		buttonPanel.add(m_in_but);
 		
+		buttonPanel.add(Box.createVerticalStrut(2));
+		
 		buttonPanel.add(m_out_but);
 		
+		buttonPanel.add(Box.createVerticalStrut(2));
+		
 		buttonPanel.add(m_in_all_but);
+		
+		buttonPanel.add(Box.createVerticalStrut(2));
 		
 		buttonPanel.add(m_out_all_but);
 		

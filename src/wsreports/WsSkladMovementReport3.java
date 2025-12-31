@@ -3,7 +3,6 @@ package wsreports;
 
 import static wsmain.WsUtils.getGuiStrs;
 import static wsmain.WsUtils.getMessagesStrs;
-
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +17,6 @@ import java.util.Vector;
 import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -149,7 +147,7 @@ public class WsSkladMovementReport3 extends WSReportViewer {
 
 		WsGuiTools.setComponentFixedWidth(m_contractsList, 800);
 		
-		WsGuiTools.setComponentFixedHeight(m_contractsList, 100);
+		WsGuiTools.setComponentFixedHeight(m_contractsList, 150);
 		
 		m_contractsList.refresh();
 		
