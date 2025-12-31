@@ -145,7 +145,7 @@ public class WsSkladMovementReport3 extends WSReportViewer {
 			m_date.setEndDate(m_date_end_static);
 		}
 
-		WsGuiTools.setComponentFixedWidth(m_contractsList, 800);
+		WsGuiTools.setComponentFixedWidth(m_contractsList, 1000);
 		
 		WsGuiTools.setComponentFixedHeight(m_contractsList, 150);
 		

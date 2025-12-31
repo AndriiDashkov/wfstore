@@ -154,13 +154,13 @@ public class WsPorivSkladWithFutureRashod  extends WSReportViewer {
 		
 		m_check_box_all_kods = new JCheckBox(getGuiStrs("allKodsExistedUseCaptionCheckBox"));
 			
-		JPanel bottom_panel1 = WsGuiTools.createHorizontalPanel();
+		//JPanel bottom_panel1 = WsGuiTools.createHorizontalPanel();
 		
-		bottom_panel1.add(m_check_box_all_kods);
+		//bottom_panel1.add(m_check_box_all_kods);
 		
-		bottom_panel1.add(Box.createHorizontalGlue());
+		m_control_panel2.add(m_check_box_all_kods);
 		
-		 m_control_panel2.add(bottom_panel1);
+		m_control_panel2.add(Box.createHorizontalGlue());
 		
 	}
 	

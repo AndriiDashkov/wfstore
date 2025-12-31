@@ -155,6 +155,8 @@ public class WsSklaMovementCompareFBase  extends WSReportViewer {
 		
 		panel_main.add(panel_spinner);
 		
+		panel_main.add(Box.createVerticalStrut(WsUtils.VERT_STRUT));
+		
 		m_control_panel2.add(panel_main);
 		
 		m_date.setCurrentStartDate();

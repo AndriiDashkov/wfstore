@@ -162,15 +162,21 @@ public class  WsSkladMovementReportZved  extends WSReportViewer {
 		
 		panelV2.add(panelH23);
 		
-		panelV2.add(Box.createVerticalGlue());
+		//panelV2.add(Box.createVerticalGlue());
 		
 		JPanel panelH2 = WsGuiTools.createHorizontalPanel();
 		
-		panelH2.add(new JLabel(getGuiStrs("contractsComboLabel"))); panelH2.add(m_contrComboBox);
+		panelH2.add(new JLabel(getGuiStrs("contractsComboLabel") + " ")); 
+		
+		panelH2.add(m_contrComboBox);
 		
 		panelV2.add(panelH2);
 		
-		WsGuiTools.setComponentFixedHeight(m_table_control, 100);
+		panelV2.add(Box.createVerticalGlue());
+		
+		WsGuiTools.setComponentFixedHeight(m_table_control, 150);
+		
+		WsGuiTools.fixComponentHeightToMin(m_contrComboBox);
 		
 		panelH1.add(Box.createHorizontalStrut(WsUtils.HOR_STRUT));
 		
