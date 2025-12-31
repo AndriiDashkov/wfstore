@@ -1030,6 +1030,8 @@ public class  WsRashodForm  extends JPanel {
 			
 		m_sum.setEditable(false);
 		
+		WsGuiTools.fixComponentHeightToMin(v);
+		
 		return v;
 		
 	}

@@ -3,15 +3,16 @@ package wstables;
 
 import static wsmain.WsUtils.getGuiStrs;
 
+import java.awt.Font;
 import java.util.Vector;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-
 import wsdatabase.WsContractsSqlStatements;
 import wsdatastruct.WsContractData;
 import wsedittables.WsDateRenderer;
+import wsmain.WsGuiTools;
 import wsmain.WsUtils;
 
 /**
@@ -266,6 +267,21 @@ public class WsContractsTable extends JTable {
 			m_model.removeRow(0);
 					
 		}
+			
+	}
+	
+	public void setCustomFont() {
+		
+		Font f = WsGuiTools.getCustomFont( );
+		
+		if(null == f) {
+			
+			return;
+		}
+		
+		setFont(f);
+		
+		getTableHeader().setFont(f);
 			
 	}
 	

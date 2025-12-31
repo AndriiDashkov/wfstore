@@ -172,13 +172,13 @@ public class WsSignsEditTable  extends JTable {
 		
 		WsGuiTools.changeFont(m_popupMenu, f); 
 		
-		  for(int i = 0; i < 3; ++i) {
+		for(int i = 0; i < 3; ++i) {
 		
 				DefaultCellEditor ed = (DefaultCellEditor)getColumnModel().getColumn(i).getCellEditor();
 				
 				ed.getComponent().setFont(f);
 		
-		  }
+		}
 			
 	}
 }

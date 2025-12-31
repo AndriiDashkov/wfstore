@@ -249,6 +249,10 @@ public class WsContractsChooser extends JPanel {
 		}
 		
 		WsGuiTools.changeFont(this, f);
+		
+		m_kods_table.setCustomFont();
+		
+		m_kods_choosen_table.setCustomFont();
 			
 	}
 

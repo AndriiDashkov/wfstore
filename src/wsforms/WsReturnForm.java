@@ -163,6 +163,8 @@ public class WsReturnForm extends JPanel {
 		
 		JPanel butPanel2 =  WsGuiTools.createHorizontalPanel();
 		
+		butPanel2.add(Box.createHorizontalStrut(WsUtils.HOR_STRUT/2));
+		
 		butPanel2.add( m_returnButton); 
 		
 		butPanel2.add(Box.createHorizontalStrut(WsUtils.HOR_STRUT));
@@ -178,6 +180,8 @@ public class WsReturnForm extends JPanel {
 		//mainPanel.setBorder(BorderFactory.createEmptyBorder(WsUtils.VERT_STRUT,WsUtils.VERT_STRUT,WsUtils.VERT_STRUT,WsUtils.VERT_STRUT));
 		
 		mainPanel.add(butPanel);
+		
+		mainPanel.add(Box.createVerticalStrut(WsUtils.VERT_STRUT/2));
 		
 		mainPanel.add(butPanel2);
 		

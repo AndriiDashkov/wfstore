@@ -112,7 +112,7 @@ public class  WsCheckForm extends JPanel {
 	    
 	    add(scroll);
 	    
-	    add(Box.createVerticalGlue());
+	   // add(Box.createVerticalGlue());
 	
 	    WsGuiTools.setFixedSizeBehavior(m_kods_combo);
 		

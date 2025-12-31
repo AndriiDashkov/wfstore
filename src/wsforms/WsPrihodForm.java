@@ -825,6 +825,8 @@ public class WsPrihodForm extends JPanel {
 			
 		m_sum.setEditable(false);
 		
+		WsGuiTools.fixComponentHeightToMin(v);
+		
 		return v;
 		
 	}

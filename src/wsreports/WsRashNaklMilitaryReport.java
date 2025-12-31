@@ -1001,7 +1001,7 @@ public class WsRashNaklMilitaryReport extends WSReportViewer {
 		   
 		   cl = createCell(rowHeader2, 6, "", creationHelper);
 
-		   sheet.addMergedRegion(new CellRangeAddress(rows_count, rows_count + 1, 6,6));
+		   sheet.addMergedRegion(new CellRangeAddress(rows_count -1, rows_count, 6,6));
 		   
 		   cl.setCellStyle(st1);
 		 

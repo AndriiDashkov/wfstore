@@ -119,7 +119,7 @@ public class WSReportViewer extends JDialog {
 	
 		createGui();
 		
-		setBounds(100, 100, 1100, 850);
+		setBounds(50, 50, 1200, 650);
 		
 		m_viewer.setContentType("text/html");
 		
@@ -402,6 +402,8 @@ public class WSReportViewer extends JDialog {
 		mainPanel.add(m_ScrollPane);
 		
 		add(mainPanel);
+		
+		m_print.setSize(m_zoomOut.getPreferredSize());
 		
 		setToolTips();
 	}
