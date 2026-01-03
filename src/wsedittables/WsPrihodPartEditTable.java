@@ -9,9 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Vector;
+
+import javax.swing.DefaultCellEditor;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.TableColumn;
 
 import wsdatabase.WsPrihodSqlStatements;
@@ -104,6 +107,12 @@ public class  WsPrihodPartEditTable extends JTable {
 	     costndsColumn.setCellEditor(new  WsCostPrihodControlCellEditor(8));
 
 	     costndsColumn.setCellRenderer(new WsQuantityControlCellRenderer());
+	     
+	     DefaultCellEditor defEd = new  DefaultCellEditor(new JTextField());
+	      
+	     defEd.getComponent().setFont(WsGuiTools.getCustomFont( ));
+	      
+	     getColumnModel().getColumn(9).setCellEditor(defEd);
 	    
 	     setPopupMenu();
 	     

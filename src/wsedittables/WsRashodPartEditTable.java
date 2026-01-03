@@ -10,9 +10,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.Vector;
+
+import javax.swing.DefaultCellEditor;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.TableColumn;
 
 import wsdatabase.WsRashodSqlStatements;
@@ -74,6 +77,12 @@ public class WsRashodPartEditTable extends JTable {
 	     costndsColumn.setCellEditor(new  WsCostRashodControlCellEditor(7));
 
 	     costndsColumn.setCellRenderer(new WsQuantityControlCellRenderer());
+	     
+	     DefaultCellEditor defEd = new  DefaultCellEditor(new JTextField());
+	      
+	     defEd.getComponent().setFont(WsGuiTools.getCustomFont( ));
+	      
+	     getColumnModel().getColumn(8).setCellEditor(defEd);
 	     
 	     setPopupMenu();
 	     
