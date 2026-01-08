@@ -1213,6 +1213,10 @@ public class WsSpisRaskladkaForm extends JPanel {
 		
 		WsGuiTools.changeFont(m_popupMenu, f);
 		
+		int margin_table = WsUtils.get().getTableMarginShiftForFont();
+		
+		m_table.setRowHeight(m_table.getRowHeight() + margin_table);
+			
 			
 	}
 }
