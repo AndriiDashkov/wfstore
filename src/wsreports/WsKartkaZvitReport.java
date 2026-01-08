@@ -920,36 +920,7 @@ public class WsKartkaZvitReport extends WSReportViewer {
 		}       
 	}
 
-	public boolean saveToFile() {
-		
-		
-		for(int i =0; i <  m_html_pages.size(); ++i) {
-			
-			 File path = new File("C:\\sys\\report_page_" + String.valueOf(i) + ".html");
 
-		        FileWriter wr;
-		        
-				try {
-					wr = new FileWriter(path);
-	
-			        wr.write(m_html_pages.elementAt(i));
-	
-			        wr.flush();
-			         
-			        wr.close();
-			        
-				} catch (IOException e) {
-				
-					e.printStackTrace();
-					
-					return false;
-				}
-
-		}
-		
-		return true;
-	}
-	
 	public void exportToExcelFile(Vector<WsSkladMoveDataRow> vec_all_parts) {
 		
 		int signs = 4;
@@ -1053,9 +1024,13 @@ public class WsKartkaZvitReport extends WSReportViewer {
 	            	WsSkladMoveDataColumn col_data =  vec_columns.elementAt(j);
 	            	
 	            	XSSFCell cell0 = row.createCell(cell_index++);
+	            	
+	            	if(col_data.out_quantity > WsUtils.getRZL()) {
 	            		
-	            	cell0.setCellValue(WsUtils.getDF_fix_str(col_data.out_quantity, signs));
-	            		 
+	            		cell0.setCellValue(WsUtils.getDF_fix_str(col_data.out_quantity, signs));
+	            	
+	            	}
+	            	
 	            	cell0.setCellStyle(cs12);
 	                	            
 	            }
@@ -1197,6 +1172,7 @@ public class WsKartkaZvitReport extends WSReportViewer {
 		   XSSFRow rowHeader2 = sheet.createRow(2);
 		   
 		   for(int i = 0; i < 8; ++i) {   
+			   
 			   createCell(rowHeader2, i, "", creationHelper);   
 			   
 			   rowHeader2 .getCell(i).setCellStyle(cs00);
@@ -1304,18 +1280,6 @@ public class WsKartkaZvitReport extends WSReportViewer {
 		   rowHeader0.getCell(0).setCellStyle(cs1);
 		
 	}
-	
-	/*private void createCell( XSSFRow rowHeader, int index, String s, XSSFCreationHelper creationHelper) {
-		
-		  XSSFCell cell3 = rowHeader.createCell(index);
-	        
-	      XSSFRichTextString richString3 = creationHelper
-	                .createRichTextString(s);
-	
-         cell3.setCellValue(richString3);
-		
-	}*/
-	
 	
 	private Vector<WsItogoData> getItogoForPage(Vector<WsSkladMoveDataRow> vec_all_parts, int page_number) {
 		
@@ -1876,8 +1840,12 @@ public class WsKartkaZvitReport extends WSReportViewer {
             	WsSkladMoveDataColumn col_data =  vec_columns.elementAt(j);
             	
             	XSSFCell cell0 = row.createCell(cell_index++);
+            	
+            	if(col_data.in_quantity > WsUtils.getRZL()) {
             		
-            	cell0.setCellValue(WsUtils.getDF_fix_str(col_data.in_quantity, signs));
+            		cell0.setCellValue(WsUtils.getDF_fix_str(col_data.in_quantity, signs));
+            	}
+            	
             		 
             	cell0.setCellStyle(cs12);
                         
