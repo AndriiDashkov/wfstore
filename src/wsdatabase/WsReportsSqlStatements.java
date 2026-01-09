@@ -1471,6 +1471,7 @@ public class WsReportsSqlStatements {
 			 
 			 Vector<WsSkladMoveDataColumn>  current_row = row_d.row_vec;
 			 
+			/*  not sure that this solution is reasonable
 			 if(alignDates) {
 			 //the date of record aligning
 				if(row_d.date_doc.compareTo(row_d.date) > 0) { row_d.date  = new Date( row_d.date_doc.getTime()); }
@@ -1483,7 +1484,7 @@ public class WsReportsSqlStatements {
 					
 					moving_date =  new Date( row_d.date.getTime());
 				}
-			 }
+			 }*/
 			 
 			 if(row_d.indexData == 1) {
 				 
