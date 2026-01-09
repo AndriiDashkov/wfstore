@@ -607,6 +607,8 @@ public class WsSpisRaskladkaForm extends JPanel {
 			
 		}
 		
+		Vector<Integer> diff_kods = new Vector<Integer>();
+		
 		for(WsSkladMoveDataColumn df : table_vec) {
 			
 			if(df.q_array[1].initial_rest != 0.0 && 
@@ -616,13 +618,54 @@ public class WsSpisRaskladkaForm extends JPanel {
 						df.q_array[1].in_quantity - df.q_array[1].out_quantity;
 				
 			}
+			
+			if(Math.abs(df.q_array[1].in_quantity - df.q_array[0].in_quantity) > 1.0 ) {
+				
+				diff_kods.add(df.kod);
+			
+			}
 		}
+		
+	
 		
 		Collections.sort(table_vec, new WsKodComparator());
 	
 		m_table.refresh();
 		
 		setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		
+		prihodEqControl(diff_kods);
+		
+
+	}
+	
+	private void prihodEqControl(Vector<Integer> diff_kods) {
+		
+		if(!diff_kods.isEmpty()) {
+			
+			StringBuilder bl = new StringBuilder();
+			
+			bl.append("<br>");
+			
+			int n = 12;
+			
+			for(Integer kod : diff_kods) {
+				
+				bl.append(kod);
+				
+				bl.append(" ");
+				
+				if(--n == 0) { bl.append("<br>");  n = 12; }
+				
+			}
+			
+			bl.append("</html>");
+			
+			 WsUtils.showMessageDialog("<html>" + getMessagesStrs("uvDiffPrihSpisMessage") +
+					 bl.toString() );
+			
+		}
+		
 	}
 	
 	
