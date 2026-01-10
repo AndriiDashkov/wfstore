@@ -1184,6 +1184,18 @@ public class WsUtils {
 					
 		 }
 		 
+		 public static boolean isSunday(java.sql.Date dt) {
+			 
+				Calendar calendar = Calendar.getInstance();
+				
+				calendar.clear();
+				
+				calendar.setTimeInMillis(dt.getTime());
+				
+				return calendar.get(Calendar.DAY_OF_WEEK) == 1;
+					
+		 }
+		 
 		 
 		 public static int getUnknownKatalogKod() {
 			 

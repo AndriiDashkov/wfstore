@@ -118,6 +118,12 @@ public class WsSkladMovementReport extends WSReportViewer {
 			
 			return  vec_pages;
 		}
+		if( !WsUtils.isSunday(m_date.getSqlEndDate()) ) {
+			
+			WsUtils.showMessageDialog(getMessagesStrs("dateNotSundayMessage"));
+			
+			return  vec_pages;
+		}
 		
 		setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		
@@ -498,35 +504,7 @@ public class WsSkladMovementReport extends WSReportViewer {
 		}       
 	}
 	
-	public boolean saveToFile() {
-		
-		for(int i =0; i <  m_html_pages.size(); ++i) {
-			
-			 File path = new File("C:\\sys\\report_page_" + String.valueOf(i) + ".html");
 
-		        FileWriter wr;
-		        
-				try {
-					wr = new FileWriter(path);
-	
-			        wr.write(m_html_pages.elementAt(i));
-	
-			        wr.flush();
-			         
-			        wr.close();
-			        
-				} catch (IOException e) {
-				
-					e.printStackTrace();
-					
-					return false;
-				}
-
-		}
-		
-		return true;
-	}
-	
 	public void exportToExcelFile(Vector<WsSkladMoveDataRow> vec_all_parts) {
 		
 		String file_to_save = 	excelSaveFileChoose(this);

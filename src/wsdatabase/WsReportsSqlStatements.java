@@ -1009,7 +1009,7 @@ public class WsReportsSqlStatements {
 				 
 				 status = endCurrentDate.compareTo(end_date);
 				 
-				 if(status > 0) { endCurrentDate = end_date; }
+				 if(status > 0) { break; /*endCurrentDate = end_date;*/ }
 		
 				 vec_prihod = getPrihodPartsListForPeriod(startDate, endCurrentDate, id_contract);
 				 
@@ -1389,7 +1389,7 @@ public class WsReportsSqlStatements {
 		
 		WsSkladMoveDataRow prihod_0 = initKodVectorData(conn, "Приход", vec_kods);
 		
-		Date moving_date = new Date(start_date_1.getTime());
+		//Date moving_date = new Date(start_date_1.getTime());
 		
 		for(int i = 0; i < vec_prihod.size(); ++i) {
 			

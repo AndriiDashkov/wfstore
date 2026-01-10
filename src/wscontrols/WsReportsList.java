@@ -286,7 +286,7 @@ public class WsReportsList extends JPanel  {
 	
 	private void openReport( DefaultMutableTreeNode node) {
 		
-		if(node ==m_move_reports_nodes.elementAt(0)) {
+		if(node == m_move_reports_nodes.elementAt(0)) {
 			
         	WsSkladMovementReport2 dialog = new WsSkladMovementReport2(WsUtils.get().getMainWindow(), 
 					getGuiStrs("movementZvitDialogWinCaption2"));
