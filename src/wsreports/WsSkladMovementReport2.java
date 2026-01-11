@@ -581,16 +581,26 @@ public class  WsSkladMovementReport2  extends WSReportViewer {
 		    
 		    int row_index = 1 + createExcelHeader(wb, sheet, creationHelper);
 
+		    int shift = 4;
+		    
+            if(m_p_panel.getApprovePerson() != null) {
+            
+            	shift = 8;
+            }
+		    
+		    
 	    	for (WsSkladMoveDataColumn dt: vec_all_parts) {
 	
 		            XSSFRow row = sheet.createRow(row_index++);
-		            
+		         
 		            int cell_index = 0;
 		            
 		            XSSFCell cell00 = row.createCell(cell_index++);
 		            
-		            cell00.setCellValue(row_index - 4);
-		            
+		            System.out.println(row_index);
+		    
+		            cell00.setCellValue(row_index - shift);
+	
 		            cell00.setCellStyle(st01);
 		            
 		            XSSFCell cell01 = row.createCell(cell_index++);

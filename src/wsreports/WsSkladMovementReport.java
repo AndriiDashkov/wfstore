@@ -852,7 +852,7 @@ public class WsSkladMovementReport extends WSReportViewer {
 			   
 			   cl1.setCellStyle(st01);
 			   
-			   cl1 = createCell(rowHeader2, cell_index++, getGuiStrs("zalishokColumnReportName"), creationHelper);
+			   cl1 = createCell(rowHeader2, cell_index++, getGuiStrs("prihodPartsColumnRestName"), creationHelper);
 			   
 			   cl1.setCellStyle(st01);
 			   

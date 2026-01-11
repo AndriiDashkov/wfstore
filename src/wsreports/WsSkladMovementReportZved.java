@@ -682,39 +682,7 @@ public class  WsSkladMovementReportZved  extends WSReportViewer {
 		 
 	}
 	
-	public boolean saveToFile() {
-		
-		if(m_html_pages == null || m_html_pages.isEmpty()) {return false;}
-		
-		for(int i =0; i <  m_html_pages.size(); ++i) {
-			
-			 File path = new File("C:\\sys\\report_page_" + String.valueOf(i) + ".html");
 
-		        FileWriter wr;
-		        
-				try {
-					wr = new FileWriter(path);
-	
-			        wr.write(m_html_pages.elementAt(i));
-	
-			        wr.flush();
-			         
-			        wr.close();
-			        
-				} catch (IOException e) {
-				
-					e.printStackTrace();
-					
-					return false;
-				}
-
-		}
-		
-		return true;
-	}
-	
-	
-	
 	public void exportToExcelFile(Vector<WsSkladMoveDataColumn>  vec_all_parts) {
 		
 		String file_to_save = 	excelSaveFileChoose(this);
