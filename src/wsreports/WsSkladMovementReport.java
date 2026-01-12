@@ -29,6 +29,7 @@ import wscontrols.WsSignsControlPanel;
 import wsdatabase.WsReportsSqlStatements;
 import wsdatastruct.WsSkladMoveDataColumn;
 import wsdatastruct.WsSkladMoveDataRow;
+import wsdialogs.WsReport14ExcelImportDialog;
 import wsmain.WsUtils;
 
 
@@ -76,8 +77,11 @@ public class WsSkladMovementReport extends WSReportViewer {
 	            public void actionPerformed(ActionEvent e) {
 	            	
 	            	if( !isReportEmpty() ) {
-	            	
-	            		exportToExcelFile(m_vec_all_parts);
+	            		
+	            		WsReport14ExcelImportDialog d = new WsReport14ExcelImportDialog(
+	            				WsUtils.get().getMainWindow(), getGuiStrs("expE"),WsSkladMovementReport.this);
+	            		
+	            		d.setVisible(true);
 	            	
 	            	}
 	             
@@ -504,8 +508,73 @@ public class WsSkladMovementReport extends WSReportViewer {
 		}       
 	}
 	
+	public Vector<Vector<WsSkladMoveDataRow>> splitDataInVerticalDirection(
+			Vector<WsSkladMoveDataRow> data, int columnsInTheRow) {
+		
+		Vector<Vector<WsSkladMoveDataRow>> res = new Vector<Vector<WsSkladMoveDataRow>>();
+		
+		int totalColumnsNumber =  data.elementAt(0).row_vec.size();
+		
+		int iterationsNumber = (int)Math.ceil(totalColumnsNumber/columnsInTheRow);
+		
+		for (int i  = 0; i < iterationsNumber; ++i) {
+			
+			Vector<WsSkladMoveDataRow> r1 = new Vector<WsSkladMoveDataRow>();
+			
+			for (int k = 0; k < data.size(); ++k) {
+				
+				WsSkladMoveDataRow dt_new1 = new WsSkladMoveDataRow();
+				
+				dt_new1.indexData = data.elementAt(k).indexData;
+				
+				dt_new1.date_end = data.elementAt(k).date_end;
+				
+				dt_new1.date_start = data.elementAt(k).date_start;
+				
+				//WsSkladMoveDataRow dt_new2 = new WsSkladMoveDataRow();
+				
+				Vector<WsSkladMoveDataColumn> sr1 = data.elementAt(k).row_vec;
+				
+				///Vector<WsSkladMoveDataColumn> sr2 = data.elementAt(k + 1).row_vec;
+				
+				dt_new1.row_vec = new Vector<WsSkladMoveDataColumn>();
+				
+				//dt_new2.row_vec = new Vector<WsSkladMoveDataColumn>();
+				
+				for(int j = i *columnsInTheRow; j < (i *columnsInTheRow + columnsInTheRow) &&
+						j < sr1.size(); ++j ) {
+					
+					WsSkladMoveDataColumn d1 = new WsSkladMoveDataColumn(sr1.elementAt(j));
+					
+					dt_new1.row_vec.add(d1);
+					
+					//WsSkladMoveDataColumn d2 = new WsSkladMoveDataColumn(sr2.elementAt(j));
+					
+					//dt_new2.row_vec.add(d2);
+					
+				}
+				
+				
+				
+				r1.add(dt_new1);
+				
+				//r1.add(dt_new2);
+				
+				
+			}
+			
+			res.add(r1);
+		}
+		
+		
+		
+		return res;
+	}
+	
 
-	public void exportToExcelFile(Vector<WsSkladMoveDataRow> vec_all_parts) {
+	public void exportToExcelFile() {
+		
+		Vector<WsSkladMoveDataRow> vec_all_parts = m_vec_all_parts;
 		
 		String file_to_save = 	excelSaveFileChoose(this);
 		
@@ -514,6 +583,7 @@ public class WsSkladMovementReport extends WSReportViewer {
 		OutputStream out;
 		
 		try {
+			
 			try {
 				
 				out = new FileOutputStream(file_to_save);
@@ -533,8 +603,7 @@ public class WsSkladMovementReport extends WSReportViewer {
 		    
 			XSSFCellStyle st01 = getExcelCellStyle(wb, 1, 1, 1, 1, 
 					   false, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false);
-			
-		    
+			 
 		    int row_index = createExcelHeader(wb, sheet, vec_all_parts, creationHelper);
 		    
 		    ++row_index;
@@ -546,15 +615,13 @@ public class WsSkladMovementReport extends WSReportViewer {
 		            Vector<WsSkladMoveDataColumn> vec_columns = dt.row_vec;
 		            
 		            int cell_index = 0;
-		            
-		            
+		               
 		            XSSFCell cell01 = row.createCell(cell_index++);
 		            
 		            cell01.setCellStyle(st01);
 		        	
 	                WsUtils.get();
-					
-	                
+						                
 	                XSSFCell cell02 = row.createCell(cell_index++);
 	                
 	                cell02.setCellStyle(st01);
@@ -591,7 +658,7 @@ public class WsSkladMovementReport extends WSReportViewer {
 							 
 							 break;
 						 }
-				  };
+				};
 				  
 				cell01.setCellValue(inDate);
 				
@@ -644,10 +711,9 @@ public class WsSkladMovementReport extends WSReportViewer {
 	                	
 	                	 cell2.setCellValue(col_data.rest);
 	                }
- 
 	            }
 	                
-	          }
+	        }
 	    	
             XSSFRow row = sheet.createRow(row_index++);
             
@@ -691,10 +757,8 @@ public class WsSkladMovementReport extends WSReportViewer {
 	        	
 	        	sheet.addMergedRegion(new CellRangeAddress(row_index - 1,row_index - 1,0,6));
 	        	
-	   
 	        }
 	
-	   
 			wb.write(out);
 	
 			out.close();
@@ -712,73 +776,77 @@ public class WsSkladMovementReport extends WSReportViewer {
 
 	}
 	
+	private int createExcelHeader0(  XSSFWorkbook wb, XSSFSheet sheet,  XSSFCreationHelper creationHelper) {
+		
+		XSSFCellStyle st0_right = getExcelCellStyle(wb, 0, 0, 0, 0, 
+				   false, HorizontalAlignment.LEFT, VerticalAlignment.CENTER, false);
+		
+		int rows_count = 0;
+		
+		XSSFRow rowHeader = sheet.createRow( rows_count);
+		
+		if(m_p_panel.getApprovePerson() != null) {
+			
+			XSSFCell cl1 = createCell(rowHeader, 0, getGuiStrs("apprLabelRep"), creationHelper); 
+			   
+			sheet.addMergedRegion(new CellRangeAddress(rows_count,rows_count,0,6));
+			
+			cl1.setCellStyle(st0_right);
+		   
+		    rowHeader = sheet.createRow(++rows_count);
+		    
+		    cl1 = createCell(rowHeader, 0, m_p_panel.getApprovePerson().position, creationHelper); 
+			   
+			sheet.addMergedRegion(new CellRangeAddress(rows_count,rows_count,0,6));
+			
+			cl1.setCellStyle(st0_right);
+			
+			rowHeader = sheet.createRow(++rows_count);
+			    
+			cl1 = createCell(rowHeader, 0, m_p_panel.getApprovePerson().rank + "____________" +
+					m_p_panel.getApprovePerson().name, creationHelper); 
+				   
+			sheet.addMergedRegion(new CellRangeAddress(rows_count,rows_count,0,6));
+				
+			cl1.setCellStyle(st0_right);
+			
+			rowHeader = sheet.createRow(++rows_count);
+		    
+			cl1 = createCell(rowHeader, 0," '____' ________ _______ ", creationHelper); 
+				   
+			sheet.addMergedRegion(new CellRangeAddress(rows_count,rows_count,0,6));
+				
+			cl1.setCellStyle(st0_right);
+			
+			rowHeader = sheet.createRow(++rows_count);
+	    
+		}
+		
+	   sheet.addMergedRegion(new CellRangeAddress(rows_count ,rows_count, 
+			   0, 11));
+	
+	   sheet.createRow(++rows_count);
+	   
+	   sheet.createRow(++rows_count);
+	   
+	   return rows_count;
+}
+	
 	
 	private int createExcelHeader(  XSSFWorkbook wb, XSSFSheet sheet, Vector<WsSkladMoveDataRow> vec_all_parts, XSSFCreationHelper creationHelper) {
 		
-			XSSFCellStyle st0_right = getExcelCellStyle(wb, 0, 0, 0, 0, 
-					   false, HorizontalAlignment.LEFT, VerticalAlignment.CENTER, false);
-			
-			//XSSFCellStyle st0 = getExcelCellStyle(wb, 0, 0, 0, 0, 
-			//		   false, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false);
-			
+
 			XSSFCellStyle st01 = getExcelCellStyle(wb, 1, 1, 1, 1, 
 					   false, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false);
 			
-			int rows_count = 0;
-			
-			XSSFRow rowHeader = sheet.createRow( rows_count);
-			
-			if(m_p_panel.getApprovePerson() != null) {
-				
-				XSSFCell cl1 = createCell(rowHeader, 0, getGuiStrs("apprLabelRep"), creationHelper); 
-				   
-				sheet.addMergedRegion(new CellRangeAddress(rows_count,rows_count,0,6));
-				
-				cl1.setCellStyle(st0_right);
-			   
-			    rowHeader = sheet.createRow(++rows_count);
-			    
-			    cl1 = createCell(rowHeader, 0, m_p_panel.getApprovePerson().position, creationHelper); 
-				   
-				sheet.addMergedRegion(new CellRangeAddress(rows_count,rows_count,0,6));
-				
-				cl1.setCellStyle(st0_right);
-				
-				rowHeader = sheet.createRow(++rows_count);
-				    
-				cl1 = createCell(rowHeader, 0, m_p_panel.getApprovePerson().rank + "____________" +
-						m_p_panel.getApprovePerson().name, creationHelper); 
-					   
-				sheet.addMergedRegion(new CellRangeAddress(rows_count,rows_count,0,6));
-					
-				cl1.setCellStyle(st0_right);
-				
-				rowHeader = sheet.createRow(++rows_count);
-			    
-				cl1 = createCell(rowHeader, 0," '____' ________ _______ ", creationHelper); 
-					   
-				sheet.addMergedRegion(new CellRangeAddress(rows_count,rows_count,0,6));
-					
-				cl1.setCellStyle(st0_right);
-				
-				rowHeader = sheet.createRow(++rows_count);
-		    
-			}
-			
-		   XSSFRow rowHeader0 = sheet.createRow(++rows_count);
-		   
-		   XSSFCell cl1 = createCell(rowHeader0, 0, getReportCaption(), creationHelper);
-		   
-		   sheet.addMergedRegion(new CellRangeAddress(rows_count ,rows_count, 
-				   0, 11));
 		
-		   rowHeader0 = sheet.createRow(++rows_count);
+		   int rows_count = createExcelHeader0(wb, sheet, creationHelper) ;
 		   
-		   rowHeader0 = sheet.createRow(++rows_count);
+		   XSSFRow rowHeader0 = sheet.createRow(rows_count);
 		   
 		   int row0_index = rows_count;
 		   
-		   cl1 = createCell(rowHeader0, 0, "", creationHelper); 
+		   XSSFCell cl1 = createCell(rowHeader0, 0, "", creationHelper); 
 		   
 		   cl1.setCellStyle(st01);
 	
@@ -901,5 +969,353 @@ public class WsSkladMovementReport extends WSReportViewer {
 		
 		return hS_b.toString();
 		
+	}
+	
+	public void exportToExcelFile2(int colNum) {
+		
+		Vector<WsSkladMoveDataRow> vec_all_parts = m_vec_all_parts;
+		
+		String file_to_save = 	excelSaveFileChoose(this);
+		
+		if (null == file_to_save)  { return; }
+		
+		OutputStream out;
+		
+		try {
+			
+			try {
+				
+				out = new FileOutputStream(file_to_save);
+				
+			} catch(java.io.FileNotFoundException exf) {
+				
+				WsUtils.showMessageDialog(getMessagesStrs("cantOpenFileForExportMessage"));
+				
+				return;
+			}
+			
+			XSSFWorkbook wb = new XSSFWorkbook();
+			
+			XSSFCreationHelper creationHelper = wb.getCreationHelper();
+		
+		    XSSFSheet sheet = (XSSFSheet) wb.createSheet();
+		    
+			XSSFCellStyle st01 = getExcelCellStyle(wb, 1, 1, 1, 1, 
+					   false, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false);
+			
+		    int row_index = createExcelHeader0(  wb, sheet,  creationHelper);
+				
+		    ++row_index;
+		    
+			Vector<Vector<WsSkladMoveDataRow>> data =  splitDataInVerticalDirection(vec_all_parts, colNum);
+	
+			XSSFRow rowHeader0 = null;
+			
+			XSSFRow rowHeader1 = null;
+			
+			XSSFRow rowHeader2 = null;
+			
+			System.out.print(data.size());
+			
+			for (Vector<WsSkladMoveDataRow> d0: data) {
+				
+				boolean flag = true;
+				
+				for (WsSkladMoveDataRow d1: d0) {
+					
+					if(flag) {
+						
+						rowHeader0 = sheet.createRow(row_index++);
+						
+						rowHeader1 = sheet.createRow(row_index++);
+						
+						rowHeader2 = sheet.createRow(row_index++);
+
+					}
+
+					XSSFRow row = sheet.createRow(row_index++);
+					
+					
+		            
+		            Vector<WsSkladMoveDataColumn> vec_columns = d1.row_vec;
+		            
+		            int cell_index = 0;
+		               
+		            XSSFCell cell01 = row.createCell(cell_index++);
+		            
+		            cell01.setCellStyle(st01);
+		        	
+	                WsUtils.get();
+						                
+	                XSSFCell cell02 = row.createCell(cell_index++);
+	                
+	                cell02.setCellStyle(st01);
+	                
+	                String nameRow = null;
+	                
+	                String inDate = null;
+	               
+		   		    switch(d1.indexData) {
+					 
+						 case 0:{ 
+							 
+							 nameRow = getGuiStrs("zalishokNaReportName") + " " +  WsUtils.dateToString(d1.date_end, "dd.MM.yy" );
+							 
+							 inDate = WsUtils.dateToString(d1.date_end, "dd.MM.yy" );
+							 
+							 break;
+						 }
+						 case 1:{
+							 
+							 nameRow = getGuiStrs("zvPribReportBookName")+ " " +  WsUtils.dateToString(d1.date_start, "dd.MM.yy" ) + " " + getGuiStrs("poNameReport") + " "
+									 + WsUtils.dateToString(d1.date_end, "dd.MM.yy" );
+							 
+							 inDate = WsUtils.dateToString(d1.date_start, "dd.MM.yy" );
+							 
+							 break;
+						 }
+						 case 2 : {
+							 
+							 nameRow = getGuiStrs("zvVitratBookReportName") + " " +  WsUtils.dateToString(d1.date_start, "dd.MM.yy" ) + " " + getGuiStrs("poNameReport") + " "
+									 + WsUtils.dateToString(d1.date_end, "dd.MM.yy" );
+							 
+							 inDate = WsUtils.dateToString(d1.date_end, "dd.MM.yy" );
+							 
+							 break;
+						 }
+					};
+					  
+					cell01.setCellValue(inDate);
+					
+				    cell01.setCellStyle(st01);
+			 
+			 		cell02.setCellValue(nameRow);
+			 		
+			 	    cell02.setCellStyle(st01);
+			 	    
+			 	    boolean initHeaderFlag = true;
+	
+		            for (int j = 0; j < vec_columns.size(); j++) {
+		            	
+		            	
+		            	WsSkladMoveDataColumn col_data =  vec_columns.elementAt(j);
+		            	
+		            	if(flag) {
+		            		createHeader2( wb, sheet,rowHeader0, 
+		            				rowHeader1, rowHeader2, cell_index,
+		            				col_data, creationHelper);
+		            		
+		            		if(initHeaderFlag)  { 
+		            			
+		            			createHeader3( wb, sheet,rowHeader0, 
+		            				rowHeader1, rowHeader2, creationHelper) ;
+		            			
+		            			initHeaderFlag = false;
+		            		
+		            		}
+		            	
+		            	}
+		            	
+		                XSSFCell cell0 = row.createCell(cell_index++);
+		                
+		                cell0.setCellStyle(st01);
+		                
+		                if(col_data.in_quantity < 0.00001) {
+		                	
+		                	 cell0.setCellValue("");
+		                }
+		                else {
+		                	
+		                	 cell0.setCellValue(col_data.in_quantity);
+		                }
+		                
+		                XSSFCell cell1 = row.createCell(cell_index++);
+		                
+		                cell1.setCellStyle(st01);
+		                
+		                if(col_data.out_quantity < 0.00001) {
+		                	
+		                	 cell1.setCellValue("");
+		                }
+		                else {
+		                	
+		                	 cell1.setCellValue(col_data.out_quantity);
+		                }
+		
+	
+		                XSSFCell cell2 = row.createCell(cell_index++);
+		                
+		                cell2.setCellStyle(st01);
+		                
+		                if(col_data.rest < 0.00001) {
+		                	
+		                	 cell2.setCellValue("");
+		                }
+		                else {
+		                	
+		                	 cell2.setCellValue(col_data.rest);
+		                }
+		            }
+		            
+		            flag = false;
+				
+				}
+				
+				sheet.createRow(row_index++);
+			
+				
+			}
+	    	
+            XSSFRow row = sheet.createRow(row_index++);
+            
+            row = sheet.createRow(row_index++);
+            
+	        if(m_p_panel.getP1Person() != null) {
+	        	
+	        	XSSFCell c1 = row.createCell(0);
+	        	
+	        	c1.setCellValue(m_p_panel.getP1Person().position);
+	        	
+	        	sheet.addMergedRegion(new CellRangeAddress(row_index - 1,row_index - 1,0,4));
+	        	
+	        	row = sheet.createRow(row_index++);
+	        	
+	        	c1 = row.createCell(0);
+	        	
+	        	c1.setCellValue(m_p_panel.getP1Person().rank + " ____________ " + m_p_panel.getP1Person().name);
+	        	
+	        	sheet.addMergedRegion(new CellRangeAddress(row_index - 1,row_index - 1,0,6));
+	        	
+	        }
+	        
+	        row = sheet.createRow(row_index++);
+	        
+	        row = sheet.createRow(row_index++);
+	        
+	        if(m_p_panel.getP2Person() != null) {
+	        	
+	        	XSSFCell c1 = row.createCell(0);
+	        	
+	        	c1.setCellValue(m_p_panel.getP2Person().position);
+	        	
+	        	sheet.addMergedRegion(new CellRangeAddress(row_index - 1,row_index - 1,0,4));
+	        	
+	        	row = sheet.createRow(row_index++);
+	        	
+	        	c1 = row.createCell(0);
+	        	
+	        	c1.setCellValue(m_p_panel.getP2Person().rank + " ____________ " + m_p_panel.getP2Person().name);
+	        	
+	        	sheet.addMergedRegion(new CellRangeAddress(row_index - 1,row_index - 1,0,6));
+	        	 
+	        }
+
+			wb.write(out);
+	
+			out.close();
+	    
+			wb.close(); 
+			
+			WsUtils.showMessageDialog(getMessagesStrs("saveExcelReportSuccessMessage"));
+    
+		} catch (IOException  e) {
+
+			e.printStackTrace();
+			
+			WsUtils.showMessageDialog(getMessagesStrs("saveExcelReportFailedMessage"));
+		}
+
+	}
+	
+	void createHeader2( XSSFWorkbook wb, XSSFSheet sheet, XSSFRow rowHeader0, 
+			XSSFRow rowHeader1, XSSFRow rowHeader2, int cell_index,
+			WsSkladMoveDataColumn col, XSSFCreationHelper creationHelper) {
+		
+			XSSFCellStyle st01 = getExcelCellStyle(wb, 1, 1, 1, 1, 
+				   false, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false);
+		
+			int cell_index_merge = cell_index;
+		   
+		   XSSFCell cl1 = createCell(rowHeader0, cell_index, col.name, creationHelper);
+		   
+		   cl1.setCellStyle(st01);
+		   
+		   cl1 = createCell(rowHeader1, cell_index, String.valueOf(col.kod), creationHelper);
+		   
+		   cl1.setCellStyle(st01);
+		   
+		   cl1 = createCell(rowHeader2, cell_index++, getGuiStrs("pribuloReportName"), creationHelper);
+		   
+		   cl1.setCellStyle(st01);
+		   
+		   cl1 = createCell(rowHeader0, cell_index, "", creationHelper);
+		   
+		   cl1.setCellStyle(st01);
+		   
+		   cl1 = createCell(rowHeader1, cell_index, "", creationHelper);
+		   
+		   cl1.setCellStyle(st01);
+		   
+		   cl1 = createCell(rowHeader2, cell_index++, getGuiStrs("quantityNameVibuloReportColumn"), creationHelper);
+		   
+		   cl1.setCellStyle(st01);
+		   
+		   cl1 =createCell(rowHeader0, cell_index, "", creationHelper);
+		   
+		   cl1.setCellStyle(st01);
+		   
+		   cl1 =createCell(rowHeader1, cell_index, "", creationHelper);
+		   
+		   cl1.setCellStyle(st01);
+		   
+		   cl1 = createCell(rowHeader2, cell_index++, getGuiStrs("prihodPartsColumnRestName"), creationHelper);
+		   
+		   cl1.setCellStyle(st01);
+		   
+		   sheet.addMergedRegion(new CellRangeAddress(rowHeader0.getRowNum(),rowHeader0.getRowNum(),cell_index_merge,cell_index_merge + 2));
+		   
+		   sheet.addMergedRegion(new CellRangeAddress(rowHeader1.getRowNum() , rowHeader1.getRowNum(), 
+				   cell_index_merge,cell_index_merge + 2));
+		
+		
+		
+	}
+	
+	
+
+	void createHeader3( XSSFWorkbook wb, XSSFSheet sheet, XSSFRow rowHeader0, 
+			XSSFRow rowHeader1, XSSFRow rowHeader2, XSSFCreationHelper creationHelper) {
+		
+			XSSFCellStyle st01 = getExcelCellStyle(wb, 1, 1, 1, 1, 
+				   false, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false);
+		
+		   XSSFCell cl1 = createCell(rowHeader0, 1, "", creationHelper);
+		   
+		   cl1.setCellStyle(st01);
+		   
+		   cl1 = createCell(rowHeader0, 0, getGuiStrs("reportBookNameGoodColumn") + ":", creationHelper);
+		   
+		   cl1.setCellStyle(st01);
+		   
+		   cl1 = createCell(rowHeader1, 1, "", creationHelper);
+		   
+		   cl1.setCellStyle(st01);
+		   
+		   cl1 = createCell(rowHeader1, 0, getGuiStrs("colNameKod") + ":", creationHelper);
+		   
+		   cl1.setCellStyle(st01);
+		   
+		   cl1 = createCell(rowHeader2, 0, getGuiStrs("reportBookInDateNameColumn"), creationHelper);
+		   
+		   cl1.setCellStyle(st01);
+		   
+		   cl1 = createCell(rowHeader2, 1, getGuiStrs("docNameReportName"), creationHelper);
+		   
+		   cl1.setCellStyle(st01);
+		   	   
+		   sheet.addMergedRegion(new CellRangeAddress(rowHeader0.getRowNum(),rowHeader0.getRowNum(),0,1));
+		   
+		   sheet.addMergedRegion(new CellRangeAddress(rowHeader1.getRowNum() , rowHeader1.getRowNum(), 0,1));
+	
 	}
 }
