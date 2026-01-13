@@ -2,7 +2,6 @@
 package wscontrols;
 
 import static wsmain.WsUtils.getGuiStrs;
-
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -14,7 +13,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
 import wsmain.WsUtils;
 
 
@@ -39,6 +37,8 @@ public class WsFileChooser extends JPanel {
 	
 	private Font m_font = WsUtils.get().getBaseFont();
 	
+	boolean m_excelFlag = false;
+	
 	public WsFileChooser(String label) {
 		
 		if(label != null) {
@@ -55,12 +55,38 @@ public class WsFileChooser extends JPanel {
 		
 	}
 	
+	public void setExcelType(boolean flag) {
+		
+		m_excelFlag = flag;
+		
+	}
+	
 	class Forwarder implements ActionListener {
 		
 		public void actionPerformed(ActionEvent e) {
 
 			
-			if ( e.getSource() == m_pathButton ) onPath(e);
+			if ( e.getSource() == m_pathButton ) { 
+				
+				if(m_current_path == null) { m_current_path = ""; }
+				
+				if(m_excelFlag ) {
+					
+					String f = WsUtils.get().excelSaveFileChoose( WsFileChooser.this, 
+							new WsMutableString(m_current_path));
+						
+					if(null == f) { return; }
+					
+					m_path.setText(f);	
+					
+					m_current_path = f;
+					
+				}
+				else { 
+					
+					onPath(e);
+				}
+			}
 			
 		}
 	}

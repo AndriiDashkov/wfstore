@@ -1,14 +1,12 @@
 package wsdialogs;
 
 import static wsmain.WsUtils.getGuiStrs;
-
+import static wsmain.WsUtils.getMessagesStrs;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -21,18 +19,19 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
-
+import wscontrols.WsFileChooser;
 import wsmain.WsGuiTools;
+import wsmain.WsUtils;
 import wsreports.WsSkladMovementReport;
+
+/**
+ * @author Andrii Dashkov license GNU GPL v3
+ *
+ */
 
 public class WsReport14ExcelImportDialog extends JDialog {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
-
 
 	JRadioButton m_horRadio = new JRadioButton(getGuiStrs("horRep"));
 	
@@ -45,6 +44,8 @@ public class WsReport14ExcelImportDialog extends JDialog {
 	WsSkladMovementReport m_parent =  null;
 	
 	TitledBorder m_title = null;
+	
+	WsFileChooser m_file = new  WsFileChooser(getGuiStrs("fileExpCh"));
 	
 	public  WsReport14ExcelImportDialog(JFrame jfrm, String nameFrame,
 			WsSkladMovementReport parent) {
@@ -71,6 +72,8 @@ public class WsReport14ExcelImportDialog extends JDialog {
 		
 		m_spin.setEnabled(false);
 		
+		m_file.setExcelType(true);
+		
 	}
 	
 	void addListeners() {
@@ -80,16 +83,27 @@ public class WsReport14ExcelImportDialog extends JDialog {
 				
 	            public void actionPerformed(ActionEvent e) {
 	            	
+	            	String f  = m_file.getFullFilePath();
+	            	
+	            	if (f == null || f.isEmpty())  { 
+	            		
+	            		WsUtils.showMessageDialog(getMessagesStrs("noexpfile"));
+         		
+	            		return; 
+	            		
+	            	}
+	            	
+	            	
 	            	if( m_horRadio.isSelected() ) {
 	            	
-	            		m_parent.exportToExcelFile();
+	            		m_parent.exportToExcelFile(f);
 	            		
 	            		WsReport14ExcelImportDialog.this.dispose();
 	            	
 	            	}
 	            	else {
 	            		
-	            		m_parent.exportToExcelFile2((int)m_spin.getValue());
+	            		m_parent.exportToExcelFile2(f, (int)m_spin.getValue());
 	            		
 	            		WsReport14ExcelImportDialog.this.dispose();
 	            		
@@ -161,9 +175,14 @@ public class WsReport14ExcelImportDialog extends JDialog {
 		 
 		 bt_panel.add(Box.createHorizontalGlue());
 		
-		main.add(main1);
+		 main.add(main1);
 		
-		main.add(bt_panel);
+		 main.add(m_file);
+		
+		 main.add(bt_panel);
+		
+		 main.setBorder(BorderFactory.createEmptyBorder(WsUtils.VERT_STRUT,WsUtils.VERT_STRUT,WsUtils.VERT_STRUT,WsUtils.VERT_STRUT));
+		
 		
 	}
 	

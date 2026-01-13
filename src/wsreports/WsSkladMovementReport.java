@@ -572,11 +572,9 @@ public class WsSkladMovementReport extends WSReportViewer {
 	}
 	
 
-	public void exportToExcelFile() {
+	public void exportToExcelFile(String file_to_save) {
 		
 		Vector<WsSkladMoveDataRow> vec_all_parts = m_vec_all_parts;
-		
-		String file_to_save = 	excelSaveFileChoose(this);
 		
 		if (null == file_to_save)  { return; }
 	
@@ -607,6 +605,8 @@ public class WsSkladMovementReport extends WSReportViewer {
 		    int row_index = createExcelHeader(wb, sheet, vec_all_parts, creationHelper);
 		    
 		    ++row_index;
+		    
+    	
 		
 	    	for (WsSkladMoveDataRow dt: vec_all_parts) {
 	
@@ -822,12 +822,10 @@ public class WsSkladMovementReport extends WSReportViewer {
 	    
 		}
 		
-	   sheet.addMergedRegion(new CellRangeAddress(rows_count ,rows_count, 
-			   0, 11));
-	
+	 
 	   sheet.createRow(++rows_count);
 	   
-	   sheet.createRow(++rows_count);
+	   //sheet.createRow(++rows_count);
 	   
 	   return rows_count;
 }
@@ -836,13 +834,22 @@ public class WsSkladMovementReport extends WSReportViewer {
 	private int createExcelHeader(  XSSFWorkbook wb, XSSFSheet sheet, Vector<WsSkladMoveDataRow> vec_all_parts, XSSFCreationHelper creationHelper) {
 		
 
-			XSSFCellStyle st01 = getExcelCellStyle(wb, 1, 1, 1, 1, 
+		   XSSFCellStyle st01 = getExcelCellStyle(wb, 1, 1, 1, 1, 
 					   false, HorizontalAlignment.CENTER, VerticalAlignment.CENTER, false);
 			
 		
 		   int rows_count = createExcelHeader0(wb, sheet, creationHelper) ;
 		   
-		   XSSFRow rowHeader0 = sheet.createRow(rows_count);
+		   XSSFRow capRow = sheet.createRow(rows_count);
+		    
+		   sheet.addMergedRegion(new CellRangeAddress(rows_count ,rows_count++, 
+					   0, 11));
+			   
+		   createCell(capRow, 0,this.getReportCaption(), creationHelper);
+			
+		   sheet.createRow(rows_count++);
+		   
+		   XSSFRow rowHeader0 = sheet.createRow(rows_count);	
 		   
 		   int row0_index = rows_count;
 		   
@@ -945,7 +952,7 @@ public class WsSkladMovementReport extends WSReportViewer {
 		
 		StringBuilder hS_b = new StringBuilder();
 		
-		hS_b.append(getGuiStrs("bookSkladMovementReportName") );
+		hS_b.append(getGuiStrs("bookSkladMovementReportName4") );
 		
 		hS_b.append(" " );
 		
@@ -971,12 +978,10 @@ public class WsSkladMovementReport extends WSReportViewer {
 		
 	}
 	
-	public void exportToExcelFile2(int colNum) {
+	public void exportToExcelFile2(String file_to_save, int colNum) {
 		
 		Vector<WsSkladMoveDataRow> vec_all_parts = m_vec_all_parts;
-		
-		String file_to_save = 	excelSaveFileChoose(this);
-		
+
 		if (null == file_to_save)  { return; }
 		
 		OutputStream out;
@@ -1007,6 +1012,15 @@ public class WsSkladMovementReport extends WSReportViewer {
 				
 		    ++row_index;
 		    
+		    XSSFRow capRow = sheet.createRow(row_index);
+		    
+		    sheet.addMergedRegion(new CellRangeAddress(row_index ,row_index++, 
+					   0, 11));
+			   
+			createCell(capRow, 0,this.getReportCaption(), creationHelper);
+			
+			sheet.createRow(row_index++);
+			
 			Vector<Vector<WsSkladMoveDataRow>> data =  splitDataInVerticalDirection(vec_all_parts, colNum);
 	
 			XSSFRow rowHeader0 = null;
@@ -1034,9 +1048,7 @@ public class WsSkladMovementReport extends WSReportViewer {
 					}
 
 					XSSFRow row = sheet.createRow(row_index++);
-					
-					
-		            
+							            
 		            Vector<WsSkladMoveDataColumn> vec_columns = d1.row_vec;
 		            
 		            int cell_index = 0;
