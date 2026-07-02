@@ -591,6 +591,8 @@ public class WsCatalogKods {
 	
 	public  int getKodFromCatalog(int foreign_kod) {
 		
+		if( foreign_kod == -1 ) return WsUtils.UNKNOWN_KOD;
+		
 		if( m_map.containsKey(foreign_kod)) { return foreign_kod; }
 		
 		int tmp1 = foreign_kod - 10000;
