@@ -827,38 +827,21 @@ public class WsExcelImport {
 		    	
 		    	if(null == row_kod) { break; }
 		  
-			    XSSFCell cell_kod = row_kod.getCell( kods_column_index, MissingCellPolicy.RETURN_NULL_AND_BLANK );
-			    
-			    if(null == cell_kod) { break; }
-	   
 				int kod = -1;
-			        	
-	        	try {
-	        		
-	        		kod = (int)cell_kod.getNumericCellValue();
-	        		
-	        		kod = kt.getKodFromCatalog(kod);
-	        		
-	        		if( kod == WsUtils.UNKNOWN_KOD ) { 
-	        			
-	        			++unknown_kod__cell_counter;
-	        			
-	        			if(unknown_kod__cell_counter > 30) { break; }
+			        		
+        		kod = WsImportExcelUtil.getKodCell( row_kod, kods_column_index);
+        		
+        		kod = kt.getKodFromCatalog(kod);
+        		
+        		if(kod == WsUtils.UNKNOWN_KOD ) { 
+        			
+        			++unknown_kod__cell_counter;
+        			
+        			if(unknown_kod__cell_counter > 30) { break; }
 
-	        			continue ;
-	        		}
+        			continue ;
+        		}
 	        		
-	        	 } catch(Exception e) {
-	        		 
-	        		 ++non_valid_cell_counter;
-	        		 
-	        		 if(non_valid_cell_counter > 30) { break; }
-	        		 
-	        		 continue; 
-	        		 
-	        	 }
-	        	
-	        	
 	        	XSSFCell cell_cost = row_kod.getCell(cost_column_index);
 	        	
 	        	double cost = 0.0;
